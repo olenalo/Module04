@@ -27,7 +27,7 @@ public class Move {
         //  2 - if does not comply with general rules, check specific rules if eligible
         //    e.g. for King / Rook - check if ever moved (if castling is attempted);
         //    think about Pawn
-        //  3 - check if cell is occupied
+        //  3 - check if cell is not occupied by pieces of same color
         return true;
     }
 
