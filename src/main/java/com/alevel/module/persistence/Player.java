@@ -30,6 +30,7 @@ public class Player {
         // TODO
     }
 
+    // TODO piece or pieces (castling)?
     public boolean makeMove(Piece piece, Cell cell) {
         // TODO validate (validation logic to be placed in the `Move` class
         // TODO isCheckmate

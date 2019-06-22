@@ -13,7 +13,7 @@ public class Move {
     // Note: color information is encapsulated in a piece (color indicates a player)
     // If King and Rook are being castled, two pieces are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
-    private Piece[] pieces;
+    private Piece[] pieces; // TODO make it to be arraylist
     private Cell currentCell;
     private Cell destinationCell;
     // TODO results (captured pieces if any)
