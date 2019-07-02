@@ -10,6 +10,8 @@ public class Piece {
     private boolean isCaptured; // won't be stored in the db
     // TODO: add additional rules, i.e. if special features are provided (promotion, castling), specific rules apply
 
+    // TODO doMove
+
     public Piece(Color color) {
         this.color = color;
     }

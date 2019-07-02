@@ -14,20 +14,22 @@ public class Move {
     // If King and Rook are being castled, two pieces are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
     private Piece[] pieces; // TODO make it to be arraylist
-    private Cell currentCell;
-    private Cell destinationCell;
+    private Cell currentCell; // before
+    private Cell destinationCell; // after
     // TODO results (captured pieces if any)
 
     // TODO add constructor
 
     public boolean validate() {
         // TODO
-        //  0 - ensure the move is within the field
-        //  1 - general rules
+        //  0 - ensure the move is within the field -- this belongs to thw validation in `Space` class
+        //  1 - general rules  -- // ----- this part in Chessboard???
         //  2 - if does not comply with general rules, check specific rules if eligible
         //    e.g. for King / Rook - check if ever moved (if castling is attempted);
         //    think about Pawn
         //  3 - check if cell is not occupied by pieces of same color
+
+        // TODO IllegalArgumentException
         return true;
     }
 
