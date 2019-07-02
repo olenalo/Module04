@@ -13,6 +13,7 @@ public class King extends Piece {
     public static final int[][] ALLOWED_GENERAL_MOVES = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     // TODO add castling if never moved (for Rook as well), ref.: https://en.wikipedia.org/wiki/Castling
     //  public static int[][] ALLOWED_SPECIFIC_MOVES = {};
+    // TODO ensure the move doesn't put a king in check
 
     public King(Color color) {
         super(color, KING);

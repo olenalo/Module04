@@ -28,6 +28,7 @@ public class Move {
         //    e.g. for King / Rook - check if ever moved (if castling is attempted);
         //    think about Pawn
         //  3 - check if cell is not occupied by pieces of same color   -- this belongs to the `Square` class
+        //  4 - validate if checkmate
         //  other checks?
 
         // TODO IllegalArgumentException
