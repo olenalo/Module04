@@ -1,5 +1,6 @@
 package com.alevel.module.persistence;
 
+import com.alevel.module.persistence.chessboard.Space;
 import com.alevel.module.persistence.pieces.Piece;
 
 public class Player {
@@ -18,8 +19,11 @@ public class Player {
         this.username = username;
     }
 
+    // TODO chess color
+
     // TODO hashcode, equals
 
+    // TODO consider moving someplace else
     /**
      * Find a lobby.
      *
@@ -31,7 +35,7 @@ public class Player {
     }
 
     // TODO piece or pieces (castling)?
-    public boolean makeMove(Piece piece, Cell cell) {
+    public boolean makeMove(Piece piece, Space space) {
         // TODO validate (validation logic to be placed in the `Move` class
         // TODO isCheckmate
         return true;

@@ -1,4 +1,4 @@
-package com.alevel.module.persistence;
+package com.alevel.module.persistence.chessboard;
 
 import com.alevel.module.persistence.pieces.Piece;
 
@@ -13,21 +13,22 @@ public class Move {
     // Note: color information is encapsulated in a piece (color indicates a player)
     // If King and Rook are being castled, two pieces are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
-    private Piece[] pieces; // TODO make it to be arraylist
-    private Cell currentCell; // before
-    private Cell destinationCell; // after
+    private Piece piece;
+    private Space currentSpace; // before
+    private Space destinationSpace; // after
     // TODO results (captured pieces if any)
 
     // TODO add constructor
 
     public boolean validate() {
         // TODO
-        //  0 - ensure the move is within the field -- this belongs to thw validation in `Space` class
-        //  1 - general rules  -- // ----- this part in Chessboard???
+        //  0 - ensure the move is within the field -- this belongs to the `Square` class
+        //  1 - general rules
         //  2 - if does not comply with general rules, check specific rules if eligible
         //    e.g. for King / Rook - check if ever moved (if castling is attempted);
         //    think about Pawn
-        //  3 - check if cell is not occupied by pieces of same color
+        //  3 - check if cell is not occupied by pieces of same color   -- this belongs to the `Square` class
+        //  other checks?
 
         // TODO IllegalArgumentException
         return true;
@@ -55,23 +56,23 @@ public class Move {
         this.timestamp = timestamp;
     }
 
-    public Cell getDestinationCell() {
-        return destinationCell;
+    public Space getDestinationSpace() {
+        return destinationSpace;
     }
 
-    public void setDestinationCell(Cell destinationCell) {
-        this.destinationCell = destinationCell;
+    public void setDestinationSpace(Space destinationSpace) {
+        this.destinationSpace = destinationSpace;
     }
 
-    public Cell getCurrentCell() {
-        return currentCell;
+    public Space getCurrentSpace() {
+        return currentSpace;
     }
 
-    public void setCurrentCell(Cell currentCell) {
-        this.currentCell = currentCell;
+    public void setCurrentSpace(Space currentSpace) {
+        this.currentSpace = currentSpace;
     }
 
-    public Piece[] getPieces() {
-        return pieces;
+    public Piece getPiece() {
+        return piece;
     }
 }

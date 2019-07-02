@@ -3,7 +3,7 @@ package com.alevel.module.persistence;
 public class Game {
 
     private Lobby lobby;
-    private Player[] players = new Player[1];
+    private Player[] players = new Player[2];
     private boolean isOver = false;  // won't be stored in a db
     // TODO results - null if not over
 
