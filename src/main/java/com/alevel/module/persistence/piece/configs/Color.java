@@ -1,4 +1,4 @@
-package com.alevel.module.persistence.pieces.configs;
+package com.alevel.module.persistence.piece.configs;
 
 public enum Color {
     BLACK, WHITE; // TODO create within the `Piece` class

@@ -1,10 +1,9 @@
-package com.alevel.module.persistence.pieces;
+package com.alevel.module.persistence.piece;
 
 import com.alevel.module.persistence.chessboard.Chessboard;
 import com.alevel.module.persistence.chessboard.Move;
-import com.alevel.module.persistence.chessboard.Vector;
-import com.alevel.module.persistence.pieces.configs.Color;
-import com.alevel.module.persistence.pieces.configs.Type;
+import com.alevel.module.persistence.piece.configs.Color;
+import com.alevel.module.persistence.piece.configs.Type;
 
 
 public abstract class Piece {

@@ -1,12 +1,12 @@
-package com.alevel.module.persistence.pieces.pieces;
+package com.alevel.module.persistence.piece.pieces;
 
 import com.alevel.module.persistence.chessboard.Chessboard;
 import com.alevel.module.persistence.chessboard.Move;
-import com.alevel.module.persistence.pieces.Piece;
-import com.alevel.module.persistence.pieces.configs.Color;
-import com.alevel.module.persistence.pieces.configs.Type;
+import com.alevel.module.persistence.piece.Piece;
+import com.alevel.module.persistence.piece.configs.Color;
+import com.alevel.module.persistence.piece.configs.Type;
 
-import static com.alevel.module.persistence.pieces.configs.Type.KING;
+import static com.alevel.module.persistence.piece.configs.Type.KING;
 
 public class King extends Piece {
     public static final Type TITLE = KING;

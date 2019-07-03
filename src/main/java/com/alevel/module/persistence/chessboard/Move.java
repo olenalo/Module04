@@ -1,6 +1,6 @@
 package com.alevel.module.persistence.chessboard;
 
-import com.alevel.module.persistence.pieces.Piece;
+import com.alevel.module.persistence.piece.Piece;
 
 /**
  * TODO add docstring
@@ -9,16 +9,19 @@ import com.alevel.module.persistence.pieces.Piece;
  */
 public class Move {
 
-    private int timestamp;
-    // Note: color information is encapsulated in a piece (color indicates a player)
-    // If King and Rook are being castled, two pieces are involved TODO but maybe it should be two separate moves;
+    private int timestamp;  // TODO make final, assigning the current timestamp
+    // If King and Rook are being castled, two piece are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
     private Piece piece;
     private Space currentSpace; // before
     private Space destinationSpace; // after
-    // TODO results (captured pieces if any)
+    // TODO results (captured piece if any)
 
-    // TODO add constructor
+    public Move(Piece piece, Space currentSpace, Space destinationSpace) {
+        this.piece = piece;
+        this.currentSpace = currentSpace;
+        this.destinationSpace = destinationSpace;
+    }
 
     public boolean validate() {
         // TODO
@@ -27,7 +30,7 @@ public class Move {
         //  2 - if does not comply with general rules, check specific rules if eligible
         //    e.g. for King / Rook - check if ever moved (if castling is attempted);
         //    think about Pawn
-        //  3 - check if cell is not occupied by pieces of same color   -- this belongs to the `Square` class
+        //  3 - check if cell is not occupied by piece of same color   -- this belongs to the `Square` class
         //  4 - validate if checkmate
         //  other checks?
 
@@ -43,7 +46,7 @@ public class Move {
      * @return boolean: true if checkmate is reached, false if not.
      */
     public boolean validateCheckMate() {
-        // TODO
+        // TODO consider moving someplace else
         return true;
     }
 

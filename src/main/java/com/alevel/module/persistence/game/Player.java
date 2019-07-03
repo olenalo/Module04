@@ -1,11 +1,13 @@
-package com.alevel.module.persistence;
+package com.alevel.module.persistence.game;
 
 import com.alevel.module.persistence.chessboard.Space;
-import com.alevel.module.persistence.pieces.Piece;
+import com.alevel.module.persistence.piece.Piece;
+import com.alevel.module.persistence.piece.configs.Color;
 
 public class Player {
 
     private String username;
+    private Color piecesColor;
 
     public Player(String username) {
         this.username = username;
@@ -34,10 +36,18 @@ public class Player {
         // TODO
     }
 
-    // TODO piece or pieces (castling)?
+    // TODO piece or piece (castling)?
     public boolean makeMove(Piece piece, Space space) {
         // TODO validate (validation logic to be placed in the `Move` class
         // TODO isCheckmate
         return true;
+    }
+
+    public Color getPiecesColor() {
+        return piecesColor;
+    }
+
+    public void setPiecesColor(Color piecesColor) {
+        this.piecesColor = piecesColor;
     }
 }
