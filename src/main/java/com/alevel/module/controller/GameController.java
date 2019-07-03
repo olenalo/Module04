@@ -1,50 +1,35 @@
 package com.alevel.module.controller;
 
 import com.alevel.module.persistence.chessboard.Chessboard;
+import com.alevel.module.persistence.chessboard.Move;
 import com.alevel.module.persistence.chessboard.Space;
-import com.alevel.module.persistence.chessboard.Square;
-import com.alevel.module.persistence.chessboard.configs.File;
 import com.alevel.module.persistence.chessboard.configs.Rank;
 import com.alevel.module.persistence.game.Game;
 import com.alevel.module.persistence.game.Lobby;
 import com.alevel.module.persistence.game.Player;
+import com.alevel.module.persistence.piece.Piece;
+import com.alevel.module.persistence.piece.pieces.King;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.alevel.module.controller.utils.GameControllerUtils.createDummyChessboard;
+import static com.alevel.module.persistence.chessboard.configs.File.A;
+import static com.alevel.module.persistence.chessboard.configs.File.B;
+import static com.alevel.module.persistence.chessboard.configs.Rank.ONE;
+import static com.alevel.module.persistence.chessboard.configs.Rank.TWO;
+import static com.alevel.module.persistence.chessboard.configs.Rank.FOUR;
+import static com.alevel.module.persistence.piece.configs.Color.WHITE;
 
 @RestController
 @RequestMapping("/chess")
 public class GameController {
 
-    @PostMapping("/demo")
+    @PostMapping("/demoGame")
     public @ResponseBody Game demoGame(@RequestBody String username) {
         Player firstPlayer = new Player(username);
         Lobby lobby = new Lobby(firstPlayer);
         Player secondPlayer = new Player("yoyo");
-        List<Square> squares = new ArrayList<>();
-
-        squares.add(new Square(new Space(File.A, Rank.ONE)));
-        squares.add(new Square(new Space(File.B, Rank.ONE)));
-        squares.add(new Square(new Space(File.C, Rank.ONE)));
-        squares.add(new Square(new Space(File.D, Rank.ONE)));
-        squares.add(new Square(new Space(File.E, Rank.ONE)));
-        squares.add(new Square(new Space(File.F, Rank.ONE)));
-        squares.add(new Square(new Space(File.G, Rank.ONE)));
-        squares.add(new Square(new Space(File.H, Rank.ONE)));
-
-        squares.add(new Square(new Space(File.A, Rank.TWO)));
-        squares.add(new Square(new Space(File.B, Rank.TWO)));
-        squares.add(new Square(new Space(File.C, Rank.TWO)));
-        squares.add(new Square(new Space(File.D, Rank.TWO)));
-        squares.add(new Square(new Space(File.E, Rank.TWO)));
-        squares.add(new Square(new Space(File.F, Rank.TWO)));
-        squares.add(new Square(new Space(File.G, Rank.TWO)));
-        squares.add(new Square(new Space(File.H, Rank.TWO)));
-
-        Chessboard chessboard = new Chessboard(squares);
-        return new Game(firstPlayer, secondPlayer, chessboard);
+        return new Game(firstPlayer, secondPlayer, createDummyChessboard());
     }
 
     @PostMapping("/join")
@@ -55,7 +40,28 @@ public class GameController {
         return lobby;
     }
 
-    // TODO makeMove
+    @PostMapping("/demoMove")
+    public boolean demoMove() {
+        Piece piece = new King(WHITE);
+        // Example of valid movement
+        Space currentSpace = new Space(A, ONE);
+        Space destinationSpace = new Space(B, TWO);
+        // Example of invalid movement
+        /*
+        Space currentSpace = new Space(A, ONE);
+        Space destinationSpace = new Space(B, FOUR);
+        */
+        Move move = new Move(piece, currentSpace, destinationSpace);
+        return move.getPiece().doMove(move, createDummyChessboard());
+    }
 
+    @PostMapping("/makeMove")
+    // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
+    public boolean makeMove(@RequestBody Move move) {
+        // TODO get current user (player) from request
+        // TODO get an open game the user is currently playing
+        // TODO get the game's chessboard
+        return move.getPiece().doMove(move, createDummyChessboard());
+    }
 
 }

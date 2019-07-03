@@ -1,5 +1,40 @@
 package com.alevel.module.persistence.piece.configs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum Type {
-    KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN;  // TODO create within the `Piece` class; can be simply `Type` then
+    KING("king"),
+    QUEEN("queen"),
+    ROOK("rook"),
+    KNIGHT("knight"),
+    BISHOP("bishop"),
+    PAWN("pawn");
+
+    private String shortTitle;
+
+    Type (String shortTitle) {
+        this.shortTitle = shortTitle;
+    }
+
+    @Override
+    public String toString() {
+        return shortTitle;
+    }
+
+    @JsonCreator
+    public static Type create(String value) {
+        if(value == null) {
+            throw new IllegalArgumentException("Please provide a Type value.");
+        }
+        for(Type v : values()) {
+            if(value.equals(v.getShortTitle())) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("Please provide a correct Type value.");
+    }
+
+    public String getShortTitle() {
+        return shortTitle;
+    }
 }

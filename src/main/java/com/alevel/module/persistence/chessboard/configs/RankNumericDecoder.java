@@ -15,7 +15,8 @@ import static com.alevel.module.persistence.chessboard.configs.Rank.EIGHT;
 
 public class RankNumericDecoder {
 
-    public static Map<Rank, Integer> FILE_NUMERIC_DECODER = ImmutableMap.<Rank, Integer>builder()
+    // TODO consider getting read of it e.g. use enumerator short values
+    public static Map<Rank, Integer> RANK_NUMERIC_DECODER = ImmutableMap.<Rank, Integer>builder()
             .put(ONE, 1)
             .put(TWO, 2)
             .put(THREE, 3)

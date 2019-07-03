@@ -4,25 +4,32 @@ import com.alevel.module.persistence.chessboard.Chessboard;
 import com.alevel.module.persistence.chessboard.Move;
 import com.alevel.module.persistence.piece.Piece;
 import com.alevel.module.persistence.piece.configs.Color;
-import com.alevel.module.persistence.piece.configs.Type;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import static com.alevel.module.persistence.piece.configs.MovementRules.KING_ALLOWED_MOVEMENT_DELTAS;
 import static com.alevel.module.persistence.piece.configs.Type.KING;
 
 public class King extends Piece {
-    public static final Type TITLE = KING;
-    public static final int[][] ALLOWED_GENERAL_MOVES = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    // TODO add castling if never moved (for Rook as well), ref.: https://en.wikipedia.org/wiki/Castling
-    //  public static int[][] ALLOWED_SPECIFIC_MOVES = {};
-    // TODO ensure the move doesn't put a king in check
 
     public King(Color color) {
         super(color, KING);
+        // this.allowedMovementDeltas = KING_ALLOWED_MOVEMENT_DELTAS;
     }
+
+    // Ref.: https://stackoverflow.com/a/51014378
+    public King() {}
 
     @Override
     public boolean doMove(Move move, Chessboard chessboard) {
+        return super.validatePerMovementRules(move, KING_ALLOWED_MOVEMENT_DELTAS);
+        // TODO check compliance with specific rules
+        // TODO add validateCheck () (King always needs it) -
+        //  ensure the move doesn't put a king in check
+
+        // TODO implement the move (if valid)
+
         // TODO
-        return false;
+        //  validateCheckMate();
     }
 
 

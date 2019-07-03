@@ -13,6 +13,10 @@ public class Space {
         this.rank = rank;
     }
 
+    // Ref.: https://stackoverflow.com/a/51014378
+    public Space() {
+    }
+
     public File getFile() {
         return file;
     }

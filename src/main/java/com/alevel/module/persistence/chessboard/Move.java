@@ -1,6 +1,7 @@
 package com.alevel.module.persistence.chessboard;
 
 import com.alevel.module.persistence.piece.Piece;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * TODO add docstring
@@ -13,8 +14,8 @@ public class Move {
     // If King and Rook are being castled, two piece are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
     private Piece piece;
-    private Space currentSpace; // before
-    private Space destinationSpace; // after
+    private Space currentSpace;
+    private Space destinationSpace;
     // TODO results (captured piece if any)
 
     public Move(Piece piece, Space currentSpace, Space destinationSpace) {
@@ -23,34 +24,24 @@ public class Move {
         this.destinationSpace = destinationSpace;
     }
 
+    // Ref.: https://stackoverflow.com/a/51014378
+    public Move() {
+    }
+
     public boolean validate() {
         // TODO
-        //  0 - ensure the move is within the field -- this belongs to the `Square` class
-        //  1 - general rules
-        //  2 - if does not comply with general rules, check specific rules if eligible
+        //  0 - Square: ensure the move is within the field -- this belongs to the `Square` class
+        //  1 - Piece: general rules
+        //  2 - Piece: if does not comply with general rules, check specific rules if eligible
         //    e.g. for King / Rook - check if ever moved (if castling is attempted);
         //    think about Pawn
-        //  3 - check if cell is not occupied by piece of same color   -- this belongs to the `Square` class
-        //  4 - validate if checkmate
+        //  3 - Square: check if cell is not occupied by piece of same color
+        //  4 - Piece: validate if checkmate
         //  other checks?
 
         // TODO IllegalArgumentException
         return true;
     }
-
-    /**
-     * Check if checkmate is in effect.
-     *
-     * i.e. check if the game is won.
-     *
-     * @return boolean: true if checkmate is reached, false if not.
-     */
-    public boolean validateCheckMate() {
-        // TODO consider moving someplace else
-        return true;
-    }
-
-    // TODO add validateCheck () (King always needs it)
 
     public int getTimestamp() {
         return timestamp;
@@ -78,5 +69,14 @@ public class Move {
 
     public Piece getPiece() {
         return piece;
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "piece=" + piece +
+                ", currentSpace=" + currentSpace +
+                ", destinationSpace=" + destinationSpace +
+                '}';
     }
 }

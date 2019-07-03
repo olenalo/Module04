@@ -2,7 +2,6 @@ package com.alevel.module.persistence.chessboard.configs;
 
 import com.google.common.collect.ImmutableMap;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.alevel.module.persistence.chessboard.configs.File.A;
@@ -17,6 +16,7 @@ import static com.alevel.module.persistence.chessboard.configs.File.H;
 
 public class FileNumericDecoder {
 
+    // TODO consider getting read of it e.g. use enumerator short values
     public static Map<File, Integer> FILE_NUMERIC_DECODER = ImmutableMap.<File, Integer>builder()
             .put(A, 1)
             .put(B, 2)
