@@ -19,6 +19,9 @@ public class Square {
         this.space = space;
     }
 
+    public Square() {
+    }
+
     public Space getSpace() {
         return space;
     }

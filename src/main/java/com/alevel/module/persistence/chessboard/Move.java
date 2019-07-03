@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 /**
  * TODO add docstring
  *
- * Only valid move will be saved to the db.
+ * Only valid move will be saved to the db
  */
 public class Move {
 

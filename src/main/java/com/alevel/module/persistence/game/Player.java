@@ -4,6 +4,8 @@ import com.alevel.module.persistence.chessboard.Space;
 import com.alevel.module.persistence.piece.Piece;
 import com.alevel.module.persistence.piece.configs.Color;
 
+import java.util.UUID;
+
 public class Player {
 
     private String username;
@@ -24,17 +26,6 @@ public class Player {
     // TODO chess color
 
     // TODO hashcode, equals
-
-    // TODO consider moving someplace else
-    /**
-     * Find a lobby.
-     *
-     * If no lobby with a single player is found,
-     * a lobby is created.
-     */
-    public void findLobby() {
-        // TODO
-    }
 
     // TODO piece or piece (castling)?
     public boolean makeMove(Piece piece, Space space) {
