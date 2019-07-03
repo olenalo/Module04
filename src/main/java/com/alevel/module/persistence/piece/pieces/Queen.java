@@ -21,8 +21,8 @@ public class Queen extends Piece {
 
     @Override
     public boolean doMove(Move move, Chessboard chessboard) {
-        // TODO
-        return false;
+        return super.validatePerMovementRules(move, QUEEN_ALLOWED_MOVEMENT_DELTAS);
+        // TODO do the rest
     }
 
 }

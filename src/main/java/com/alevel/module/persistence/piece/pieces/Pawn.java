@@ -23,8 +23,8 @@ public class Pawn extends Piece {
 
     @Override
     public boolean doMove(Move move, Chessboard chessboard) {
-        // TODO
-        return false;
+        return super.validatePerMovementRules(move, PAWN_ALLOWED_MOVEMENT_DELTAS);
+        // TODO do the rest
     }
 
 }

@@ -22,7 +22,6 @@ public class Bishop extends Piece {
     public boolean doMove(Move move, Chessboard chessboard) {
         return super.validatePerMovementRules(move, BISHOP_ALLOWED_MOVEMENT_DELTAS);
         // TODO do the rest
-
     }
 
 }

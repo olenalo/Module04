@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.Arrays;
-
 import static com.alevel.module.persistence.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.persistence.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
