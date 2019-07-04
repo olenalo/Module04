@@ -1,22 +1,48 @@
 package com.alevel.module.persistence.chessboard;
 
+import com.alevel.module.persistence.game.Game;
+import com.alevel.module.persistence.game.Player;
 import com.alevel.module.persistence.piece.Piece;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.hibernate.mapping.Set;
+
+import javax.persistence.*;
 
 /**
  * TODO add docstring
  *
  * Only valid move will be saved to the db
  */
+@Entity
+@Table(name="moves")
 public class Move {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne
+    @JoinColumn()
+    private Game game;
+
+    @ManyToOne
+    @JoinColumn()
+    private Player player;
+
+    @Transient // TODO shouldn't be
     private int timestamp;  // TODO make final, assigning the current timestamp
     // If King and Rook are being castled, two piece are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
+
+    // TODO @Column(name = "piece")
+    @Transient
     private Piece piece;
+
+    @Transient
     private Space currentSpace;
+
+    // TODO @Column(name = "destinationSpace")
+    @Transient
     private Space destinationSpace;
-    // TODO results (captured piece if any)
 
     public Move(Piece piece, Space currentSpace, Space destinationSpace) {
         this.piece = piece;
@@ -78,5 +104,29 @@ public class Move {
                 ", currentSpace=" + currentSpace +
                 ", destinationSpace=" + destinationSpace +
                 '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }
