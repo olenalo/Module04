@@ -7,6 +7,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Build up state from squares.
+ *
+ * Occupied squares go first.
+ *
+ * TODO Iteration should stop once all occupied squares are iterated over
+ *  i.e. once an empty square appears.
+ */
 public class Chessboard {
 
     private final UUID id  = UUID.randomUUID();
