@@ -2,11 +2,12 @@ package com.alevel.module.persistence.game.initializers;
 
 import com.alevel.module.persistence.chessboard.Chessboard;
 import com.alevel.module.persistence.chessboard.Square;
-import com.alevel.module.persistence.game.initializers.utils.EmptySquares;
-import com.alevel.module.persistence.game.initializers.utils.NewGameSquares;
+import com.alevel.module.persistence.game.initializers.utils.ChessboardSquarePopulator;
+import com.alevel.module.persistence.game.initializers.utils.ChessboardPiecePopulator;
 
 import java.util.List;
 
+// TODO refactor populators (subclass from the same base class)
 /**
  * Build up a chessboard.
  *
@@ -24,7 +25,7 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
 
     public StandardChessboardBuilder addEmptySquares() {
         if (this.occupiedSquares != null) {
-            this.emptySquares = new EmptySquares().excludeSquares(this.occupiedSquares);
+            this.emptySquares = new ChessboardSquarePopulator().excludeSquares(this.occupiedSquares);
         }
         return this;
     }
@@ -32,11 +33,11 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
     @Override
     public Chessboard build() {
         List<Square> squares;
-        if (this.occupiedSquares != null) {
+        if (this.occupiedSquares.isEmpty()) {  // TODO check against null
+            squares = new ChessboardPiecePopulator().populateSquares();
+        } else {
             squares = occupiedSquares;
             squares.addAll(emptySquares);
-        } else {
-            squares = new NewGameSquares().placePieces();
         }
         return new Chessboard(squares);
     }

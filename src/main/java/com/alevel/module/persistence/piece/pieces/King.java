@@ -31,5 +31,11 @@ public class King extends Piece {
         //  validateCheckMate();
     }
 
-
+    @Override
+    public String toString() {
+        return "King{" +
+                "color=" + this.getColor() +
+                ", type=" + this.getType() +
+                '}';
+    }
 }

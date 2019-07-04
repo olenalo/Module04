@@ -23,4 +23,12 @@ public class Rook extends Piece {  // could be `Castle`
         return super.validatePerMovementRules(move, ROOK_ALLOWED_MOVEMENT_DELTAS);
         // TODO do the rest
     }
+
+    @Override
+    public String toString() {
+        return "Rook{" +
+                "color=" + this.getColor() +
+                ", type=" + this.getType() +
+                '}';
+    }
 }

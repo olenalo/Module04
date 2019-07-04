@@ -27,4 +27,11 @@ public class Pawn extends Piece {
         // TODO do the rest
     }
 
+    @Override
+    public String toString() {
+        return "Pawn{" +
+                "color=" + this.getColor() +
+                ", type=" + this.getType() +
+                '}';
+    }
 }

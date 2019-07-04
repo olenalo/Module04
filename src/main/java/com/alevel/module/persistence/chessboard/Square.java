@@ -54,6 +54,6 @@ public class Square {
         return "Square{" +
                 "space=" + space +
                 ", piece=" + piece +
-                '}';
+                "}\n";
     }
 }

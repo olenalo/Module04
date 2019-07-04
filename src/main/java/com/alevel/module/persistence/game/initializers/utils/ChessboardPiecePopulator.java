@@ -14,6 +14,14 @@ import com.alevel.module.persistence.piece.pieces.Rook;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.alevel.module.persistence.chessboard.configs.File.A;
+import static com.alevel.module.persistence.chessboard.configs.File.B;
+import static com.alevel.module.persistence.chessboard.configs.File.C;
+import static com.alevel.module.persistence.chessboard.configs.File.D;
+import static com.alevel.module.persistence.chessboard.configs.File.E;
+import static com.alevel.module.persistence.chessboard.configs.File.F;
+import static com.alevel.module.persistence.chessboard.configs.File.G;
+import static com.alevel.module.persistence.chessboard.configs.File.H;
 import static com.alevel.module.persistence.chessboard.configs.Rank.ONE;
 import static com.alevel.module.persistence.chessboard.configs.Rank.TWO;
 import static com.alevel.module.persistence.chessboard.configs.Rank.SEVEN;
@@ -22,12 +30,12 @@ import static com.alevel.module.persistence.chessboard.configs.Rank.EIGHT;
 import static com.alevel.module.persistence.piece.configs.Color.BLACK;
 import static com.alevel.module.persistence.piece.configs.Color.WHITE;
 
-public class NewGameSquares {
+public class ChessboardPiecePopulator {
 
     private List<Square> squares = new ArrayList<>();
 
-    public NewGameSquares() {
-        // TODO DRY (see `EmptySquares`)
+    public ChessboardPiecePopulator() {
+        // TODO DRY (see `ChessboardSquarePopulator`)
         for (Rank rank : Rank.values()) {
             for (File file : File.values()) {
                 squares.add(new Square(new Space(file, rank)));
@@ -35,51 +43,52 @@ public class NewGameSquares {
         }
     }
 
-    private void placeKingRow(Square square) {
+    private void populateKingRowSquare(Square square) {
         switch (square.getSpace().getFile()) {
             case A:
-                square.setPiece(new Rook());
-            case B:
-                square.setPiece(new Knight());
-            case C:
-                square.setPiece(new Bishop());
-            case D:
-                square.setPiece(new Queen());
-            case E:
-                square.setPiece(new King());
-            case F:
-                square.setPiece(new Bishop());
-            case G:
-                square.setPiece(new Knight());
             case H:
                 square.setPiece(new Rook());
+                break;
+            case B:
+            case G:
+                square.setPiece(new Knight());
+                break;
+            case C:
+            case F:
+                square.setPiece(new Bishop());
+                break;
+            case D:
+                square.setPiece(new Queen());
+                break;
+            case E:
+                square.setPiece(new King());
+                break;
         }
     }
 
-
-    public List<Square> placePieces() {
+    public List<Square> populateSquares() {
         for (Square square : this.squares) {
-            if (square.getSpace().getRank() == ONE) {
-                placeKingRow(square);
+            if (square.getSpace().getRank().equals(ONE)) {
+                populateKingRowSquare(square);
                 // TODO handle nullables "better" (here and in other cases)
                 if (square.getPiece() != null) {
                     square.getPiece().setColor(WHITE);
                 }
             }
-            if (square.getSpace().getRank() == TWO) {
+            if (square.getSpace().getRank().equals(TWO)) {
                 square.setPiece(new Pawn());
                 if (square.getPiece() != null) {
                     square.getPiece().setColor(WHITE);
                 }
             }
-            if (square.getSpace().getRank() == SEVEN) {
+            if (square.getSpace().getRank().equals(SEVEN)) {
                 square.setPiece(new Pawn());
                 if (square.getPiece() != null) {
                     square.getPiece().setColor(BLACK);
                 }
             }
-            if (square.getSpace().getRank() == EIGHT) {
-                placeKingRow(square);
+            if (square.getSpace().getRank().equals(EIGHT)) {
+                populateKingRowSquare(square);
                 if (square.getPiece() != null) {
                     square.getPiece().setColor(BLACK);
                 }

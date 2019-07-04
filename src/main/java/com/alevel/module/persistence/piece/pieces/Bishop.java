@@ -24,4 +24,11 @@ public class Bishop extends Piece {
         // TODO do the rest
     }
 
+    @Override
+    public String toString() {
+        return "Bishop{" +
+                "color=" + this.getColor() +
+                ", type=" + this.getType() +
+                '}';
+    }
 }

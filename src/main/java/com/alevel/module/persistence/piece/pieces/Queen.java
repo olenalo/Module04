@@ -25,4 +25,11 @@ public class Queen extends Piece {
         // TODO do the rest
     }
 
+    @Override
+    public String toString() {
+        return "Queen{" +
+                "color=" + this.getColor() +
+                ", type=" + this.getType() +
+                '}';
+    }
 }

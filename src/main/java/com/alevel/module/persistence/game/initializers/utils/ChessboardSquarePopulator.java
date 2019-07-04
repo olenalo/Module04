@@ -8,11 +8,11 @@ import com.alevel.module.persistence.chessboard.configs.Rank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmptySquares {
+public class ChessboardSquarePopulator {
 
     private List<Square> squares = new ArrayList<>();
 
-    public EmptySquares() {
+    public ChessboardSquarePopulator() {
         for (Rank rank : Rank.values()) {
             for (File file : File.values()) {
                 squares.add(new Square(new Space(file, rank)));

@@ -119,12 +119,4 @@ public abstract class Piece {
     }
      */
 
-    @Override
-    public String toString() {
-        return "Piece{" +
-                "color=" + color +
-                ", type=" + type +
-                ", isCaptured=" + isCaptured +
-                '}';
-    }
 }

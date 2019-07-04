@@ -24,4 +24,11 @@ public class Knight extends Piece {
         // TODO do the rest
     }
 
+    @Override
+    public String toString() {
+        return "Knight{" +
+                "color=" + this.getColor() +
+                ", type=" + this.getType() +
+                '}';
+    }
 }
