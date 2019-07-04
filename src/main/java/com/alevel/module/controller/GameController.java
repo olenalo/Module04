@@ -21,7 +21,10 @@ import static com.alevel.module.controller.utils.GameControllerUtils.createDummy
 import static com.alevel.module.persistence.chessboard.configs.File.A;
 import static com.alevel.module.persistence.chessboard.configs.File.B;
 import static com.alevel.module.persistence.chessboard.configs.Rank.*;
+import static com.alevel.module.persistence.piece.configs.Color.BLACK;
 import static com.alevel.module.persistence.piece.configs.Color.WHITE;
+
+// TODO get rid of wildcard imports everywhere
 
 @RestController
 @RequestMapping("/chess")
@@ -51,7 +54,7 @@ public class GameController {
         // Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
         Move move2 = new Move(new King(WHITE), new Space(A, ONE), new Space(A, THREE));
-        Move move3 = new Move(new Queen(WHITE), new Space(A, ONE), new Space(A, FOUR));
+        Move move3 = new Move(new Queen(BLACK), new Space(A, ONE), new Space(A, FOUR));
 
         // Build squares w/ pieces (build up states from moves history)
         Square square1 = new Square(move1.getDestinationSpace(), move1.getPiece());
@@ -59,9 +62,11 @@ public class GameController {
         Square square3 = new Square(move3.getDestinationSpace(), move3.getPiece());
         List<Square> squares = new ArrayList<>();
         // Comment out to test chessboard initial population with pieces
+        /*
         squares.add(square1);
         squares.add(square2);
         squares.add(square3);
+         */
 
         // Build the game's chessboard to ease access to states
         StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();

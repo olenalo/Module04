@@ -7,7 +7,6 @@ import com.alevel.module.persistence.game.initializers.utils.ChessboardPiecePopu
 
 import java.util.List;
 
-// TODO refactor populators (subclass from the same base class)
 /**
  * Build up a chessboard.
  *

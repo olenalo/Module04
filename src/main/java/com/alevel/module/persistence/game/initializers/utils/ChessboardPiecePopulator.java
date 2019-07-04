@@ -4,6 +4,7 @@ import com.alevel.module.persistence.chessboard.Space;
 import com.alevel.module.persistence.chessboard.Square;
 import com.alevel.module.persistence.chessboard.configs.File;
 import com.alevel.module.persistence.chessboard.configs.Rank;
+import com.alevel.module.persistence.piece.configs.Color;
 import com.alevel.module.persistence.piece.pieces.Bishop;
 import com.alevel.module.persistence.piece.pieces.King;
 import com.alevel.module.persistence.piece.pieces.Knight;
@@ -30,6 +31,7 @@ import static com.alevel.module.persistence.chessboard.configs.Rank.EIGHT;
 import static com.alevel.module.persistence.piece.configs.Color.BLACK;
 import static com.alevel.module.persistence.piece.configs.Color.WHITE;
 
+// TODO refactor populators (find things in common, subclass from the same base class)
 public class ChessboardPiecePopulator {
 
     private List<Square> squares = new ArrayList<>();
@@ -43,55 +45,44 @@ public class ChessboardPiecePopulator {
         }
     }
 
-    private void populateKingRowSquare(Square square) {
+    private void populateKingRowSquare(Square square, Color color) {
         switch (square.getSpace().getFile()) {
             case A:
             case H:
-                square.setPiece(new Rook());
+                square.setPiece(new Rook(color));
                 break;
             case B:
             case G:
-                square.setPiece(new Knight());
+                square.setPiece(new Knight(color));
                 break;
             case C:
             case F:
-                square.setPiece(new Bishop());
+                square.setPiece(new Bishop(color));
                 break;
             case D:
-                square.setPiece(new Queen());
+                square.setPiece(new Queen(color));
                 break;
             case E:
-                square.setPiece(new King());
+                square.setPiece(new King(color));
                 break;
         }
     }
 
     public List<Square> populateSquares() {
         for (Square square : this.squares) {
-            if (square.getSpace().getRank().equals(ONE)) {
-                populateKingRowSquare(square);
-                // TODO handle nullables "better" (here and in other cases)
-                if (square.getPiece() != null) {
-                    square.getPiece().setColor(WHITE);
-                }
-            }
-            if (square.getSpace().getRank().equals(TWO)) {
-                square.setPiece(new Pawn());
-                if (square.getPiece() != null) {
-                    square.getPiece().setColor(WHITE);
-                }
-            }
-            if (square.getSpace().getRank().equals(SEVEN)) {
-                square.setPiece(new Pawn());
-                if (square.getPiece() != null) {
-                    square.getPiece().setColor(BLACK);
-                }
-            }
-            if (square.getSpace().getRank().equals(EIGHT)) {
-                populateKingRowSquare(square);
-                if (square.getPiece() != null) {
-                    square.getPiece().setColor(BLACK);
-                }
+            switch (square.getSpace().getRank()) {
+                case ONE:
+                    populateKingRowSquare(square, WHITE);
+                    break;
+                case TWO:
+                    square.setPiece(new Pawn(WHITE));
+                    break;
+                case SEVEN:
+                    square.setPiece(new Pawn(BLACK));
+                    break;
+                case EIGHT:
+                    populateKingRowSquare(square, BLACK);
+                    break;
             }
         }
         return squares;
