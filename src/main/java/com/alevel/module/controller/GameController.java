@@ -6,6 +6,8 @@ import com.alevel.module.persistence.chessboard.Space;
 import com.alevel.module.persistence.chessboard.Square;
 import com.alevel.module.persistence.game.Game;
 import com.alevel.module.persistence.game.Player;
+import com.alevel.module.persistence.game.initializers.ChessboardBuilder;
+import com.alevel.module.persistence.game.initializers.StandardChessboardBuilder;
 import com.alevel.module.persistence.piece.Piece;
 import com.alevel.module.persistence.piece.pieces.King;
 import com.alevel.module.persistence.piece.pieces.Knight;
@@ -56,14 +58,19 @@ public class GameController {
         Square square1 = new Square(move1.getDestinationSpace(), move1.getPiece());
         Square square2 = new Square(move2.getDestinationSpace(), move1.getPiece());
         Square square3 = new Square(move3.getDestinationSpace(), move1.getPiece());
-        // TODO order? empty?
         List<Square> squares = new ArrayList<>();
         squares.add(square1);
         squares.add(square2);
         squares.add(square3);
 
         // Build the game's chessboard to ease access to states
-        Chessboard chessboard = new Chessboard(squares);
+        StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
+        Chessboard chessboard = chessboardBuilder
+                .addOccupiedSquares(squares)
+                .addEmptySquares()
+                .build();
+        // FIXME (squares are duplicated)
+        System.out.println(chessboard);
 
         // Make a move
         return move.getPiece().doMove(move, chessboard);

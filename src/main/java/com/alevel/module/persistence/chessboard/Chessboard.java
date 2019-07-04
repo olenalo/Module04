@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Build up state from squares.
+ * Build up a board state from squares.
  *
  * Occupied squares go first.
  *
@@ -36,5 +36,12 @@ public class Chessboard {
 
     public void setSquares(List<Square> squares) {
         this.squares = squares;
+    }
+
+    @Override
+    public String toString() {
+        return "Chessboard{" +
+                "squares=" + squares +
+                '}';
     }
 }

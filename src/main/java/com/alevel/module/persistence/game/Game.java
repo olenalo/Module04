@@ -13,6 +13,9 @@ public class Game {
     private Chessboard chessboard;
     private boolean isOver = false;  // won't be stored in a db
 
+    // TODO keep track of pieces removed from the board
+    // TODO record the moves
+
     public Game(Player firstPlayer, Player secondPlayer, Chessboard chessboard) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;

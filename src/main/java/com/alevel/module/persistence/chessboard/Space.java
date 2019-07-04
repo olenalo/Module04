@@ -24,4 +24,12 @@ public class Space {
     public Rank getRank() {
         return rank;
     }
+
+    @Override
+    public String toString() {
+        return "Space{" +
+                "file=" + file +
+                ", rank=" + rank +
+                '}';
+    }
 }
