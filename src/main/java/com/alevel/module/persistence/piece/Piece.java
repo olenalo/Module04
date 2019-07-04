@@ -31,7 +31,6 @@ import static com.alevel.module.persistence.chessboard.configs.RankNumericDecode
     @JsonSubTypes.Type(name = "rook", value = Rook.class)
 })
 public abstract class Piece {
-
     private Color color;
     private Type type;
 

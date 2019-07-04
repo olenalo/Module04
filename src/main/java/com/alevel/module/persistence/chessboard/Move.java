@@ -33,16 +33,23 @@ public class Move {
     // If King and Rook are being castled, two piece are involved TODO but maybe it should be two separate moves;
     //  also, TODO what about cells? figure out...
 
-    // TODO @Column(name = "piece")
     @Transient
     private Piece piece;
 
     @Transient
     private Space currentSpace;
 
-    // TODO @Column(name = "destinationSpace")
     @Transient
     private Space destinationSpace;
+
+    @Column(name = "pieceTitle")
+    private String pieceTitle;
+
+    @Column(name = "spaceFile")
+    private String spaceFile;
+
+    @Column(name = "spaceRank")
+    private String spaceRank;
 
     public Move(Piece piece, Space currentSpace, Space destinationSpace) {
         this.piece = piece;
@@ -67,6 +74,23 @@ public class Move {
 
         // TODO IllegalArgumentException
         return true;
+    }
+
+    // TODO ensure enums are properly created
+    //  Hibernate was once bad with enums, ref.: https://stackoverflow.com/a/735762
+    @Enumerated(EnumType.STRING)
+    public String getPieceTitle() {
+        return piece.getType().getShortTitle();
+    }
+
+    @Enumerated(EnumType.STRING)
+    public String getSpaceFile() {
+        return destinationSpace.getFile().getShortTitle();
+    }
+
+    @Enumerated(EnumType.STRING)
+    public String getSpaceRank() {
+        return destinationSpace.getRank().getShortTitle();
     }
 
     public int getTimestamp() {
