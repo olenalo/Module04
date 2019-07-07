@@ -52,12 +52,12 @@ public class MoveService implements MoveOperations {
         // TODO get a current user (player) from the move (and do what?)
         // TODO get the game the user is currently playing (if any; if none, what then?)
 
-        // Fetch moves history
+        // TODO models: Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
         Move move2 = new Move(new King(WHITE), new Space(A, ONE), new Space(A, THREE));
         Move move3 = new Move(new Queen(BLACK), new Space(A, ONE), new Space(A, FOUR));
 
-        // Build squares w/ pieces (build up states from moves history)
+        // TODO models: Build squares w/ pieces (build up states from moves history)
         Square square1 = new Square(move1.getDestinationSpace(), move1.getPiece());
         Square square2 = new Square(move2.getDestinationSpace(), move2.getPiece());
         Square square3 = new Square(move3.getDestinationSpace(), move3.getPiece());
@@ -69,20 +69,21 @@ public class MoveService implements MoveOperations {
         squares.add(square3);
          */
 
-        // Build the game's chessboard to provide the access to states
+        // TODO models: Build the game's chessboard to provide the access to states
         StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
         Chessboard chessboard = chessboardBuilder
                 .addOccupiedSquares(squares)
                 .addEmptySquares()
                 .build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
-        // TODO define current spaces of pieces
+        // TODO models: define current spaces of pieces (visitors)
         move.setCurrentSpace(new Space(A, ONE));
-        // Uncomment to check an error
+        // Uncomment to check an error; or just pass an invalid file/rank
         // move.setCurrentSpace(new Space(A, FOUR));
 
 
         // Make a move
+        // TODO models: check if checkmate, check or draw (with respective consequences e.g. define the winner)
         if (move.getPiece().doMove(move, chessboard)) {
             return moveRepository.save(move).getId() ;
         } else {
