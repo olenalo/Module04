@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.*;
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
-// Ref. https://www.baeldung.com/jackson-annotations
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")  // objectType  type
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
     @JsonSubTypes.Type(name = "bishop", value = Bishop.class),
@@ -38,7 +37,7 @@ public abstract class Piece {
     //    (promotion, castling), specific rules apply
     // private int[][] getAllowedSpecificMovesDeltas;
 
-    private boolean isCaptured; // won't be stored in the db
+    private boolean isCaptured;
 
     // Ref.: https://stackoverflow.com/a/51014378
     public Piece() {}

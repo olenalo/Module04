@@ -1,12 +1,26 @@
 package com.alevel.module.model.repository;
 
+import com.alevel.module.controller.exceptions.InvalidMoveException;
+import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
+import com.alevel.module.model.chessboard.Space;
+import com.alevel.module.model.chessboard.Square;
+import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
+import com.alevel.module.model.piece.pieces.King;
+import com.alevel.module.model.piece.pieces.Knight;
+import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.alevel.module.model.chessboard.configs.File.A;
+import static com.alevel.module.model.chessboard.configs.Rank.*;
+import static com.alevel.module.model.piece.configs.Color.BLACK;
+import static com.alevel.module.model.piece.configs.Color.WHITE;
 
 @Service
 public class MoveService implements MoveOperations {
@@ -35,7 +49,45 @@ public class MoveService implements MoveOperations {
 
     @Override
     public Long save(Move move) {
-        return moveRepository.save(move).getId();
+        // TODO get a current user (player) from the move (and do what?)
+        // TODO get the game the user is currently playing (if any; if none, what then?)
+
+        // Fetch moves history
+        Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
+        Move move2 = new Move(new King(WHITE), new Space(A, ONE), new Space(A, THREE));
+        Move move3 = new Move(new Queen(BLACK), new Space(A, ONE), new Space(A, FOUR));
+
+        // Build squares w/ pieces (build up states from moves history)
+        Square square1 = new Square(move1.getDestinationSpace(), move1.getPiece());
+        Square square2 = new Square(move2.getDestinationSpace(), move2.getPiece());
+        Square square3 = new Square(move3.getDestinationSpace(), move3.getPiece());
+        List<Square> squares = new ArrayList<>();
+        // Comment out to test chessboard initial population with pieces
+        /*
+        squares.add(square1);
+        squares.add(square2);
+        squares.add(square3);
+         */
+
+        // Build the game's chessboard to provide the access to states
+        StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
+        Chessboard chessboard = chessboardBuilder
+                .addOccupiedSquares(squares)
+                .addEmptySquares()
+                .build();
+        System.out.println("The game chessboard has been built: \n" + chessboard);
+        // TODO define current spaces of pieces
+        move.setCurrentSpace(new Space(A, ONE));
+        // Uncomment to check an error
+        // move.setCurrentSpace(new Space(A, FOUR));
+
+
+        // Make a move
+        if (move.getPiece().doMove(move, chessboard)) {
+            return moveRepository.save(move).getId() ;
+        } else {
+            throw new InvalidMoveException(move);
+        }
     }
 
     @Override

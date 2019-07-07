@@ -22,7 +22,6 @@ import static com.alevel.module.model.chessboard.configs.Rank.*;
 import static com.alevel.module.model.piece.configs.Color.BLACK;
 import static com.alevel.module.model.piece.configs.Color.WHITE;
 
-// TODO get rid of wildcard imports everywhere
 
 @RestController
 @RequestMapping("/demo")
@@ -66,11 +65,7 @@ public class DemoController {
     }
 
     @PostMapping("/makeMove")
-    // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     public boolean makeMove(@RequestBody Move move) {
-        // TODO get a current user (player) from the move
-        // TODO get a game the user is currently playing
-
         // Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
         Move move2 = new Move(new King(WHITE), new Space(A, ONE), new Space(A, THREE));

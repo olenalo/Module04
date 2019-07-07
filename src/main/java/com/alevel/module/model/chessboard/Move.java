@@ -44,6 +44,7 @@ public class Move {
     @Transient
     private Space destinationSpace;
 
+    // TODO disallow null values whenever needed, throughout the project (JPA)
     @Column(name = "pieceTitle")
     private String pieceTitle;
 

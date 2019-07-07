@@ -5,6 +5,8 @@ import com.alevel.module.service.MoveOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+// TODO get rid of wildcard imports everywhere
+
 @RestController
 @RequestMapping("/chess/move")
 public class MoveController {
@@ -15,12 +17,12 @@ public class MoveController {
         this.moveOperations = moveOperations;
     }
 
+    // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Move save(@RequestBody Move move) {
         Long id = moveOperations.save(move);
         move.setId(id);
-        // TODO
         return move;
     }
 }
