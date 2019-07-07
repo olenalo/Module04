@@ -1,15 +1,19 @@
 package com.alevel.module.controller;
 
+import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.game.Game;
-import com.alevel.module.model.game.Player;
 import com.alevel.module.service.GameOperations;
 import com.alevel.module.service.MoveOperations;
 import com.alevel.module.service.PlayerOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 // TODO get rid of wildcard imports everywhere
@@ -36,21 +40,26 @@ public class MoveController {
 
     // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Move save(@RequestBody Move move) {
+    public ResponseEntity save(HttpServletRequest request, @RequestBody Move move) {  // @RequestBody Move move
+        //authentication.getName();
+        //UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        //System.out.println("User has authorities: " + userDetails.getAuthorities());
+        Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("-------isAuthenticated: --------" + currentAuthentication.isAuthenticated());
 
-        // TODO get a current user (player) from the move (and do what? -> TODO: save attempts? additional checks?)
-        // TODO handle not found case (use PlayerFoundException)
-        Optional<Player> player = playerOperations.find(move.getPlayer().getId());
-        System.out.println("Player: " + player);
+        // if (currentAuthentication.isAuthenticated()){
+        // TODO catch 'IllegalArgumentException' e.g. Please provide a correct Rank value
+        try {
+            // System.out.println("userTest roles: " + currentAuthentication.getAuthorities());
+            // TODO get the game the user is currently playing (if any; if none, raise GameNotFoundException)
+            Optional<Game> game = gameOperations.find(move.getGame().getId());
+            System.out.println("Game: " + game);
+            Long id = moveOperations.save(move);
+            move.setId(id);
+            return new ResponseEntity(move, HttpStatus.CREATED); // FIXME  piece's "type": null
+        } catch (InvalidMoveException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
 
-        // TODO get the game the user is currently playing (if any; if none, what then?)
-        Optional<Game> game = gameOperations.find(move.getGame().getId());
-        System.out.println("Game: " + player);
-
-        // TODO handle not found case (use GameFoundException)
-        Long id = moveOperations.save(move);
-        move.setId(id);
-        return move; // FIXME  piece's "type": null
     }
 }

@@ -10,26 +10,30 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
+import static com.alevel.module.auth.configs.UserRoles.ROLE_ADMIN;
+import static com.alevel.module.auth.configs.UserRoles.ROLE_USER;
+
 @Configuration
 public class AuthConfigurer extends WebSecurityConfigurerAdapter {
 
     private PlayerDetailsService playerDetailsService;
+    private DataSource dataSource;
 
     @Autowired
-    public AuthConfigurer(PlayerDetailsService playerDetailsService) {
+    public AuthConfigurer(PlayerDetailsService playerDetailsService, DataSource dataSource) {
         this.playerDetailsService = playerDetailsService;
+        this.dataSource = dataSource;
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(playerDetailsService);
-        /*
-        auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
-                .and()
-                .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER",
-                                                                                         "ADMIN");
-         */
+        auth
+            .jdbcAuthentication()
+            .dataSource(dataSource)
+            .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -38,9 +42,9 @@ public class AuthConfigurer extends WebSecurityConfigurerAdapter {
             .anonymous()
                 .and()
             .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/chess/player/register**").permitAll()
-                .antMatchers(HttpMethod.GET, "/chess/player/login**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.POST, "/chess/player/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/chess/player/login").permitAll()
+                .anyRequest().authenticated() // .hasAnyRole(ROLE_USER.getShortTitle(), ROLE_ADMIN.getShortTitle()) // .authenticated()
                 .and()
             .httpBasic()
                 .and()

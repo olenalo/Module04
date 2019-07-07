@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 // TODO use it
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class GameFoundException extends RuntimeException {
+public class GameNotFoundException extends RuntimeException {
 
-    public GameFoundException(Long id) {
+    public GameNotFoundException(Long id) {
         super("Game with id " + id + " not found");
     }
 

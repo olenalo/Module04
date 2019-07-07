@@ -49,7 +49,7 @@ public class MoveService implements MoveOperations {
     }
 
     @Override
-    public Long save(Move move) {
+    public Long save(Move move) throws IllegalArgumentException {
 
         // TODO models: Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
@@ -79,7 +79,6 @@ public class MoveService implements MoveOperations {
         move.setCurrentSpace(new Space(A, ONE));
         // Uncomment to check an error; or just pass an invalid file/rank
         // move.setCurrentSpace(new Space(A, FOUR));
-
 
         // Make a move
         // TODO models: check if checkmate, check or draw (with respective consequences e.g. define the winner)

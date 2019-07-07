@@ -51,8 +51,6 @@ public class Player {
 
     @JsonProperty("email")
     @Column(name = "email", unique = true)
-    @NotNull
-    @NotEmpty
     private String email;
 
     @JsonProperty("password")
@@ -78,6 +76,11 @@ public class Player {
 
     public Player(String username) {
         this.username = username;
+    }
+
+    public Player(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public Player(Long id) {

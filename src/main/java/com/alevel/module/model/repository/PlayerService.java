@@ -1,16 +1,13 @@
 package com.alevel.module.model.repository;
 
-import com.alevel.module.controller.exceptions.PlayerFoundException;
+import com.alevel.module.controller.exceptions.PlayerNotFoundException;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.service.PlayerOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static com.alevel.module.auth.configs.UserRoles.ROLE_USER;
 
 @Service
 public class PlayerService implements PlayerOperations {
@@ -29,7 +26,12 @@ public class PlayerService implements PlayerOperations {
 
     @Override
     public Optional<Player> find(Long id) {
-        return playerRepository.findById(id);
+        Optional<Player> playerOptional = playerRepository.findById(id);
+        if(!playerOptional.isPresent()) {
+            throw new PlayerNotFoundException(id);
+        } else {
+            return playerOptional;
+        }
     }
 
     @Override
