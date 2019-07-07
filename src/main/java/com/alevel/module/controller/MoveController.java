@@ -6,6 +6,7 @@ import com.alevel.module.model.game.Player;
 import com.alevel.module.service.GameOperations;
 import com.alevel.module.service.MoveOperations;
 import com.alevel.module.service.PlayerOperations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +23,13 @@ public class MoveController {
     private GameOperations gameOperations;
     private PlayerOperations playerOperations;
 
+    @Autowired
     public MoveController(MoveOperations moveOperations,
                           GameOperations gameOperations,
                           PlayerOperations playerOperations) {
         this.moveOperations = moveOperations;
+        // TODO research (1) Hibernate specific and (2) Spring Data JPA ways to fetch associated entries
+        //  ref.: https://stackoverflow.com/a/31699855
         this.gameOperations = gameOperations;
         this.playerOperations = playerOperations;
     }
@@ -47,6 +51,6 @@ public class MoveController {
         // TODO handle not found case (use GameFoundException)
         Long id = moveOperations.save(move);
         move.setId(id);
-        return move;
+        return move; // FIXME  piece's "type": null
     }
 }

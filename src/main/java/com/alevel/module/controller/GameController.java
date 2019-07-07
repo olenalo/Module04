@@ -2,6 +2,7 @@ package com.alevel.module.controller;
 
 import com.alevel.module.model.game.Game;
 import com.alevel.module.service.GameOperations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ public class GameController {
 
     private GameOperations gameOperations;
 
+    @Autowired
     public GameController(GameOperations gameOperations) {
         this.gameOperations = gameOperations;
     }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+// TODO consider renaming to Player
 @JsonDeserialize(as=Player.class)
 @Entity
 @Table(name="players")
@@ -22,8 +23,24 @@ public class Player {
     private Long id;
 
     @JsonProperty("username")
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
+
+    @JsonProperty("fname")
+    @Column(name = "fname")
+    private String firstName;
+
+    @JsonProperty("sname")
+    @Column(name = "sname")
+    private String secondName;
+
+    @JsonProperty("email")
+    @Column(name = "email")
+    private String email;
+
+    @JsonProperty("password")
+    @Column(name = "password")
+    private String password;
 
     @OneToMany(mappedBy = "player")
     private List<Move> moves = new ArrayList<>();
@@ -80,6 +97,15 @@ public class Player {
         this.id = id;
     }
 
+    /**
+     * Define if equal to another object.
+     *
+     * Users won't be ever able to change the username.
+     *
+     * @param o an object the current object is being compared to.
+     * @return {@code true} if the arguments are equal to each other
+     *  and {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,5 +141,54 @@ public class Player {
 
     public void setSecondPlayerGames(List<Game> secondPlayerGames) {
         this.secondPlayerGames = secondPlayerGames;
+    }
+
+    @JsonGetter("fname")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @JsonSetter("fname")
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @JsonGetter("sname")
+    public String getSecondName() {
+        return secondName;
+    }
+
+    @JsonSetter("sname")
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    @JsonGetter("email")
+    public String getEmail() {
+        return email;
+    }
+
+    @JsonSetter("email")
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @JsonGetter("password")
+    public String getPassword() {
+        // TODO decode
+        return password;
+    }
+
+    @JsonSetter("password")
+    public void setPassword(String password) {
+        // TODO encode
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "username='" + username + '\'' +
+                '}';
     }
 }
