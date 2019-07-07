@@ -12,7 +12,6 @@ import java.util.List;
 
 import static com.alevel.module.auth.configs.UserRoles.ROLE_USER;
 
-// TODO use it
 public class PlayerUserPrincipal implements UserDetails {
 
     private Player player;

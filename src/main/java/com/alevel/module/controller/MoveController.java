@@ -3,6 +3,7 @@ package com.alevel.module.controller;
 import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.game.Game;
+import com.alevel.module.model.game.Player;
 import com.alevel.module.service.GameOperations;
 import com.alevel.module.service.MoveOperations;
 import com.alevel.module.service.PlayerOperations;
@@ -32,34 +33,26 @@ public class MoveController {
                           GameOperations gameOperations,
                           PlayerOperations playerOperations) {
         this.moveOperations = moveOperations;
-        // TODO research (1) Hibernate specific and (2) Spring Data JPA ways to fetch associated entries
-        //  ref.: https://stackoverflow.com/a/31699855
         this.gameOperations = gameOperations;
         this.playerOperations = playerOperations;
     }
 
     // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     @PostMapping("/create")
-    public ResponseEntity save(HttpServletRequest request, @RequestBody Move move) {  // @RequestBody Move move
-        //authentication.getName();
-        //UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        //System.out.println("User has authorities: " + userDetails.getAuthorities());
-        Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("-------isAuthenticated: --------" + currentAuthentication.isAuthenticated());
-
-        // if (currentAuthentication.isAuthenticated()){
+    public ResponseEntity save(@RequestBody Move move) {
         // TODO catch 'IllegalArgumentException' e.g. Please provide a correct Rank value
         try {
-            // System.out.println("userTest roles: " + currentAuthentication.getAuthorities());
+            // TODO check piece color by player (if first player in a game, it's white; if second, then black)
+            // TODO consider getting a player from the current user (i.e. from the auth pipeline)
+            Optional<Player> playerOptional = playerOperations.find(move.getPlayer().getId());
             // TODO get the game the user is currently playing (if any; if none, raise GameNotFoundException)
-            Optional<Game> game = gameOperations.find(move.getGame().getId());
-            System.out.println("Game: " + game);
+            Optional<Game> gameOptional = gameOperations.find(move.getGame().getId());
             Long id = moveOperations.save(move);
             move.setId(id);
-            return new ResponseEntity(move, HttpStatus.CREATED); // FIXME  piece's "type": null
+            // FIXME  piece's "type": null
+            return new ResponseEntity(move, HttpStatus.CREATED);
         } catch (InvalidMoveException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.FORBIDDEN);
         }
-
     }
 }

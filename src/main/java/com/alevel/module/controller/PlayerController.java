@@ -34,19 +34,12 @@ public class PlayerController {
     }
 
     @PostMapping("/login")
-    public boolean login(HttpServletRequest request,
-                         @RequestBody Player player) {
-        // TODO check optional
+    public boolean login(@RequestBody Player player) {
         // TODO check password
-        // Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
-        // UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword());
-        //System.out.println("authenticationToken: " + authenticationToken);
-
-        Authentication auth = this.getAuthentication(player.getUsername());  // new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword());
+        Authentication auth = this.getAuthentication(player.getUsername());
         System.out.println("auth: " + auth);
 
-        if (auth != null) {  // !auth.isAuthenticated()
-            // Authentication auth = new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword());
+        if (auth != null) {
             SecurityContextHolder.getContext().setAuthentication(auth);
         } else {
             return false;
