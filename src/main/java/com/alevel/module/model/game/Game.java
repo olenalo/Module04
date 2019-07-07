@@ -2,12 +2,16 @@ package com.alevel.module.model.game;
 
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @Entity
 @Table(name="games")
@@ -50,10 +54,12 @@ public class Game {
     public Game() {
     }
 
+    @JsonGetter("firstPlayer")
     public Player getFirstPlayer() {
         return firstPlayer;
     }
 
+    @JsonGetter("secondPlayer")
     public Player getSecondPlayer() {
         return secondPlayer;
     }
@@ -70,10 +76,12 @@ public class Game {
         this.id = id;
     }
 
+    @JsonSetter("firstPlayer")
     public void setFirstPlayer(Player firstPlayer) {
         this.firstPlayer = firstPlayer;
     }
 
+    @JsonSetter("secondPlayer")
     public void setSecondPlayer(Player secondPlayer) {
         this.secondPlayer = secondPlayer;
     }

@@ -10,15 +10,13 @@ import com.alevel.module.model.piece.pieces.Knight;
 import com.alevel.module.model.piece.pieces.Pawn;
 import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.model.piece.pieces.Rook;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
 // Ref. https://www.baeldung.com/jackson-annotations
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")  // objectType  type
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
@@ -100,18 +98,22 @@ public abstract class Piece {
         isCaptured = captured;
     }
 
+    @JsonGetter("color")
     public Color getColor() {
         return color;
     }
 
+    @JsonSetter("color")
     public void setColor(Color color) {
         this.color = color;
     }
 
+    @JsonSetter("type")
     public void setType(Type type) {
         this.type = type;
     }
 
+    @JsonGetter("type")
     public Type getType() {
         return type;
     }

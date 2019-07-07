@@ -4,6 +4,9 @@ import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.piece.Piece;
 import com.alevel.module.model.piece.configs.Color;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @Entity
 @Table(name="players")
@@ -45,10 +49,12 @@ public class Player {
     public Player() {
     }
 
+    @JsonGetter("username")
     public String getUsername() {
         return username;
     }
 
+    @JsonSetter("username")
     public void setUsername(String username) {
         this.username = username;
     }

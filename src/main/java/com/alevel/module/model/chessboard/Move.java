@@ -3,6 +3,9 @@ package com.alevel.module.model.chessboard;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.piece.Piece;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
@@ -12,6 +15,7 @@ import javax.persistence.*;
  *
  * A valid move only will be saved to the db.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @Entity
 @Table(name="moves")
@@ -103,10 +107,12 @@ public class Move {
         return destinationSpace.getRank().getShortTitle();
     }
 
+    @JsonGetter("destinationSpace")
     public Space getDestinationSpace() {
         return destinationSpace;
     }
 
+    @JsonSetter("destinationSpace")
     public void setDestinationSpace(Space destinationSpace) {
         this.destinationSpace = destinationSpace;
     }
@@ -119,8 +125,14 @@ public class Move {
         this.currentSpace = currentSpace;
     }
 
+    @JsonGetter("piece")
     public Piece getPiece() {
         return piece;
+    }
+
+    @JsonSetter("piece")
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 
     @Override
@@ -155,4 +167,6 @@ public class Move {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+
 }
