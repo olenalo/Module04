@@ -16,7 +16,6 @@ import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
 // Ref. https://www.baeldung.com/jackson-annotations
-@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")  // objectType  type
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
@@ -27,7 +26,9 @@ import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK
     @JsonSubTypes.Type(name = "rook", value = Rook.class)
 })
 public abstract class Piece {
+    @JsonProperty("color")
     private Color color;
+    @JsonProperty("type")
     private Type type;
 
     // protected int[][] allowedMovementDeltas; // TODO make it work with jackson (shouldn't pass as method arg below!)

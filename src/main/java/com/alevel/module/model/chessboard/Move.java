@@ -3,41 +3,44 @@ package com.alevel.module.model.chessboard;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.piece.Piece;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.persistence.*;
 
 /**
  * TODO add docstring
  *
- * A valid move only will be saved to the db.
+ * Only valid move will be saved to the db.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonIgnoreProperties({"pieceTitle", "spaceFile", "spaceRank", "currentSpace"})
+@JsonDeserialize(as=Move.class)
 @Entity
 @Table(name="moves")
 public class Move {
+    @JsonProperty("id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty("game")
     @ManyToOne
     @JoinColumn()
     private Game game;
 
+    @JsonProperty("player")
     @ManyToOne
     @JoinColumn()
     private Player player;
 
+    @JsonProperty("piece")
     @Transient
     private Piece piece;
 
     @Transient
     private Space currentSpace;
 
+    @JsonProperty("destinationSpace")
     @Transient
     private Space destinationSpace;
 
