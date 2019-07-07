@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties({"chessboard", "moves"})
 @JsonDeserialize(as=Game.class)
 @Entity
 @Table(name="games")

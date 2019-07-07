@@ -21,6 +21,7 @@ public class PlayerController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
+    // TODO validate required params
     public Player register(@RequestBody Player player) {
         Long id = playerOperations.save(player);
         player.setId(id);

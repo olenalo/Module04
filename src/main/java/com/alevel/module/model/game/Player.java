@@ -8,11 +8,20 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// TODO consider renaming to Player
+// TODO consider renaming to User
+@JsonIgnoreProperties({"moves",
+                       "firstPlayerGames",
+                       "secondPlayerGames",
+                       "piecesColor",
+                       "firstPlayerGames",
+                       "secondPlayerGames",
+                       "password"})
 @JsonDeserialize(as=Player.class)
 @Entity
 @Table(name="players")
@@ -24,24 +33,32 @@ public class Player {
 
     @JsonProperty("username")
     @Column(name = "username", unique = true)
+    @NotNull
+    @NotEmpty
     private String username;
 
+    // Can be provided by a user later
     @JsonProperty("fname")
     @Column(name = "fname")
     private String firstName;
 
+    // Can be provided by a user later
     @JsonProperty("sname")
     @Column(name = "sname")
     private String secondName;
 
     @JsonProperty("email")
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
+    @NotNull
+    @NotEmpty
     private String email;
 
     @JsonProperty("password")
     @Column(name = "password")
     private String password;
+    //  TODO  private String matchingPassword;
 
+    // TODO consider separating out to DTO
     @OneToMany(mappedBy = "player")
     private List<Move> moves = new ArrayList<>();
 
