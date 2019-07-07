@@ -10,6 +10,8 @@ public interface PlayerOperations {
 
     Optional<Player> find(Long id);
 
+    Optional<Player> find(String username);
+
     void update(Long id, Player player);
 
     Long save(Player player);

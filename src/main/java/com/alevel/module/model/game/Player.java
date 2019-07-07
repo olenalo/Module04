@@ -1,5 +1,6 @@
 package com.alevel.module.model.game;
 
+import com.alevel.module.auth.configs.UserRoles;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.piece.Piece;
@@ -22,6 +23,7 @@ import java.util.Objects;
                        "firstPlayerGames",
                        "secondPlayerGames",
                        "password"})
+                       // "roles"})
 @JsonDeserialize(as=Player.class)
 @Entity
 @Table(name="players")
@@ -56,7 +58,10 @@ public class Player {
     @JsonProperty("password")
     @Column(name = "password")
     private String password;
-    //  TODO  private String matchingPassword;
+
+    // TODO roles (consider creating a dedicated entity)
+    // @Column(name = "roles")
+    // private List<UserRoles> roles;
 
     // TODO consider separating out to DTO
     @OneToMany(mappedBy = "player")

@@ -11,6 +11,7 @@ import com.alevel.module.model.piece.pieces.Knight;
 import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

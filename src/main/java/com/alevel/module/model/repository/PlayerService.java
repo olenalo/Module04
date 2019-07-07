@@ -6,8 +6,11 @@ import com.alevel.module.service.PlayerOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static com.alevel.module.auth.configs.UserRoles.ROLE_USER;
 
 @Service
 public class PlayerService implements PlayerOperations {
@@ -30,12 +33,18 @@ public class PlayerService implements PlayerOperations {
     }
 
     @Override
+    public Optional<Player> find(String username) {
+        return playerRepository.findByUsername(username);
+    }
+
+    @Override
     public void update(Long id, Player player) {
         // TODO
     }
 
     @Override
     public Long save(Player player) {
+        // player.setRoles(Arrays.asList(ROLE_USER));
         return playerRepository.save(player).getId();
     }
 

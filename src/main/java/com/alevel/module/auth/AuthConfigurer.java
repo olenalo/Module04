@@ -1,4 +1,4 @@
-package com.alevel.module.utils;
+package com.alevel.module.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,14 +13,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class AuthConfigurer extends WebSecurityConfigurerAdapter {
 
+    private PlayerDetailsService playerDetailsService;
+
+    @Autowired
+    public AuthConfigurer(PlayerDetailsService playerDetailsService) {
+        this.playerDetailsService = playerDetailsService;
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // TODO store in the db
+        auth.userDetailsService(playerDetailsService);
+        /*
         auth.inMemoryAuthentication()
                 .withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
                 .and()
                 .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER",
-                                                                                                             "ADMIN");
+                                                                                         "ADMIN");
+         */
     }
 
     @Override

@@ -22,7 +22,9 @@ public class PlayerController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO validate required params
+    // TODO set a "USER" role
     public Player register(@RequestBody Player player) {
+        // TODO store password hash, add salting
         Long id = playerOperations.save(player);
         player.setId(id);
         return player;
