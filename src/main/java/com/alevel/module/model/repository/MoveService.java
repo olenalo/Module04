@@ -49,8 +49,6 @@ public class MoveService implements MoveOperations {
 
     @Override
     public Long save(Move move) {
-        // TODO get a current user (player) from the move (and do what?)
-        // TODO get the game the user is currently playing (if any; if none, what then?)
 
         // TODO models: Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
