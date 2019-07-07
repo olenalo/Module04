@@ -10,7 +10,8 @@ import com.alevel.module.model.piece.pieces.Knight;
 import com.alevel.module.model.piece.pieces.Pawn;
 import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.model.piece.pieces.Rook;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -18,10 +19,7 @@ import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
 // Ref. https://www.baeldung.com/jackson-annotations
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "type") // objectType  type
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")  // objectType  type
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
     @JsonSubTypes.Type(name = "bishop", value = Bishop.class),
@@ -53,8 +51,14 @@ public abstract class Piece {
         this.type = type;
     }
 
+    /**
+     * Validate if a move is allowed.
+     *
+     * @param move move to validate.
+     * @param allowedMovementDeltas move rules to validate a move against.
+     * @return true if a move is valid, otherwise false.
+     */
     protected boolean validatePerMovementRules(Move move, int[][] allowedMovementDeltas) {
-        // Validate if a move is allowed
         int fileDelta = FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile()) -
                 FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile());
         int rankDelta = RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank()) -

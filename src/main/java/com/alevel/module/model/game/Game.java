@@ -2,11 +2,13 @@ package com.alevel.module.model.game;
 
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @Entity
 @Table(name="games")
 public class Game {
@@ -39,6 +41,10 @@ public class Game {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.chessboard = chessboard;
+    }
+
+    public Game(Long id) {
+        this.id = id;
     }
 
     public Game() {

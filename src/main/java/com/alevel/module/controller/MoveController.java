@@ -1,9 +1,7 @@
 package com.alevel.module.controller;
 
 import com.alevel.module.model.chessboard.Move;
-import com.alevel.module.model.game.Player;
 import com.alevel.module.service.MoveOperations;
-import com.alevel.module.service.PlayerOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

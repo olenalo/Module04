@@ -68,8 +68,8 @@ public class DemoController {
     @PostMapping("/makeMove")
     // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     public boolean makeMove(@RequestBody Move move) {
-        // TODO get current user (player) from request
-        // TODO get an open game the user is currently playing
+        // TODO get a current user (player) from the move
+        // TODO get a game the user is currently playing
 
         // Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));

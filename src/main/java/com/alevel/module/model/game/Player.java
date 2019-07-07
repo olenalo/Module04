@@ -4,12 +4,14 @@ import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.piece.Piece;
 import com.alevel.module.model.piece.configs.Color;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @Entity
 @Table(name="players")
 public class Player {
@@ -34,6 +36,10 @@ public class Player {
 
     public Player(String username) {
         this.username = username;
+    }
+
+    public Player(Long id) {
+        this.id = id;
     }
 
     public Player() {

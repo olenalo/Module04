@@ -3,14 +3,16 @@ package com.alevel.module.model.chessboard;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.piece.Piece;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 
 /**
  * TODO add docstring
  *
- * Only valid move will be saved to the db
+ * A valid move only will be saved to the db.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @Entity
 @Table(name="moves")
 public class Move {
@@ -46,10 +48,18 @@ public class Move {
 
     // TODO timestamp
 
+    // TODO consider getting rid of this constructor (a move can't exist without a game)
     public Move(Piece piece, Space currentSpace, Space destinationSpace) {
         this.piece = piece;
         this.currentSpace = currentSpace;
         this.destinationSpace = destinationSpace;
+    }
+
+    public Move(Piece piece, Space currentSpace, Space destinationSpace, Game game) {
+        this.piece = piece;
+        this.currentSpace = currentSpace;
+        this.destinationSpace = destinationSpace;
+        this.game = game;
     }
 
     public Move(Piece piece, Space destinationSpace) {
