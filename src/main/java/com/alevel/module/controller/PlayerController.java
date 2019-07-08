@@ -33,33 +33,35 @@ public class PlayerController {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    @PostMapping("/login")
-    public boolean login(@RequestBody Player player) {
-        // TODO check password
+    private boolean authenticate(Player player) {
         Authentication auth = this.getAuthentication(player.getUsername());
-        System.out.println("auth: " + auth);
-
+        // System.out.println("auth: " + auth);
         if (auth != null) {
             SecurityContextHolder.getContext().setAuthentication(auth);
+            // System.out.println("user roles: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+            // System.out.println("username: " + SecurityContextHolder.getContext().getAuthentication().getName());
+            // System.out.println("getPrincipal: " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            return true;
         } else {
             return false;
         }
-        System.out.println("user roles: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        System.out.println("username: " + SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println("getPrincipal: " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return true;
+    }
+
+    @PostMapping("/login")
+    public boolean login(@RequestBody Player player) {
+        // TODO check password
+        return authenticate(player);
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO validate required params
-    // TODO set a "USER" role
     public Player register(@RequestBody Player player) {
         // TODO store password hash, add salting
         // TODO handle 500 (e.g. unique constraints violation)
         Long id = playerOperations.save(player);
         player.setId(id);
-        // TODO authenticate
+        authenticate(player);
         return player;
     }
 }
