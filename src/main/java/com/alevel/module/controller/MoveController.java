@@ -23,7 +23,6 @@ import java.util.Optional;
 @RequestMapping("/chess/move")
 public class MoveController {
 
-    // TODO consider coarse-grained facade vs fine-grained services, ref. https://stackoverflow.com/a/29394487
     private MoveOperations moveOperations;
     private GameOperations gameOperations;
     private PlayerOperations playerOperations;
@@ -40,7 +39,7 @@ public class MoveController {
     // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     @PostMapping("/create")
     public ResponseEntity save(@RequestBody Move move) {
-        // TODO catch 'IllegalArgumentException' e.g. Please provide a correct Rank value
+        // TODO catch 'IllegalArgumentException' e.g. "Please provide a correct Rank value"
         try {
             // TODO check piece color by player (if first player in a game, it's white; if second, then black)
             // TODO consider getting a player from the current user (i.e. from the auth pipeline)
