@@ -27,7 +27,7 @@ import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK
 public abstract class Piece {
     @JsonProperty("color")
     private Color color;
-    @JsonProperty("type")
+    @JsonProperty("pieceType")  // FIXME this is an ugly workaround; need to pass both "type" and "pieceType" with JSON
     private Type type;
 
     // protected int[][] allowedMovementDeltas; // TODO make it work with jackson (shouldn't pass as method arg below!)
@@ -108,12 +108,12 @@ public abstract class Piece {
         this.color = color;
     }
 
-    @JsonSetter("type")
+    @JsonSetter("pieceType")
     public void setType(Type type) {
         this.type = type;
     }
 
-    @JsonGetter("type")
+    @JsonGetter("pieceType")
     public Type getType() {
         return type;
     }

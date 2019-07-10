@@ -41,8 +41,6 @@ public class MoveController {
     public ResponseEntity save(@RequestBody Move move) {
         // TODO catch 'IllegalArgumentException' e.g. "Please provide a correct Rank value"
         try {
-            System.out.println("--------------" + move.getPiece());
-
             // TODO check piece color by player (if first player in a game, it's white; if second, then black);
             //  color can also be taken from request
             // TODO consider getting a player from the current user (i.e. from the auth pipeline)

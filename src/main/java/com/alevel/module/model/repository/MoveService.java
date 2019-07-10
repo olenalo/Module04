@@ -79,12 +79,9 @@ public class MoveService implements MoveOperations {
         move.setCurrentSpace(new Space(A, ONE));
 
         // Set other significant data to save with a current move
-        // System.out.println("--------------" + move.getPiece());
-        // System.out.println("--------------" + move.getPiece().getType().getShortTitle());
-        // move.setPieceTitle(move.getPiece().getType().getShortTitle());
+        move.setPieceTitle(move.getPiece().getType().getShortTitle());
         move.setSpaceFile(move.getDestinationSpace().getFile().getShortTitle());
         move.setSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
-        System.out.println("-------------- Current move: " + move);
 
         // Validate and make a move
         // TODO models: check if checkmate, check or draw (with respective consequences e.g. define the winner)

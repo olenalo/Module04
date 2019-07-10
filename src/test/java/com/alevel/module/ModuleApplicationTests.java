@@ -15,7 +15,7 @@ public class ModuleApplicationTests {
 	 - StandardChessboardBuilder - board with history: ChessboardSquarePopulator
 	 - json mapping (e.g. polymorphic type `Piece`)
 	 - MoveService: save a move (w/ validators); `InvalidMoveException`
-	 - MoveService | MoveController: 'IllegalArgumentException' e.g. "Please provide a correct Rank value"
+	 - MoveService | MoveController: 'IllegalArgumentException' e.g. "Please provide a correct Rank value" (enum)
 	 - MoveController: test API endpoint (e.g. valid move, invalid move -> error code and message)
 	 - MoveController" authorization
 	 */
