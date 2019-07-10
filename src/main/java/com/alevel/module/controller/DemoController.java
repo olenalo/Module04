@@ -91,6 +91,11 @@ public class DemoController {
                 .build();
         System.out.println(chessboard);
 
+        // Demo
+        move.setCurrentSpace(new Space(A, ONE));
+        // Uncomment to check an error; or just pass an invalid file/rank
+        // move.setCurrentSpace(new Space(A, FOUR));
+
         // Make a move
         return move.getPiece().doMove(move, chessboard);
     }

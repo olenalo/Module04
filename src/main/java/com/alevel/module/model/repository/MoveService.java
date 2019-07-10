@@ -5,13 +5,10 @@ import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.chessboard.Square;
+import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
-import com.alevel.module.model.piece.pieces.King;
-import com.alevel.module.model.piece.pieces.Knight;
-import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,8 +17,6 @@ import java.util.Optional;
 
 import static com.alevel.module.model.chessboard.configs.File.A;
 import static com.alevel.module.model.chessboard.configs.Rank.*;
-import static com.alevel.module.model.piece.configs.Color.BLACK;
-import static com.alevel.module.model.piece.configs.Color.WHITE;
 
 @Service
 public class MoveService implements MoveOperations {
@@ -39,6 +34,11 @@ public class MoveService implements MoveOperations {
     }
 
     @Override
+    public List<Move> findAll(Game game) {
+        return moveRepository.findByGame(game);
+    }
+
+    @Override
     public Optional<Move> find(Long id) {
         return moveRepository.findById(id);
     }
@@ -51,61 +51,46 @@ public class MoveService implements MoveOperations {
     @Override
     public Long save(Move move) throws IllegalArgumentException {
 
-        // TODO Fetch moves history and build up a chessboard
-        //  - If s game just started, build a chessboard right away and start validating the move (build up moves etc)
-        //  ---- figure out a way to define if a game just started w/o db hit (cache?)
-        //  - MoveOperations | MoveService - if game has been ongoing, findAll by the Game obj (or findAll, and then decide if ongoing).
-        //  - Extract latest only (per piece types)
-        //  - define if captured (isCaptured), take only non-captured pieces into account
-        //  ---- Move: store (in the db) if captured opponent's piece to avoid re-validation upon every request
-        //  - Build up moves as demonstrated below (might not be needed).
-        //  - Build up squares w/ pieces (build up states from moves history)
-        //  ---- define current spaces for each piece
-        //  - Cache it all
+        // Fetch moves history
+        // TODO Extract latest only (per piece types) when database querying, ref: https://stackoverflow.com/a/20283256
+        // TODO define if captured (isCaptured), take only non-captured pieces into account
+        List<Move> moves = findAll(move.getGame());
 
-        // Demo: Fetch moves history
-        Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
-        Move move2 = new Move(new King(WHITE), new Space(A, ONE), new Space(A, THREE));
-        Move move3 = new Move(new Queen(BLACK), new Space(A, ONE), new Space(A, FOUR));
-
-        // Demo: Build squares w/ pieces (build up states from moves history)
-        Square square1 = new Square(move1.getDestinationSpace(), move1.getPiece());
-        Square square2 = new Square(move2.getDestinationSpace(), move2.getPiece());
-        Square square3 = new Square(move3.getDestinationSpace(), move3.getPiece());
+        // Build up states from moves history (squares w/ pieces)
         List<Square> squares = new ArrayList<>();
-        // Comment out to test chessboard initial population with pieces
-        /*
-        squares.add(square1);
-        squares.add(square2);
-        squares.add(square3);
-         */
+        if (!moves.isEmpty()) {
+            for (Move m : moves) {
+                squares.add(new Square(m.getDestinationSpace(), m.getPiece()));  // TODO handle nullables
+            }
+        }
 
         // Build the game's chessboard to provide the access to states
         StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
         Chessboard chessboard = chessboardBuilder
-                .addOccupiedSquares(squares)
+                .addOccupiedSquares(squares) // TODO think of a better way to check squares isEmpty
                 .addEmptySquares()
                 .build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
+        // TODO Implement visitors to look up players' pieces' states from a chessboard
+        // TODO Define current spaces for each piece (by visitors)
         // Demo
         move.setCurrentSpace(new Space(A, ONE));
-        // Uncomment to check an error; or just pass an invalid file/rank
-        // move.setCurrentSpace(new Space(A, FOUR));
 
-        // TODO Add validators / evaluators: define current spaces of pieces (visitors), add other validators
-        //  - Implement visitors to look up players' pieces' states from a chessboard
-        //  - Add other validators (compliance with specific rules, if empty, within-the-field movement, etc)
-        //  - Implement capturing (write to the previously implemented isCaptured - update a `move` to store (setIsCaptured))
-        //  - Add evaluators
-        //  ---- check
-        //  ---- checkmate
-        //  ---- draw
-        //  - Closure (if checkmate or draw, store results and finish the game).
-
-        // Make a move
+        // Validate and make a move
         // TODO models: check if checkmate, check or draw (with respective consequences e.g. define the winner)
         if (move.getPiece().doMove(move, chessboard)) {
+
+            // TODO Add other validators (compliance with specific rules, if empty, within-the-field movement, etc)
+
+            // TODO Add game state evaluators (check, checkmate, draw)
+
+            // TODO Move: store (in the db) if captured opponent's piece to avoid re-validation upon every request
+
+            // TODO Closure (if checkmate or draw, store results and finish the game).
+            // TODO Implement capturing (write to the previously implemented isCaptured - update a `move` to store (setIsCaptured))
+
+            // TODO Cache the updated states
             return moveRepository.save(move).getId() ;
         } else {
             throw new InvalidMoveException(move);
