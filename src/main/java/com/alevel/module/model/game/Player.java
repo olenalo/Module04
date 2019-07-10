@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// TODO consider renaming to User
+// TODO consider renaming to User (or creating User DTO)
+// TODO use Lombok
 @JsonIgnoreProperties({"moves",
                        "firstPlayerGames",
                        "secondPlayerGames",

@@ -53,8 +53,8 @@ public class MoveService implements MoveOperations {
 
         // TODO Fetch moves history and build up a chessboard
         //  - If s game just started, build a chessboard right away and start validating the move (build up moves etc)
-        //  ---- figure out a way to define if a game just started (cache?)
-        //  - MoveOperations | MoveService - if game has been ongoing, findAll by the Game obj.
+        //  ---- figure out a way to define if a game just started w/o db hit (cache?)
+        //  - MoveOperations | MoveService - if game has been ongoing, findAll by the Game obj (or findAll, and then decide if ongoing).
         //  - Extract latest only (per piece types)
         //  - define if captured (isCaptured), take only non-captured pieces into account
         //  ---- Move: store (in the db) if captured opponent's piece to avoid re-validation upon every request
