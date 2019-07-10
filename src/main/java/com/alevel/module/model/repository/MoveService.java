@@ -69,7 +69,8 @@ public class MoveService implements MoveOperations {
         gameMoves.add(new Move(new Pawn(WHITE), new Space(F, TWO), new Space(F, THREE)));
         gameMoves.add(new Move(new Pawn(BLACK), new Space(E, SEVEN), new Space(E, FIVE)));
         gameMoves.add(new Move(new Pawn(WHITE), new Space(G, TWO), new Space(G, FOUR)));
-        // gameMoves.add(new Move(new Queen(BLACK), new Space(D, EIGHT), new Space(H, FOUR))); // expected move for a checkmate
+        // Expected move for checkmate:
+        // gameMoves.add(new Move(new Queen(BLACK), new Space(D, EIGHT), new Space(H, FOUR)));
 
         // Build the game chessboard
         // TODO think of better ways: this is not a builder: we don't pass params one by one

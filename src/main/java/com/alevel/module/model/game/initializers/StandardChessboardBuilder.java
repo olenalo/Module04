@@ -4,16 +4,12 @@ import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Square;
 import com.alevel.module.model.game.initializers.utils.ChessboardFreshStartPopulator;
-import com.alevel.module.model.piece.pieces.King;
-import com.alevel.module.model.piece.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Build up a chessboard.
- *
- * Occupied squares go first.
  */
 public class StandardChessboardBuilder implements ChessboardBuilder {
     private List<Move> gameMoves;
@@ -39,21 +35,23 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
      *
      * @return builder object.
      */
-    public StandardChessboardBuilder buildUpSquares() {
-        System.out.println("============ Moves ================");
+    public StandardChessboardBuilder buildUpSquares(List<Square> squares) {
+        System.out.println("============ Moves history: ================");
         if (!gameMoves.isEmpty()) {
-            for (Move m : gameMoves) {
+            for (Move move : gameMoves) {
                 // TODO update squares (clean up previous state, add new ones).
-                System.out.println(m);
+                System.out.println(move);
                 // Clean up a previous state
-                movesSquares.remove(new Square(m.getCurrentSpace(), m.getPiece()));
+                squares.remove(new Square(move.getCurrentSpace()));
                 // Update piece's states
-                m.getPiece().setMoved(true);
+                move.getPiece().setMoved(true);
+                // TODO build pieces' vectors
                 // TODO check if `isCaptured`, update if needed
                 // Add a new state
-                movesSquares.add(new Square(m.getDestinationSpace(), m.getPiece()));  // TODO handle nullables
+                squares.add(new Square(move.getDestinationSpace(), move.getPiece()));  // TODO handle nullables
             }
         }
+        this.movesSquares = squares;
         System.out.println("============================");
         return this;
     }
@@ -62,9 +60,9 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
     public Chessboard build() {
         List<Square> squares;
         squares = new ChessboardFreshStartPopulator().populateFreshStartSquares();
-        if (!this.gameMoves.isEmpty()) {  // TODO check against null
-            buildUpSquares();
+        if (!this.gameMoves.isEmpty()) {
+            buildUpSquares(squares);
         }
-        return new Chessboard(squares);
+        return new Chessboard(this.movesSquares);
     }
 }

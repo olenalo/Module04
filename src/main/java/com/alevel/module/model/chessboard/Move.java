@@ -266,8 +266,7 @@ public class Move {
     @Override
     public String toString() {
         return "Move{" +
-                "id=" + id +
-                ", piece=" + piece +
+                "piece=" + piece +
                 ", currentSpace=" + currentSpace +
                 ", destinationSpace=" + destinationSpace +
                 '}';
