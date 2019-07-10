@@ -20,8 +20,13 @@ public class Rook extends Piece {  // could be `Castle`
 
     @Override
     public boolean doMove(Move move, Chessboard chessboard) {
-        return super.validatePerMovementRules(move, ROOK_ALLOWED_MOVEMENT_DELTAS);
-        // TODO do the rest
+        // TODO check compliance with specific rules
+        if (super.validatePerMovementRules(move, ROOK_ALLOWED_MOVEMENT_DELTAS)) {
+            return validateCheckMate();
+        } else {
+            return false;
+        }
+
     }
 
     @Override

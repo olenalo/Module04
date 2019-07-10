@@ -21,17 +21,13 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
         this.gameMoves = gameMoves;
     }
 
-    // TODO Define what pieces are captured (isCaptured) by re-running shouldCapturePiece validation,
-    //  and update pieces' isCaptured state
-    // TODO Update `isMoved` for Rook and King (castling)
     /**
      * Build up states from moves history.
      *
      * That is, update squares' states move by move.
      * Clean up previous states and add new ones.
      *
-     * Update pieces states as well, i.e. `isMoved` for Rook and King
-     * (for the sake of castling), `isCaptured`.
+     * Update pieces states as well.
      *
      * @return builder object.
      */
@@ -39,14 +35,17 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
         System.out.println("============ Moves history: ================");
         if (!gameMoves.isEmpty()) {
             for (Move move : gameMoves) {
-                // TODO update squares (clean up previous state, add new ones).
                 System.out.println(move);
-                // Clean up a previous state
+                // Clean up a previous state.
+                // TODO Consider avoiding removal (just settting a piece to null)
                 squares.remove(new Square(move.getCurrentSpace()));
+                squares.add(new Square(move.getCurrentSpace()));
                 // Update piece's states
                 move.getPiece().setMoved(true);
-                // TODO build pieces' vectors
-                // TODO check if `isCaptured`, update if needed
+                // TODO Build pieces' vectors
+                // Clean up a destination square. Like that, we remove captured pieces.
+                // TODO Consider storing captured pieces in Game (current score) or elsewhere
+                squares.remove(new Square(move.getDestinationSpace()));
                 // Add a new state
                 squares.add(new Square(move.getDestinationSpace(), move.getPiece()));  // TODO handle nullables
             }

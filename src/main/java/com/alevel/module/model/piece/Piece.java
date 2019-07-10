@@ -18,7 +18,7 @@ import java.util.Objects;
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
-@JsonIgnoreProperties({"captured", "moved"})
+@JsonIgnoreProperties({"moved"})
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
@@ -42,7 +42,6 @@ public abstract class Piece {
     //    (promotion, castling), specific rules apply
     // private int[][] getAllowedSpecificMovesDeltas;
 
-    private boolean isCaptured = false;
     private boolean isMoved = false;  // Actually needed for King and Rook only (for castling)
 
     public boolean isMoved() {
@@ -102,14 +101,6 @@ public abstract class Piece {
     public boolean validateCheckMate() {
         // TODO
         return true;
-    }
-
-    public boolean isCaptured() {
-        return isCaptured;
-    }
-
-    public void setCaptured(boolean captured) {
-        isCaptured = captured;
     }
 
     @JsonGetter("color")
