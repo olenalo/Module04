@@ -54,17 +54,18 @@ public class MoveService implements MoveOperations {
         // Fetch moves history
         // TODO Extract latest only (per piece types) when database querying, ref: https://stackoverflow.com/a/20283256
         // TODO define if captured (isCaptured), take only non-captured pieces into account
-        List<Move> moves = findAll(move.getGame());
+        List<Move> gameMoves = findAll(move.getGame());
 
         // Build up states from moves history (squares w/ pieces)
         List<Square> squares = new ArrayList<>();
-        if (!moves.isEmpty()) {
-            for (Move m : moves) {
+        if (!gameMoves.isEmpty()) {
+            // TODO test
+            for (Move m : gameMoves) {
                 squares.add(new Square(m.getDestinationSpace(), m.getPiece()));  // TODO handle nullables
             }
         }
 
-        // Build the game's chessboard to provide the access to states
+        // Build the game chessboard
         StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
         Chessboard chessboard = chessboardBuilder
                 .addOccupiedSquares(squares) // TODO think of a better way to check squares isEmpty
@@ -76,6 +77,14 @@ public class MoveService implements MoveOperations {
         // TODO Define current spaces for each piece (by visitors)
         // Demo
         move.setCurrentSpace(new Space(A, ONE));
+
+        // Set other significant data to save with a current move
+        // System.out.println("--------------" + move.getPiece());
+        // System.out.println("--------------" + move.getPiece().getType().getShortTitle());
+        // move.setPieceTitle(move.getPiece().getType().getShortTitle());
+        move.setSpaceFile(move.getDestinationSpace().getFile().getShortTitle());
+        move.setSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
+        System.out.println("-------------- Current move: " + move);
 
         // Validate and make a move
         // TODO models: check if checkmate, check or draw (with respective consequences e.g. define the winner)

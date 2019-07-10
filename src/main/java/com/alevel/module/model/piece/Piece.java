@@ -61,13 +61,13 @@ public abstract class Piece {
                 FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile());
         int rankDelta = RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank()) -
                 RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank());
+        // TODO separate out to a dedicated method
         for (int[] allowedMovesDelta : allowedMovementDeltas) {
-            int allowedFileDelta = allowedMovesDelta[0];
-            int allowedRankDelta = allowedMovesDelta[1];
-            if (fileDelta == allowedFileDelta && rankDelta == allowedRankDelta) {
+            if (fileDelta == allowedMovesDelta[0] && rankDelta == allowedMovesDelta[1]) {
                 return true;
             }
         }
+        // TODO add specific rules validation
         return false;
     }
 

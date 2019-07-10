@@ -7,13 +7,14 @@ import java.util.UUID;
 /**
  * Build up a board state from squares.
  *
+ * Store states to provide the access to them.
  * Occupied squares go first.
  *
  * TODO Iteration should stop once all occupied squares are iterated over
  *  i.e. once an empty square appears.
  */
 public class Chessboard {
-
+    // TODO update JPA entity classes (consider replacing Long with UUID)
     private final UUID id  = UUID.randomUUID();
 
     private List<Square> squares;

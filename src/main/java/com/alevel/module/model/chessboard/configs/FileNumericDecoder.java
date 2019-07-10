@@ -16,7 +16,7 @@ import static com.alevel.module.model.chessboard.configs.File.H;
 
 public class FileNumericDecoder {
 
-    // TODO consider getting read of it e.g. use enumerator short values
+    // TODO consider getting rid of it, e.g. use enumerator short values
     public static Map<File, Integer> FILE_NUMERIC_DECODER = ImmutableMap.<File, Integer>builder()
             .put(A, 1)
             .put(B, 2)

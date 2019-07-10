@@ -96,16 +96,20 @@ public class Move {
 
     // TODO ensure enums are properly created
     //  Hibernate was once bad with enums, ref.: https://stackoverflow.com/a/735762
+    // TODO separate out to DTO
+    @JsonGetter("pieceTitle")
     @Enumerated(EnumType.STRING)
     public String getPieceTitle() {
         return piece.getType().getShortTitle();
     }
 
+    @JsonGetter("spaceFile")
     @Enumerated(EnumType.STRING)
     public String getSpaceFile() {
         return destinationSpace.getFile().getShortTitle();
     }
 
+    @JsonGetter("spaceRank")
     @Enumerated(EnumType.STRING)
     public String getSpaceRank() {
         return destinationSpace.getRank().getShortTitle();
@@ -139,15 +143,6 @@ public class Move {
         this.piece = piece;
     }
 
-    @Override
-    public String toString() {
-        return "Move{" +
-                "piece=" + piece +
-                ", currentSpace=" + currentSpace +
-                ", destinationSpace=" + destinationSpace +
-                '}';
-    }
-
     public Long getId() {
         return id;
     }
@@ -172,5 +167,27 @@ public class Move {
         this.player = player;
     }
 
+    @JsonSetter("pieceTitle")
+    public void setPieceTitle(String pieceTitle) {
+        this.pieceTitle = pieceTitle;
+    }
 
+    @JsonSetter("spaceFile")
+    public void setSpaceFile(String spaceFile) {
+        this.spaceFile = spaceFile;
+    }
+
+    @JsonSetter("spaceRank")
+    public void setSpaceRank(String spaceRank) {
+        this.spaceRank = spaceRank;
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "piece=" + piece +
+                ", currentSpace=" + currentSpace +
+                ", destinationSpace=" + destinationSpace +
+                '}';
+    }
 }

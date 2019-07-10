@@ -4,6 +4,7 @@ import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.piece.Piece;
 import com.alevel.module.model.piece.configs.Color;
+import com.alevel.module.model.piece.configs.Type;
 
 import static com.alevel.module.model.piece.configs.MovementRules.KING_ALLOWED_MOVEMENT_DELTAS;
 import static com.alevel.module.model.piece.configs.Type.KING;
