@@ -59,56 +59,37 @@ public class MoveService implements MoveOperations {
     public Long save(Move move) throws IllegalArgumentException {
 
         // Fetch moves history
-        // TODO Extract latest only (per piece types) when database querying, ref: https://stackoverflow.com/a/20283256
-        // TODO define if captured (isCaptured), take only non-captured pieces into account
         // FIXME each entry should contain all move's fields (now it's `id` only);
         //  consider https://stackoverflow.com/a/36329166
         List<Move> gameMoves = findAll(move.getGame());
-        // Replaced with demo moves till FIX-ME gets resolved
+        // Replaced with demo moves till aforementioned FIX-ME gets resolved
         // Play Fool's Mate to speed up testing
         //  ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
         gameMoves = new ArrayList<>();
-        gameMoves.add(new Move(new King(WHITE), new Space(F, THREE)));
-        gameMoves.add(new Move(new Pawn(BLACK), new Space(E, FIVE)));
-        gameMoves.add(new Move(new Pawn(WHITE), new Space(G, FOUR)));
-        // gameMoves.add(new Move(new Queen(BLACK), new Space(H, FOUR))); // expected move for a checkmate
-
-        // Build up states from moves history (squares w/ pieces)
-        List<Square> squares = new ArrayList<>();
-        System.out.println("============ Moves ================");
-        if (!gameMoves.isEmpty()) {
-            for (Move m : gameMoves) {
-                System.out.println(m);
-                // TODO define (fetch from request / check from db by player number),
-                //  and set a color to each move (for db-fetched moves)
-                squares.add(new Square(m.getDestinationSpace(), m.getPiece()));  // TODO handle nullables
-            }
-        }
-        System.out.println("============================");
+        gameMoves.add(new Move(new Pawn(WHITE), new Space(F, TWO), new Space(F, THREE)));
+        gameMoves.add(new Move(new Pawn(BLACK), new Space(E, SEVEN), new Space(E, FIVE)));
+        gameMoves.add(new Move(new Pawn(WHITE), new Space(G, TWO), new Space(G, FOUR)));
+        // gameMoves.add(new Move(new Queen(BLACK), new Space(D, EIGHT), new Space(H, FOUR))); // expected move for a checkmate
 
         // Build the game chessboard
-        StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
-        Chessboard chessboard = chessboardBuilder
-                .addOccupiedSquares(squares) // TODO think of a better way to check squares isEmpty
-                .addEmptySquares()
-                .build();
+        // TODO think of better ways: this is not a builder: we don't pass params one by one
+        // FIXME it still doesn't draw up correct states
+        Chessboard chessboard = new StandardChessboardBuilder(gameMoves).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
-        // TODO Implement visitors to look up players' pieces' states from a chessboard
-        // TODO Define current spaces for each piece (by visitors)
-        // Demo
-        move.setCurrentSpace(new Space(D, EIGHT));
-
+        // TODO define and set a color for current move's piece(fetch from request / check from db by player number),
         // Set other significant data to save with a current move
         move.setPieceTitle(move.getPiece().getType().getShortTitle());
-        move.setSpaceFile(move.getDestinationSpace().getFile().getShortTitle());
-        move.setSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
+        move.setCurrentSpaceFile(move.getCurrentSpace().getFile().getShortTitle());
+        move.setCurrentSpaceRank(move.getCurrentSpace().getRank().getShortTitle());
+        move.setDestinationSpaceFile(move.getDestinationSpace().getFile().getShortTitle());
+        move.setDestinationSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
 
         // Validate and make a move
-        // TODO models: check if checkmate, check or draw (with respective consequences e.g. define the winner)
         if (move.getPiece().doMove(move, chessboard)) {
-
             // TODO Add other validators (compliance with specific rules, if empty, within-the-field movement, etc)
+
+            // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
 
             // TODO Add game state evaluators (check, checkmate, draw)
 
@@ -118,6 +99,7 @@ public class MoveService implements MoveOperations {
             // TODO Implement capturing (write to the previously implemented isCaptured - update a `move` to store (setIsCaptured))
 
             // TODO Cache the updated states
+            // TODO For caching, set `isUntouched` to False if it's either Rook or King (for castling)
             return moveRepository.save(move).getId() ;
         } else {
             throw new InvalidMoveException(move);

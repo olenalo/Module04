@@ -19,6 +19,8 @@ public class Chessboard {
 
     private List<Square> squares;
 
+    // TODO capturedPieces to track a score
+
     public Chessboard(List<Square> squares) {
         this.squares = Collections.unmodifiableList(squares);
     }

@@ -1,4 +1,4 @@
-package com.alevel.module.model.game.initializers.populators;
+package com.alevel.module.model.game.initializers.utils;
 
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.chessboard.Square;
@@ -18,13 +18,11 @@ import java.util.List;
 import static com.alevel.module.model.piece.configs.Color.BLACK;
 import static com.alevel.module.model.piece.configs.Color.WHITE;
 
-// TODO refactor populators (find things in common, subclass from the same base class)
-public class ChessboardPiecePopulator {
+public class ChessboardFreshStartPopulator {
 
     private List<Square> squares = new ArrayList<>();
 
-    public ChessboardPiecePopulator() {
-        // TODO DRY (see `ChessboardSquarePopulator`)
+    public ChessboardFreshStartPopulator() {
         for (Rank rank : Rank.values()) {
             for (File file : File.values()) {
                 squares.add(new Square(new Space(file, rank)));
@@ -55,7 +53,7 @@ public class ChessboardPiecePopulator {
         }
     }
 
-    public List<Square> populateSquares() {
+    public List<Square> populateFreshStartSquares() {
         for (Square square : this.squares) {
             switch (square.getSpace().getRank()) {
                 case ONE:

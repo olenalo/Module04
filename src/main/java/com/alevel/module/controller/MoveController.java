@@ -47,6 +47,7 @@ public class MoveController {
             Optional<Player> playerOptional = playerOperations.find(move.getPlayer().getId());
             // TODO get the game the user is currently playing (if any; if none, raise GameNotFoundException)
             Optional<Game> gameOptional = gameOperations.find(move.getGame().getId());
+            System.out.println(" move: -------" + move);
             Long id = moveOperations.save(move);
             move.setId(id);
             return new ResponseEntity(move, HttpStatus.CREATED);

@@ -20,7 +20,11 @@ import static com.alevel.module.model.piece.configs.Type.KING;
  *
  * Only valid move will be saved to the db.
  */
-@JsonIgnoreProperties({"pieceTitle", "spaceFile", "spaceRank", "currentSpace"})
+@JsonIgnoreProperties({"pieceTitle",
+                       "destinationSpaceFile",
+                       "destinationSpaceRank",
+                       "currentSpaceFile",
+                       "currentSpaceRank"})
 @JsonDeserialize(as=Move.class)
 @Entity
 @Table(name="moves")
@@ -44,6 +48,7 @@ public class Move {
     @Transient
     private Piece piece;
 
+    @JsonProperty("currentSpace")
     @Transient
     private Space currentSpace;
 
@@ -56,11 +61,17 @@ public class Move {
     @Column(name = "pieceTitle")
     private String pieceTitle;
 
-    @Column(name = "spaceFile")
-    private String spaceFile;
+    @Column(name = "destinationSpaceFile")
+    private String destinationSpaceFile;
 
-    @Column(name = "spaceRank")
-    private String spaceRank;
+    @Column(name = "destinationSpaceRank")
+    private String destinationSpaceRank;
+
+    @Column(name = "currentSpaceFile")
+    private String currentSpaceFile;
+
+    @Column(name = "currentSpaceRank")
+    private String currentSpaceRank;
 
     // TODO adda timestamp field
 
@@ -96,6 +107,8 @@ public class Move {
     // move0_.space_rank as space_ra4_1_
     // from moves move0_ left outer join games game1_ on move0_.game_id=game1_.id where game1_.id=?
     // TODO remove (didn't help for now)
+    // TODO update (destination, current spaces)
+    /*
     public Move(Long id, String gameId, String pieceTitle, String playerId, String spaceFile, String spaceRank) {
         switch(pieceTitle) {
             // TODO consider getting rid of magic strings
@@ -121,6 +134,7 @@ public class Move {
         this.id = id;
         this.destinationSpace = new Space(File.create(spaceFile), Rank.create(spaceRank));
     }
+     */
 
     public boolean validate() {
         // TODO
@@ -146,16 +160,28 @@ public class Move {
         return piece.getType().getShortTitle();
     }
 
-    @JsonGetter("spaceFile")
+    @JsonGetter("destinationSpaceFile")
     @Enumerated(EnumType.STRING)
-    public String getSpaceFile() {
+    public String getDestinationSpaceFile() {
         return destinationSpace.getFile().getShortTitle();
     }
 
-    @JsonGetter("spaceRank")
+    @JsonGetter("destinationSpaceRank")
     @Enumerated(EnumType.STRING)
-    public String getSpaceRank() {
+    public String getDestinationSpaceRank() {
         return destinationSpace.getRank().getShortTitle();
+    }
+
+    @JsonGetter("currentSpaceFile")
+    @Enumerated(EnumType.STRING)
+    public String getCurrentSpaceFile() {
+        return currentSpace.getFile().getShortTitle();
+    }
+
+    @JsonGetter("currentSpaceRank")
+    @Enumerated(EnumType.STRING)
+    public String getCurrentSpaceRank() {
+        return currentSpace.getRank().getShortTitle();
     }
 
     @JsonGetter("destinationSpace")
@@ -168,10 +194,12 @@ public class Move {
         this.destinationSpace = destinationSpace;
     }
 
+    @JsonGetter("currentSpace")
     public Space getCurrentSpace() {
         return currentSpace;
     }
 
+    @JsonSetter("currentSpace")
     public void setCurrentSpace(Space currentSpace) {
         this.currentSpace = currentSpace;
     }
@@ -215,14 +243,24 @@ public class Move {
         this.pieceTitle = pieceTitle;
     }
 
-    @JsonSetter("spaceFile")
-    public void setSpaceFile(String spaceFile) {
-        this.spaceFile = spaceFile;
+    @JsonSetter("destinationSpaceFile")
+    public void setDestinationSpaceFile(String spaceFile) {
+        this.destinationSpaceFile = spaceFile;
     }
 
-    @JsonSetter("spaceRank")
-    public void setSpaceRank(String spaceRank) {
-        this.spaceRank = spaceRank;
+    @JsonSetter("destinationSpaceRank")
+    public void setDestinationSpaceRank(String spaceRank) {
+        this.destinationSpaceRank = spaceRank;
+    }
+
+    @JsonSetter("currentSpaceFile")
+    public void setCurrentSpaceFile(String spaceFile) {
+        this.currentSpaceFile = spaceFile;
+    }
+
+    @JsonSetter("currentSpaceRank")
+    public void setCurrentSpaceRank(String spaceRank) {
+        this.currentSpaceRank = spaceRank;
     }
 
     @Override

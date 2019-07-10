@@ -5,7 +5,7 @@ import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.piece.Piece;
 import com.alevel.module.model.piece.configs.Color;
 
-import static com.alevel.module.model.piece.configs.MovementRules.ROOK_ALLOWED_MOVEMENT_DELTAS;
+import static com.alevel.module.model.piece.configs.rules.MovementRules.ROOK_ALLOWED_MOVEMENT_DELTAS;
 import static com.alevel.module.model.piece.configs.Type.ROOK;
 
 public class Rook extends Piece {  // could be `Castle`

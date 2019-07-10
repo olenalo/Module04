@@ -1,4 +1,4 @@
-package com.alevel.module.model.piece.configs;
+package com.alevel.module.model.piece.configs.rules;
 
 public class SpecificMovementRules {
 

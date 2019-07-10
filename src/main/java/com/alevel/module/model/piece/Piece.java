@@ -12,9 +12,13 @@ import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.model.piece.pieces.Rook;
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
+
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
+@JsonIgnoreProperties({"captured", "moved"})
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
@@ -38,7 +42,16 @@ public abstract class Piece {
     //    (promotion, castling), specific rules apply
     // private int[][] getAllowedSpecificMovesDeltas;
 
-    private boolean isCaptured;
+    private boolean isCaptured = false;
+    private boolean isMoved = false;  // Actually needed for King and Rook only (for castling)
+
+    public boolean isMoved() {
+        return isMoved;
+    }
+
+    public void setMoved(boolean moved) {
+        isMoved = moved;
+    }
 
     // Ref.: https://stackoverflow.com/a/51014378
     public Piece() {}
@@ -117,6 +130,20 @@ public abstract class Piece {
     @JsonGetter("pieceType")
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return color == piece.color &&
+                type == piece.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, type);
     }
 
     /*

@@ -65,7 +65,7 @@ public class DemoController {
     }
 
     @PostMapping("/makeMove")
-    public boolean makeMove(@RequestBody Move move) {
+    public void makeMove(@RequestBody Move move) {
         // Fetch moves history
         Move move1 = new Move(new Knight(WHITE), new Space(A, ONE), new Space(A, TWO));
         Move move2 = new Move(new King(WHITE), new Space(A, ONE), new Space(A, THREE));
@@ -84,6 +84,7 @@ public class DemoController {
          */
 
         // Build the game's chessboard to ease access to states
+        /*
         StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();
         Chessboard chessboard = chessboardBuilder
                 .addOccupiedSquares(squares)
@@ -98,6 +99,7 @@ public class DemoController {
 
         // Make a move
         return move.getPiece().doMove(move, chessboard);
+         */
     }
 
 }
