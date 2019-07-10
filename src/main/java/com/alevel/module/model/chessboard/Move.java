@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.persistence.*;
 
+import static com.alevel.module.model.piece.configs.Type.KING;
+
 /**
  * TODO add docstring
  *
@@ -96,6 +98,7 @@ public class Move {
     // TODO remove (didn't help for now)
     public Move(Long id, String gameId, String pieceTitle, String playerId, String spaceFile, String spaceRank) {
         switch(pieceTitle) {
+            // TODO consider getting rid of magic strings
             case "king":
                 this.piece = new King();
                 break;

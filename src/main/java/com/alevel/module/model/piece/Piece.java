@@ -58,13 +58,13 @@ public abstract class Piece {
      * @return true if a move is valid, otherwise false.
      */
     protected boolean validatePerMovementRules(Move move, int[][] allowedMovementDeltas) {
-        int fileDelta = FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile()) -
-                FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile());
-        int rankDelta = RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank()) -
-                RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank());
+        int expectedFileDelta = FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile()) -
+                FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile());
+        int expectedRankDelta = RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank()) -
+                RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank());
         // TODO separate out to a dedicated method
         for (int[] allowedMovesDelta : allowedMovementDeltas) {
-            if (fileDelta == allowedMovesDelta[0] && rankDelta == allowedMovesDelta[1]) {
+            if (expectedFileDelta == allowedMovesDelta[0] && expectedRankDelta == allowedMovesDelta[1]) {
                 return true;
             }
         }

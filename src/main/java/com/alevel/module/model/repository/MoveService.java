@@ -7,6 +7,11 @@ import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.chessboard.Square;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
+import com.alevel.module.model.piece.Piece;
+import com.alevel.module.model.piece.configs.Color;
+import com.alevel.module.model.piece.pieces.King;
+import com.alevel.module.model.piece.pieces.Pawn;
+import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.alevel.module.model.chessboard.configs.File.A;
+import static com.alevel.module.model.chessboard.configs.File.*;
 import static com.alevel.module.model.chessboard.configs.Rank.*;
+import static com.alevel.module.model.piece.configs.Color.BLACK;
+import static com.alevel.module.model.piece.configs.Color.WHITE;
 
 @Service
 public class MoveService implements MoveOperations {
@@ -54,16 +61,26 @@ public class MoveService implements MoveOperations {
         // Fetch moves history
         // TODO Extract latest only (per piece types) when database querying, ref: https://stackoverflow.com/a/20283256
         // TODO define if captured (isCaptured), take only non-captured pieces into account
-        // FIXME each entry should contain all move's fields (now it's `id` only)
+        // FIXME each entry should contain all move's fields (now it's `id` only);
+        //  consider https://stackoverflow.com/a/36329166
         List<Move> gameMoves = findAll(move.getGame());
+        // Replaced with demo moves till FIX-ME gets resolved
+        // Play Fool's Mate to speed up testing
+        //  ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
+        gameMoves = new ArrayList<>();
+        gameMoves.add(new Move(new King(WHITE), new Space(F, THREE)));
+        gameMoves.add(new Move(new Pawn(BLACK), new Space(E, FIVE)));
+        gameMoves.add(new Move(new Pawn(WHITE), new Space(G, FOUR)));
+        // gameMoves.add(new Move(new Queen(BLACK), new Space(H, FOUR))); // expected move for a checkmate
 
         // Build up states from moves history (squares w/ pieces)
         List<Square> squares = new ArrayList<>();
-        System.out.println("============ Fetched moves ================");
+        System.out.println("============ Moves ================");
         if (!gameMoves.isEmpty()) {
             for (Move m : gameMoves) {
                 System.out.println(m);
-                // TODO define and set a color to each move
+                // TODO define (fetch from request / check from db by player number),
+                //  and set a color to each move (for db-fetched moves)
                 squares.add(new Square(m.getDestinationSpace(), m.getPiece()));  // TODO handle nullables
             }
         }
@@ -80,7 +97,7 @@ public class MoveService implements MoveOperations {
         // TODO Implement visitors to look up players' pieces' states from a chessboard
         // TODO Define current spaces for each piece (by visitors)
         // Demo
-        move.setCurrentSpace(new Space(A, ONE));
+        move.setCurrentSpace(new Space(D, EIGHT));
 
         // Set other significant data to save with a current move
         move.setPieceTitle(move.getPiece().getType().getShortTitle());

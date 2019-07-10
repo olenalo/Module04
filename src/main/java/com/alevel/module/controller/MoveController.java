@@ -49,14 +49,10 @@ public class MoveController {
             Optional<Game> gameOptional = gameOperations.find(move.getGame().getId());
             Long id = moveOperations.save(move);
             move.setId(id);
-            // FIXME  piece's "type": null
             return new ResponseEntity(move, HttpStatus.CREATED);
         } catch (InvalidMoveException e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity("The move is invalid.", HttpStatus.FORBIDDEN);
         }
     }
-
-    // TODO Play Fool's Mate to speed up testing
-    //  https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
 
 }
