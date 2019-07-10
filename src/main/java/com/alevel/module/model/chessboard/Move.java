@@ -1,8 +1,13 @@
 package com.alevel.module.model.chessboard;
 
+import com.alevel.module.model.chessboard.configs.File;
+import com.alevel.module.model.chessboard.configs.Rank;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.piece.Piece;
+import com.alevel.module.model.piece.configs.Color;
+import com.alevel.module.model.piece.configs.Type;
+import com.alevel.module.model.piece.pieces.*;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -45,6 +50,7 @@ public class Move {
     private Space destinationSpace;
 
     // TODO disallow null values whenever needed, throughout the project (JPA)
+    // TODO consider making enums separate entities (piece title, file, rank)
     @Column(name = "pieceTitle")
     private String pieceTitle;
 
@@ -54,15 +60,9 @@ public class Move {
     @Column(name = "spaceRank")
     private String spaceRank;
 
-    // TODO timestamp
+    // TODO adda timestamp field
 
-    // TODO consider getting rid of this constructor (a move can't exist without a game)
-    public Move(Piece piece, Space currentSpace, Space destinationSpace) {
-        this.piece = piece;
-        this.currentSpace = currentSpace;
-        this.destinationSpace = destinationSpace;
-    }
-
+    // TODO review constructors (do we need all of them?)
     public Move(Piece piece, Space currentSpace, Space destinationSpace, Game game) {
         this.piece = piece;
         this.currentSpace = currentSpace;
@@ -75,8 +75,48 @@ public class Move {
         this.destinationSpace = destinationSpace;
     }
 
+    public Move(Piece piece, Space currentSpace, Space destinationSpace) {
+        this.piece = piece;
+        this.currentSpace = currentSpace;
+        this.destinationSpace = destinationSpace;
+    }
+
     // Ref.: https://stackoverflow.com/a/51014378
     public Move() {
+    }
+
+    // Hibernate:
+    // select move0_.id as id1_1_,
+    // move0_.game_id as game_id5_1_,
+    // move0_.piece_title as piece_ti2_1_,
+    // move0_.player_id as player_i6_1_,
+    // move0_.space_file as space_fi3_1_,
+    // move0_.space_rank as space_ra4_1_
+    // from moves move0_ left outer join games game1_ on move0_.game_id=game1_.id where game1_.id=?
+    // TODO remove (didn't help for now)
+    public Move(Long id, String gameId, String pieceTitle, String playerId, String spaceFile, String spaceRank) {
+        switch(pieceTitle) {
+            case "king":
+                this.piece = new King();
+                break;
+            case "bishop":
+                this.piece = new Bishop();
+                break;
+            case "knight":
+                this.piece = new Knight();
+                break;
+            case "pawn":
+                this.piece = new Pawn();
+                break;
+            case "queen":
+                this.piece = new Queen();
+                break;
+            case "rook":
+                this.piece = new Rook();
+                break;
+        }
+        this.id = id;
+        this.destinationSpace = new Space(File.create(spaceFile), Rank.create(spaceRank));
     }
 
     public boolean validate() {
@@ -185,7 +225,8 @@ public class Move {
     @Override
     public String toString() {
         return "Move{" +
-                "piece=" + piece +
+                "id=" + id +
+                ", piece=" + piece +
                 ", currentSpace=" + currentSpace +
                 ", destinationSpace=" + destinationSpace +
                 '}';

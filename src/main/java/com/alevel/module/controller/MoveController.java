@@ -43,7 +43,7 @@ public class MoveController {
         try {
             // TODO check piece color by player (if first player in a game, it's white; if second, then black);
             //  color can also be taken from request
-            // TODO consider getting a player from the current user (i.e. from the auth pipeline)
+            // TODO ensure a move's player is the same as a current user (i.e. authenticated user)
             Optional<Player> playerOptional = playerOperations.find(move.getPlayer().getId());
             // TODO get the game the user is currently playing (if any; if none, raise GameNotFoundException)
             Optional<Game> gameOptional = gameOperations.find(move.getGame().getId());
@@ -55,4 +55,8 @@ public class MoveController {
             return new ResponseEntity(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+
+    // TODO Play Fool's Mate to speed up testing
+    //  https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
+
 }

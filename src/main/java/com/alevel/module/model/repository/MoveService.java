@@ -35,7 +35,7 @@ public class MoveService implements MoveOperations {
 
     @Override
     public List<Move> findAll(Game game) {
-        return moveRepository.findByGame(game);
+        return moveRepository.findByGameId(game.getId());
     }
 
     @Override
@@ -54,16 +54,20 @@ public class MoveService implements MoveOperations {
         // Fetch moves history
         // TODO Extract latest only (per piece types) when database querying, ref: https://stackoverflow.com/a/20283256
         // TODO define if captured (isCaptured), take only non-captured pieces into account
+        // FIXME each entry should contain all move's fields (now it's `id` only)
         List<Move> gameMoves = findAll(move.getGame());
 
         // Build up states from moves history (squares w/ pieces)
         List<Square> squares = new ArrayList<>();
+        System.out.println("============ Fetched moves ================");
         if (!gameMoves.isEmpty()) {
-            // TODO test
             for (Move m : gameMoves) {
+                System.out.println(m);
+                // TODO define and set a color to each move
                 squares.add(new Square(m.getDestinationSpace(), m.getPiece()));  // TODO handle nullables
             }
         }
+        System.out.println("============================");
 
         // Build the game chessboard
         StandardChessboardBuilder chessboardBuilder = new StandardChessboardBuilder();

@@ -25,6 +25,7 @@ import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK
     @JsonSubTypes.Type(name = "rook", value = Rook.class)
 })
 public abstract class Piece {
+    // TODO consider replacing with @POJOBuilderBean
     @JsonProperty("color")
     private Color color;
     @JsonProperty("pieceType")  // FIXME this is an ugly workaround; need to pass both "type" and "pieceType" with JSON

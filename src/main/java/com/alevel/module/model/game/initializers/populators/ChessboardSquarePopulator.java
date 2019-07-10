@@ -1,4 +1,4 @@
-package com.alevel.module.model.game.initializers.utils;
+package com.alevel.module.model.game.initializers.populators;
 
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.chessboard.Square;

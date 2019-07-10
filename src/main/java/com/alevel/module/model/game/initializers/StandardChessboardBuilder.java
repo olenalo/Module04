@@ -2,8 +2,8 @@ package com.alevel.module.model.game.initializers;
 
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Square;
-import com.alevel.module.model.game.initializers.utils.ChessboardSquarePopulator;
-import com.alevel.module.model.game.initializers.utils.ChessboardPiecePopulator;
+import com.alevel.module.model.game.initializers.populators.ChessboardSquarePopulator;
+import com.alevel.module.model.game.initializers.populators.ChessboardPiecePopulator;
 
 import java.util.List;
 
