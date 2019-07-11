@@ -15,7 +15,6 @@ import static com.alevel.module.model.chessboard.configs.Rank.EIGHT;
 
 public class RankNumericDecoder {
 
-    // TODO consider getting read of it e.g. use enumerator short values
     public static Map<Rank, Integer> RANK_NUMERIC_DECODER = ImmutableMap.<Rank, Integer>builder()
             .put(ONE, 1)
             .put(TWO, 2)

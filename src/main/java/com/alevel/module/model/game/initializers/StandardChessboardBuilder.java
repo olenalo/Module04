@@ -41,7 +41,7 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
                 squares.remove(new Square(move.getCurrentSpace()));
                 squares.add(new Square(move.getCurrentSpace()));
                 // Update piece's states
-                move.getPiece().setMoved(true);
+                move.getPiece().setMoved(true);  // TODO check nullable (shouldn't be null though)
                 // TODO Build pieces' vectors
                 // Clean up a destination square. Like that, we remove captured pieces.
                 squares.remove(new Square(move.getDestinationSpace()));

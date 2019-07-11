@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// TODO consider renaming to User (or creating User DTO)
+// TODO consider renaming to Userm create user DTO
 // TODO use Lombok
 @JsonIgnoreProperties({"fname",
                        "sname",
@@ -65,7 +65,6 @@ public class Player {
     // @Column(name = "roles")
     // private List<UserRoles> roles;
 
-    // TODO consider separating out to DTO
     @OneToMany(mappedBy = "player")
     private List<Move> moves = new ArrayList<>();
 

@@ -56,7 +56,9 @@ public class MoveService implements MoveOperations {
         // Fetch moves history
         // FIXME each entry should contain all move's fields (now it's `id` only);
         //  consider https://stackoverflow.com/a/36329166
+        // TODO assign colors to pieces!  (see StandardChessboardBuilder)
         List<Move> gameMoves = findAll(move.getGame());
+
         // Replaced with demo moves till aforementioned FIX-ME gets resolved
         // Play Fool's Mate to speed up testing
         //  ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
@@ -72,7 +74,7 @@ public class MoveService implements MoveOperations {
         Chessboard chessboard = new StandardChessboardBuilder(gameMoves).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
-        // TODO define and set a color for current move's piece(fetch from request / check from db by player number),
+        // TODO define and set a color for current move's piece (fetch from request / check from db by player number),
         // Set other significant data to save with a current move
         move.setPieceTitle(move.getPiece().getType().getShortTitle());
         move.setCurrentSpaceFile(move.getCurrentSpace().getFile().getShortTitle());

@@ -16,43 +16,31 @@ import javax.persistence.*;
 import static com.alevel.module.model.piece.configs.Type.KING;
 
 /**
- * TODO add docstring
+ * Move model.
  *
  * Only valid move will be saved to the db.
  */
-@JsonIgnoreProperties({"pieceTitle",
-                       "destinationSpaceFile",
-                       "destinationSpaceRank",
-                       "currentSpaceFile",
-                       "currentSpaceRank"})
-@JsonDeserialize(as=Move.class)
 @Entity
 @Table(name="moves")
 public class Move {
-    @JsonProperty("id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("game")
     @ManyToOne
     @JoinColumn()
     private Game game;
 
-    @JsonProperty("player")
     @ManyToOne
     @JoinColumn()
     private Player player;
 
-    @JsonProperty("piece")
     @Transient
     private Piece piece;
 
-    @JsonProperty("currentSpace")
     @Transient
     private Space currentSpace;
 
-    @JsonProperty("destinationSpace")
     @Transient
     private Space destinationSpace;
 
@@ -94,22 +82,29 @@ public class Move {
         this.destinationSpace = destinationSpace;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
+    // Required for model mapper
     public Move() {
     }
 
     // Hibernate:
-    // select move0_.id as id1_1_,
-    // move0_.game_id as game_id5_1_,
-    // move0_.piece_title as piece_ti2_1_,
-    // move0_.player_id as player_i6_1_,
-    // move0_.space_file as space_fi3_1_,
-    // move0_.space_rank as space_ra4_1_
+    // select
+    //   move0_.id as id1_1_,
+    //   move0_.current_space_file as current_2_1_,
+    //   move0_.current_space_rank as current_3_1_,
+    //   move0_.destination_space_file as destinat4_1_,
+    //   move0_.destination_space_rank as destinat5_1_,
+    //   move0_.game_id as game_id7_1_,
+    //   move0_.piece_title as piece_ti6_1_,
+    //   move0_.player_id as player_i8_1_
     // from moves move0_ left outer join games game1_ on move0_.game_id=game1_.id where game1_.id=?
-    // TODO remove (didn't help for now)
-    // TODO update (destination, current spaces)
-    /*
-    public Move(Long id, String gameId, String pieceTitle, String playerId, String spaceFile, String spaceRank) {
+    public Move(Long id,
+                String currentSpaceFile,
+                String currentSpaceRank,
+                String destinationSpaceFile,
+                String destinationSpaceRank,
+                String gameId,
+                String pieceTitle,
+                String playerId) {
         switch(pieceTitle) {
             // TODO consider getting rid of magic strings
             case "king":
@@ -132,71 +127,80 @@ public class Move {
                 break;
         }
         this.id = id;
-        this.destinationSpace = new Space(File.create(spaceFile), Rank.create(spaceRank));
+        this.destinationSpace = new Space(File.create(destinationSpaceFile), Rank.create(destinationSpaceRank));
+        this.currentSpace = new Space(File.create(currentSpaceFile), Rank.create(currentSpaceRank));
     }
-     */
 
-    // TODO ensure enums are properly created
-    //  Hibernate was once bad with enums, ref.: https://stackoverflow.com/a/735762
-    // TODO separate out to DTO
-    @JsonGetter("pieceTitle")
+
+    // FIXME enum types in the db tables
+    //  Hibernate with enums, ref.: https://stackoverflow.com/a/735762
     @Enumerated(EnumType.STRING)
     public String getPieceTitle() {
         return piece.getType().getShortTitle();
     }
 
-    @JsonGetter("destinationSpaceFile")
     @Enumerated(EnumType.STRING)
     public String getDestinationSpaceFile() {
         return destinationSpace.getFile().getShortTitle();
     }
 
-    @JsonGetter("destinationSpaceRank")
     @Enumerated(EnumType.STRING)
     public String getDestinationSpaceRank() {
         return destinationSpace.getRank().getShortTitle();
     }
 
-    @JsonGetter("currentSpaceFile")
     @Enumerated(EnumType.STRING)
     public String getCurrentSpaceFile() {
         return currentSpace.getFile().getShortTitle();
     }
 
-    @JsonGetter("currentSpaceRank")
     @Enumerated(EnumType.STRING)
     public String getCurrentSpaceRank() {
         return currentSpace.getRank().getShortTitle();
     }
 
-    @JsonGetter("destinationSpace")
     public Space getDestinationSpace() {
         return destinationSpace;
     }
 
-    @JsonSetter("destinationSpace")
     public void setDestinationSpace(Space destinationSpace) {
         this.destinationSpace = destinationSpace;
     }
 
-    @JsonGetter("currentSpace")
     public Space getCurrentSpace() {
         return currentSpace;
     }
 
-    @JsonSetter("currentSpace")
     public void setCurrentSpace(Space currentSpace) {
         this.currentSpace = currentSpace;
     }
 
-    @JsonGetter("piece")
     public Piece getPiece() {
         return piece;
     }
 
-    @JsonSetter("piece")
     public void setPiece(Piece piece) {
         this.piece = piece;
+    }
+
+    public void setPieceTitle(String pieceTitle) {
+        this.pieceTitle = pieceTitle;
+    }
+
+    public void setDestinationSpaceFile(String spaceFile) {
+        this.destinationSpaceFile = spaceFile;
+    }
+
+    public void setDestinationSpaceRank(String spaceRank) {
+        this.destinationSpaceRank = spaceRank;
+    }
+
+    public void setCurrentSpaceFile(String spaceFile) {
+        this.currentSpaceFile = spaceFile;
+    }
+
+    public void setCurrentSpaceRank(String spaceRank) {
+        this.currentSpaceRank = spaceRank;
     }
 
     public Long getId() {
@@ -221,31 +225,6 @@ public class Move {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    @JsonSetter("pieceTitle")
-    public void setPieceTitle(String pieceTitle) {
-        this.pieceTitle = pieceTitle;
-    }
-
-    @JsonSetter("destinationSpaceFile")
-    public void setDestinationSpaceFile(String spaceFile) {
-        this.destinationSpaceFile = spaceFile;
-    }
-
-    @JsonSetter("destinationSpaceRank")
-    public void setDestinationSpaceRank(String spaceRank) {
-        this.destinationSpaceRank = spaceRank;
-    }
-
-    @JsonSetter("currentSpaceFile")
-    public void setCurrentSpaceFile(String spaceFile) {
-        this.currentSpaceFile = spaceFile;
-    }
-
-    @JsonSetter("currentSpaceRank")
-    public void setCurrentSpaceRank(String spaceRank) {
-        this.currentSpaceRank = spaceRank;
     }
 
     @Override
