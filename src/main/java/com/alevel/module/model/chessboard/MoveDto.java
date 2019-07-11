@@ -22,7 +22,7 @@ public class MoveDto {
     private Game game;
 
     @JsonProperty("player")
-    private Player player;
+    private Player player;  // TODO use PlayerDto
 
     @JsonProperty("piece")
     private Piece piece;

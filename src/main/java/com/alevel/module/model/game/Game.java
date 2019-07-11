@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO introduce GameDto
 @JsonIgnoreProperties({"chessboard", "moves", "firstPlayer", "secondPlayer"})
 @JsonDeserialize(as=Game.class)
 @Entity

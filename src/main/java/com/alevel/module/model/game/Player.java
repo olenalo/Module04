@@ -2,6 +2,7 @@ package com.alevel.module.model.game;
 
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.piece.configs.Color;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +13,17 @@ import java.util.Objects;
 
 // TODO consider renaming to User
 // TODO use Lombok
+// TODO introduce PlayerDto as a nested structure instead of Player
+//  to get rid of JSON annotations here
+@JsonIgnoreProperties({"username",
+                       "firstName",
+                       "secondName",
+                       "email",
+                       "password",
+                       "firstPlayerGames",
+                       "secondPlayerGames",
+                       "piecesColor",
+                       "moves"})
 @Entity
 @Table(name="players")
 public class Player {
