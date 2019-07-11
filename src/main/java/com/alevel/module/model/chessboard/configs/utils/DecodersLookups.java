@@ -11,6 +11,8 @@ public class DecodersLookups {
      *
      * Provided single value occurrences.
      *
+     * Ref.: https://www.baeldung.com/java-map-key-from-value
+     *
      * @param map
      * @param value
      * @param <File>
