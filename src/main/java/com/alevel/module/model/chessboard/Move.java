@@ -131,6 +131,8 @@ public class Move {
         this.currentSpaceRank = this.currentSpace.getRank().getShortTitle();
         this.destinationSpaceFile = this.destinationSpace.getFile().getShortTitle();
         this.destinationSpaceRank = this.destinationSpace.getRank().getShortTitle();
+        this.player = new Player(playerId);
+        this.game = new Game(gameId);
     }
 
     // FIXME enum types in the db tables
@@ -231,9 +233,17 @@ public class Move {
     @Override
     public String toString() {
         return "Move{" +
-                "piece=" + piece +
+                "id=" + id +
+                ", game=" + game +
+                ", player=" + player +
+                ", piece=" + piece +
                 ", currentSpace=" + currentSpace +
                 ", destinationSpace=" + destinationSpace +
+                ", pieceTitle='" + pieceTitle + '\'' +
+                ", destinationSpaceFile='" + destinationSpaceFile + '\'' +
+                ", destinationSpaceRank='" + destinationSpaceRank + '\'' +
+                ", currentSpaceFile='" + currentSpaceFile + '\'' +
+                ", currentSpaceRank='" + currentSpaceRank + '\'' +
                 '}';
     }
 }

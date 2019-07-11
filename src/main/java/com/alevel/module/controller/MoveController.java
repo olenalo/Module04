@@ -1,5 +1,6 @@
 package com.alevel.module.controller;
 
+import com.alevel.module.controller.exceptions.GameNotFoundException;
 import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.controller.utils.Response;
 import com.alevel.module.model.chessboard.Move;
@@ -24,27 +25,22 @@ import java.util.Optional;
 public class MoveController {
 
     private MoveOperations moveOperations;
-    private GameOperations gameOperations;
     private PlayerOperations playerOperations;
     private ModelMapper modelMapper;
 
     @Autowired
     public MoveController(MoveOperations moveOperations,
-                          GameOperations gameOperations,
                           PlayerOperations playerOperations,
                           ModelMapper modelMapper) {
         this.moveOperations = moveOperations;
-        this.gameOperations = gameOperations;
         this.playerOperations = playerOperations;
         this.modelMapper  =  modelMapper;
     }
 
-    private MoveDto convertToDto(Move move) {
-        return modelMapper.map(move, MoveDto.class);
-    }
-
     private Move convertToEntity(MoveDto moveDto) {
-        return modelMapper.map(moveDto, Move.class);
+        Move move = modelMapper.map(moveDto, Move.class);
+        move.setPieceTitle(moveDto.getPiece().getType().getShortTitle());
+        return move;
     }
 
     /**
@@ -56,12 +52,8 @@ public class MoveController {
     public ResponseEntity save(@RequestBody MoveDto moveDto) {
         try {
             System.out.println("Current move: -------" + moveDto);
-            // TODO check piece color by player (if first player in a game, it's white; if second, then black);
-            //  color can also be taken from request
             // TODO ensure a move's player is the same as a current user (i.e. authenticated user)
             Optional<Player> playerOptional = playerOperations.find(moveDto.getPlayer().getId());
-            // TODO get the game the user is currently playing (if any; if none, raise GameNotFoundException)
-            Optional<Game> gameOptional = gameOperations.find(moveDto.getGame().getId());
             Long id = moveOperations.save(convertToEntity(moveDto));
             if (id == null) { // TODO handle checkmate case better (null is not obvious)
                 // TODO end the game
@@ -77,6 +69,8 @@ public class MoveController {
             return new ResponseEntity<>(new Response("Illegal argument. " + e.getMessage()), HttpStatus.FORBIDDEN);
         } catch (InvalidMoveException e) {
             return new ResponseEntity<>(new Response("The move is invalid."), HttpStatus.FORBIDDEN);
+        } catch (GameNotFoundException e) {
+            return new ResponseEntity<>(new Response("Provided game id is invalid."), HttpStatus.FORBIDDEN);
         }
     }
 

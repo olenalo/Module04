@@ -1,11 +1,13 @@
 package com.alevel.module.model.repository;
 
+import com.alevel.module.controller.exceptions.GameNotFoundException;
 import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
+import com.alevel.module.model.piece.configs.Color;
 import com.alevel.module.model.piece.pieces.Pawn;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +26,12 @@ import static com.alevel.module.model.piece.configs.Color.WHITE;
 public class MoveService implements MoveOperations {
 
     private MoveRepository moveRepository;
+    private GameRepository gameRepository;
 
     @Autowired
-    public MoveService(MoveRepository moveRepository) {
+    public MoveService(MoveRepository moveRepository, GameRepository gameRepository) {
         this.moveRepository = moveRepository;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -51,14 +55,20 @@ public class MoveService implements MoveOperations {
     }
 
     @Override
-    public Long save(Move move) throws InvalidMoveException {
+    public Long save(Move move) throws InvalidMoveException, GameNotFoundException {
         // Fetch moves history
-        // TODO assign colors to pieces!  (see StandardChessboardBuilder)
         List<Move> gameMoves = findAll(move.getGame());
+
+        // TODO check the game the user is currently playing (if none, raise GameNotFoundException)
+        Optional<Game> gameOptional = gameRepository.findById(move.getGame().getId());
+        Game game = gameOptional.orElse(null);
+        if (game == null) {
+            throw new GameNotFoundException(move.getGame().getId());
+        }
 
         // Build the game chessboard
         // TODO think of better ways: this is not a builder: we don't pass params one by one
-        Chessboard chessboard = new StandardChessboardBuilder(gameMoves).build();
+        Chessboard chessboard = new StandardChessboardBuilder(gameMoves, game).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
         // Validate and make a move, evaluate game situation
@@ -76,6 +86,7 @@ public class MoveService implements MoveOperations {
 
         // TODO Cache the updated states
         if (move.getPiece().validateMove(move, chessboard)) {
+            System.out.println("Going to save a move: " + move);
             Long id = moveRepository.save(move).getId();
             if (chessboard.isCheckMate(move)) {
                 return null;

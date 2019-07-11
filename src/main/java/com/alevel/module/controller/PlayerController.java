@@ -42,10 +42,6 @@ public class PlayerController {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private PlayerDto convertToDto(Player player) {
-        return modelMapper.map(player, PlayerDto.class);
-    }
-
     private Player convertToEntity(PlayerDto playerDto) {
         return modelMapper.map(playerDto, Player.class);
     }
