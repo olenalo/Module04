@@ -3,6 +3,7 @@ package com.alevel.module.model.chessboard;
 import com.alevel.module.model.chessboard.configs.File;
 import com.alevel.module.model.chessboard.configs.Rank;
 import com.alevel.module.model.piece.Piece;
+import com.alevel.module.model.piece.configs.Color;
 import com.alevel.module.model.piece.pieces.King;
 
 import java.util.*;
@@ -70,6 +71,18 @@ public class Chessboard {
         return null;
     }
 
+    private List<Square> getSquaresByPieceColor(Color color) {
+        List<Square> squaresByColor = new ArrayList<>();
+        for (Square square : squares) {
+            if (square.getPiece() != null) {
+                if (square.getPiece().getColor() == color) {
+                    squaresByColor.add(square);
+                }
+            }
+        }
+        return squaresByColor;
+    }
+
     /**
      * Check if checkmate is in effect.
      *
@@ -107,41 +120,30 @@ public class Chessboard {
 
         // Check that with all allowed moves a king would fall under attack
         // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
-        // TODO make chessboard immutable again to preserve history (think of better ways to count a current move)
+        // TODO make chessboard immutable again to preserve history (think of better ways to count a current move);
+        //  we lose movement rules field when updating chessboard!
         updateChessboard(move);
         // Iterate over all pieces on the board and
         //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
         //  and if so, checkmate!
-        for (Square square: squares) {
-            if (square.getPiece() != null) {
-                if (square.getPiece().getColor() == move.getPiece().getColor()) {
-                    Space space = square.getSpace(); // TODO filter out by color
-                    int currentFile = FILE_NUMERIC_DECODER.get(space.getFile());
-                    int currentRank = RANK_NUMERIC_DECODER.get(space.getRank());
-                    // TODO take into account specific rules
-                    System.out.println("o_O o_O o_O o_O o_O " + square.getPiece() + " at " + square.getSpace());
-                    /*
-                    for (int [] rule : square.getPiece().getAllowedMovementDeltas() ) {
-                        System.out.println("o_O o_O o_O  " + rule[0] + " and " + rule[1]);
-                    }
-                    // System.out.println("o_O o_O o_O  " + square.getPiece().getAllowedMovementDeltas() != null);
-                     */
-                    for (int[] rule : square.getPiece().getAllowedMovementDeltas()) { // FIXME deltas
-                        File file = getFileKey(FILE_NUMERIC_DECODER, currentFile + rule[0]);
-                        Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
-                        // TODO consider changing loop nesting (by allowed space and then by square)
-                        for (Space s : kingAllowedSpaces) {
-                            // Check if a king is within reach (under attack)
-                            if (file == s.getFile() && rank == s.getRank()) {
-                                System.out.println("Revealed a piece which can beat the king: " + square.getPiece());
-                                return true;
-                            }
-                        }
+        for (Square square: getSquaresByPieceColor(move.getPiece().getColor())) {
+            Space space = square.getSpace();
+            int currentFile = FILE_NUMERIC_DECODER.get(space.getFile());
+            int currentRank = RANK_NUMERIC_DECODER.get(space.getRank());
+            // TODO take into account specific rules
+            for (int[] rule : square.getPiece().getAllowedMovementDeltas()) {
+                File file = getFileKey(FILE_NUMERIC_DECODER, currentFile + rule[0]);
+                Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
+                // TODO consider changing loop nesting (by king-allowed-space and then by square)
+                for (Space s : kingAllowedSpaces) {
+                    // Check if a king is within reach (under attack)
+                    if (file == s.getFile() && rank == s.getRank()) {
+                        System.out.println("Revealed a piece which can beat the king: " + square.getPiece());
+                        return true;
                     }
                 }
             }
         }
-
         return false;
     }
 
@@ -151,10 +153,7 @@ public class Chessboard {
         squares.add(new Square(move.getCurrentSpace()));
         // Update piece's states
         move.getPiece().setMoved(true);
-        System.out.println("0000000000000000000000000000000000000000" + move.getPiece());
-        System.out.println("0000000000000000000000000000000000000000" + move.getPiece().getType());
-        System.out.println("0000000000000000000" + move.getPiece().getAllowedMovementDeltas());
-        // FIXME come up with a better design
+        // FIXME come up with a better design (we lose movement rules field when updating chessboard!)
         switch(move.getPiece().getType()) {
             // TODO consider getting rid of magic strings
             case KING:
