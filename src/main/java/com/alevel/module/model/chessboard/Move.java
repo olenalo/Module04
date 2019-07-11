@@ -125,8 +125,13 @@ public class Move {
         this.id = id;
         this.destinationSpace = new Space(File.create(destinationSpaceFile), Rank.create(destinationSpaceRank));
         this.currentSpace = new Space(File.create(currentSpaceFile), Rank.create(currentSpaceRank));
+        // Set other significant data
+        this.pieceTitle = this.piece.getType().getShortTitle();
+        this.currentSpaceFile = this.currentSpace.getFile().getShortTitle();
+        this.currentSpaceRank = this.currentSpace.getRank().getShortTitle();
+        this.destinationSpaceFile = this.destinationSpace.getFile().getShortTitle();
+        this.destinationSpaceRank = this.destinationSpace.getRank().getShortTitle();
     }
-
 
     // FIXME enum types in the db tables
     //  Hibernate with enums, ref.: https://stackoverflow.com/a/735762

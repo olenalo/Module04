@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public enum Type {
     KING("king"),
     QUEEN("queen"),
-    ROOK("rook"),
+    ROOK("rook"),  // could be Castle
     KNIGHT("knight"),
     BISHOP("bishop"),
     PAWN("pawn");

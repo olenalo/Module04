@@ -15,8 +15,8 @@ public class Bishop extends Piece {
         this.allowedMovementDeltas = BISHOP_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
     public Bishop() {
+        this.type = BISHOP;
         this.allowedMovementDeltas = BISHOP_ALLOWED_MOVEMENT_DELTAS;
     }
 

@@ -61,14 +61,6 @@ public class MoveService implements MoveOperations {
         Chessboard chessboard = new StandardChessboardBuilder(gameMoves).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
-        // TODO define and set a color for current move's piece (fetch from request / check from db by player number),
-        // Set other significant data to save with a current move
-        move.setPieceTitle(move.getPiece().getType().getShortTitle());
-        move.setCurrentSpaceFile(move.getCurrentSpace().getFile().getShortTitle());
-        move.setCurrentSpaceRank(move.getCurrentSpace().getRank().getShortTitle());
-        move.setDestinationSpaceFile(move.getDestinationSpace().getFile().getShortTitle());
-        move.setDestinationSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
-
         // Validate and make a move, evaluate game situation
         // TODO Add other validators
         //  compliance with specific rules,

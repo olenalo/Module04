@@ -16,8 +16,8 @@ public class Queen extends Piece {
         this.allowedMovementDeltas = QUEEN_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
     public Queen() {
+        this.type = QUEEN;
         this.allowedMovementDeltas = QUEEN_ALLOWED_MOVEMENT_DELTAS;
     }
 

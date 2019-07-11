@@ -15,8 +15,8 @@ public class Knight extends Piece {
         this.allowedMovementDeltas = KNIGHT_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
     public Knight() {
+        this.type = KNIGHT;
         this.allowedMovementDeltas = KNIGHT_ALLOWED_MOVEMENT_DELTAS;
     }
 

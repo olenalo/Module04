@@ -15,8 +15,8 @@ public class Pawn extends Piece {
         this.allowedMovementDeltas = PAWN_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
     public Pawn() {
+        this.type = PAWN;
         this.allowedMovementDeltas = PAWN_ALLOWED_MOVEMENT_DELTAS;
     }
 

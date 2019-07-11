@@ -8,15 +8,15 @@ import com.alevel.module.model.piece.configs.Color;
 import static com.alevel.module.model.piece.configs.rules.MovementRules.ROOK_ALLOWED_MOVEMENT_DELTAS;
 import static com.alevel.module.model.piece.configs.Type.ROOK;
 
-public class Rook extends Piece {  // could be `Castle`
+public class Rook extends Piece {
 
     public Rook(Color color) {
         super(color, ROOK);
         this.allowedMovementDeltas = ROOK_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
     public Rook() {
+        this.type = ROOK;
         this.allowedMovementDeltas = ROOK_ALLOWED_MOVEMENT_DELTAS;
     }
 

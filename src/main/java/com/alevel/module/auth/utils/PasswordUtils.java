@@ -25,7 +25,7 @@ public class PasswordUtils {
     /**
      * Encode a password for it to be securely stored.
      *
-     * TODO add password salting (here and in the decoding flow).
+     * TODO add password salting (update here and in the decoding flow).
      *
      * @param password password to encode.
      * @return encoded password.

@@ -15,8 +15,8 @@ public class King extends Piece {
         this.allowedMovementDeltas = KING_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // Ref.: https://stackoverflow.com/a/51014378
     public King() {
+        this.type = KING;
         this.allowedMovementDeltas = KING_ALLOWED_MOVEMENT_DELTAS;
     }
 

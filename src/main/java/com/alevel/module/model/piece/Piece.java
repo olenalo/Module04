@@ -32,10 +32,10 @@ import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK
 public abstract class Piece {
     // TODO consider replacing with @POJOBuilderBean
     @JsonProperty("color")
-    private Color color;
+    protected Color color;
     @JsonProperty("pieceType")  // FIXME this is an ugly workaround; need to pass both "type" and "pieceType" with JSON
-    private Type type;
-
+    protected Type type;
+    protected boolean isMoved = false;  // Actually needed for King and Rook only (for castling)
     protected int[][] allowedMovementDeltas;
 
     public int[][] getAllowedMovementDeltas() {
@@ -47,7 +47,6 @@ public abstract class Piece {
     //    (promotion, castling), specific rules apply
     // private int[][] getAllowedSpecificMovesDeltas;
 
-    private boolean isMoved = false;  // Actually needed for King and Rook only (for castling)
 
     public boolean isMoved() {
         return isMoved;
