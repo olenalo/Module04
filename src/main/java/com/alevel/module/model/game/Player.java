@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.alevel.module.auth.utils.PasswordUtils.encodePassword;
+
 // TODO consider renaming to User
 // TODO use Lombok
 // TODO introduce PlayerDto as a nested structure instead of Player
@@ -155,13 +157,11 @@ public class Player {
     }
 
     public String getPassword() {
-        // TODO decode
         return password;
     }
 
     public void setPassword(String password) {
-        // TODO encode
-        this.password = password;
+        this.password = encodePassword(password);
     }
 
     /**

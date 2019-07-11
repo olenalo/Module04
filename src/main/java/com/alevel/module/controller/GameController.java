@@ -4,6 +4,7 @@ import com.alevel.module.model.game.Game;
 import com.alevel.module.service.GameOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,11 +19,11 @@ public class GameController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Game save(@RequestBody Game game) {
+    public ResponseEntity save(@RequestBody Game game) {
         System.out.println("Input game: " + game);
         Long id = gameOperations.save(game);
         game.setId(id);
-        return game;
+        // TODO handle erroneous cases (think of any)
+        return new ResponseEntity<>(game, HttpStatus.CREATED);
     }
 }

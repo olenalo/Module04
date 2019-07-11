@@ -1,17 +1,23 @@
 package com.alevel.module.controller;
 
 import com.alevel.module.auth.PlayerDetailsService;
+import com.alevel.module.controller.utils.Response;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.game.PlayerDto;
 import com.alevel.module.service.PlayerOperations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+import static com.alevel.module.auth.utils.PasswordUtils.validatePlayer;
 
 @RestController
 @RequestMapping("/chess/player")
@@ -59,24 +65,41 @@ public class PlayerController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     // TODO validate required params
-    public PlayerDto register(@RequestBody PlayerDto playerDto) {
-        // TODO store password hash
-        // TODO add password salting
-        // TODO handle 500 (e.g. unique constraints violation)
-        // TODO check that account doesn't already exist
+    public ResponseEntity register(@RequestBody PlayerDto playerDto) {
         System.out.println("Input playerDto: " + playerDto);
-        Player player = convertToEntity(playerDto);
-        Long id = playerOperations.save(player);
-        player.setId(id);
-        authenticate(player);
-        return playerDto;
+        try {
+            Player player = convertToEntity(playerDto);
+            Long id = playerOperations.save(player);
+            player.setId(id);
+            authenticate(player);
+            return new ResponseEntity<>(playerDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // TODO handle various causes of 500 (e.g. unique constraints violation);
+            //  check that account doesn't already exist
+            return new ResponseEntity<>(new Response("Cannot register a user."), HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody PlayerDto playerDto) {
-        // TODO check password
-        return authenticate(convertToEntity(playerDto));
+    public ResponseEntity login(@RequestBody PlayerDto playerDto) {
+        Player dbPlayer = null;
+        Optional<Player> playerOptional = playerOperations.find(playerDto.getUsername());
+        if(playerOptional.isPresent()) {
+            dbPlayer = playerOptional.get();
+        }
+        if (dbPlayer != null) {
+            if (validatePlayer(playerDto, dbPlayer)) {
+                if (authenticate(convertToEntity(playerDto))) {
+                    return new ResponseEntity<>(playerDto, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(new Response("Could not authenticate."), HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return new ResponseEntity<>(new Response("Incorrect credentials."), HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            return new ResponseEntity<>(new Response("User does not exist."), HttpStatus.UNAUTHORIZED);
+        }
     }
 }
