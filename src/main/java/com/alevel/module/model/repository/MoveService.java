@@ -69,7 +69,6 @@ public class MoveService implements MoveOperations {
 
         // Build the game chessboard
         // TODO think of better ways: this is not a builder: we don't pass params one by one
-        // FIXME it still doesn't draw up correct states
         Chessboard chessboard = new StandardChessboardBuilder(gameMoves).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 

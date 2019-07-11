@@ -122,6 +122,7 @@ public class Chessboard {
         // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
         // TODO make chessboard immutable again to preserve history (think of better ways to count a current move);
         //  we lose movement rules field when updating chessboard!
+        //  Consider hitting a db one more time
         updateChessboard(move);
         // Iterate over all pieces on the board and
         //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
