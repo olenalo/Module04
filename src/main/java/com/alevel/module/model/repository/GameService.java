@@ -4,6 +4,7 @@ import com.alevel.module.model.game.Game;
 import com.alevel.module.service.GameOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class GameService implements GameOperations {
 
     @Override
     public void update(Long id, Game game) {
-        // TODO
+        throw new NotImplementedException();
     }
 
     @Override

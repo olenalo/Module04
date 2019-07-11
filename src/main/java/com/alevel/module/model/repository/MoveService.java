@@ -12,6 +12,7 @@ import com.alevel.module.model.piece.pieces.Pawn;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MoveService implements MoveOperations {
 
     @Override
     public void update(Long id, Move move) {
-        // TODO
+        throw new NotImplementedException();
     }
 
     @Override
@@ -59,7 +60,7 @@ public class MoveService implements MoveOperations {
         // Fetch moves history
         List<Move> gameMoves = findAll(move.getGame());
 
-        // TODO check the game the user is currently playing (if none, raise GameNotFoundException)
+        // Check the game the user is currently playing (if none, raise GameNotFoundException)
         Optional<Game> gameOptional = gameRepository.findById(move.getGame().getId());
         Game game = gameOptional.orElse(null);
         if (game == null) {
@@ -80,14 +81,13 @@ public class MoveService implements MoveOperations {
 
         // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
 
-        // TODO Add game state evaluators: check, checkmate, draw -
-        //  ref. https://en.wikipedia.org/wiki/Draw_(chess)
-        // TODO Closure (if checkmate or draw, store results and finish the game).
-
-        // TODO Cache the updated states
         if (move.getPiece().validateMove(move, chessboard)) {
             System.out.println("Going to save a move: " + move);
             Long id = moveRepository.save(move).getId();
+            // TODO Cache the updated states
+            // Evaluate game situation
+            // TODO Add isDraw() evaluation, ref. https://en.wikipedia.org/wiki/Draw_(chess)
+            // TODO Closure (if checkmate or draw, store results and finish the game).
             if (chessboard.isCheckMate(move)) {
                 return null;
             } else {
