@@ -20,9 +20,8 @@ public class Knight extends Piece {
 
     @Override
     public boolean doMove(Move move, Chessboard chessboard) {
-        // TODO do the rest
         if (super.validatePerMovementRules(move, KNIGHT_ALLOWED_MOVEMENT_DELTAS)) {
-            return validateCheckMate();
+            return chessboard.validateCheckMate(move);
         } else {
             return false;
         }

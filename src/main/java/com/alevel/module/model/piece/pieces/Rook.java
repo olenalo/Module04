@@ -22,7 +22,7 @@ public class Rook extends Piece {  // could be `Castle`
     public boolean doMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
         if (super.validatePerMovementRules(move, ROOK_ALLOWED_MOVEMENT_DELTAS)) {
-            return validateCheckMate();
+            return chessboard.validateCheckMate(move);
         } else {
             return false;
         }

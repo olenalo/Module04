@@ -2,6 +2,7 @@ package com.alevel.module.model.piece;
 
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
+import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.piece.configs.Color;
 import com.alevel.module.model.piece.configs.Type;
 import com.alevel.module.model.piece.pieces.King;
@@ -62,6 +63,13 @@ public abstract class Piece {
         this.type = type;
     }
 
+    // TODO: implement
+    /*
+    public Vector getVector(Move move) {
+
+    }
+    */
+
     /**
      * Validate if a move is allowed.
      *
@@ -82,25 +90,6 @@ public abstract class Piece {
         }
         // TODO add specific rules validation
         return false;
-    }
-
-    // TODO: implement
-    /*
-    public Vector getVector(Move move) {
-
-    }
-    */
-
-    /**
-     * Check if checkmate is in effect.
-     *
-     * i.e. check if the game is won.
-     *
-     * @return boolean: true if checkmate is reached, false if not.
-     */
-    public boolean validateCheckMate() {
-        // TODO
-        return true;
     }
 
     @JsonGetter("color")

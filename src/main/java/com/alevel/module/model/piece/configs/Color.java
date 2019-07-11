@@ -33,4 +33,8 @@ public enum Color {
     public String getShortTitle() {
         return shortTitle;
     }
+
+    public Color getOpponentColor() {
+        return (this == WHITE) ? BLACK : WHITE;
+    }
 }

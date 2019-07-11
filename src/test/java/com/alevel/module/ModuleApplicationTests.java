@@ -17,7 +17,7 @@ public class ModuleApplicationTests {
 	 - MoveService | MoveController: 'IllegalArgumentException' e.g. "Please provide a correct Rank value" (enum)
 	 - MoveController: test API endpoint (e.g. valid move, invalid move -> error code and message)
 	 - MoveController" authorization
-	 - Move, Piece: check validation per general rules for each piece
+	 - Move, Piece: check validation per general rules for pieces of each kind
 	 - PlayerController: cannot login if not registered (401)
 	 - Integration: Play Fool's Mate to speed up testing, ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
 	 */

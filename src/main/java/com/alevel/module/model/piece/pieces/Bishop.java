@@ -21,7 +21,7 @@ public class Bishop extends Piece {
     @Override
     public boolean doMove(Move move, Chessboard chessboard) {
         if (super.validatePerMovementRules(move, BISHOP_ALLOWED_MOVEMENT_DELTAS)) {
-            return validateCheckMate();
+            return chessboard.validateCheckMate(move);
         } else {
             return false;
         }

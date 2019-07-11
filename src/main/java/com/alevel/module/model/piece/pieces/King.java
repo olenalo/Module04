@@ -23,7 +23,7 @@ public class King extends Piece {
         // TODO check compliance with specific rules
         // TODO add validateCheck(): ensure the move doesn't put a King in check
         if (super.validatePerMovementRules(move, KING_ALLOWED_MOVEMENT_DELTAS)) {
-            return validateCheckMate();
+            return chessboard.validateCheckMate(move);
         } else {
             return false;
         }

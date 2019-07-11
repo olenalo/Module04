@@ -73,7 +73,7 @@ public class Move {
     @Column(name = "currentSpaceRank")
     private String currentSpaceRank;
 
-    // TODO adda timestamp field
+    // TODO add a timestamp field
 
     // TODO review constructors (do we need all of them?)
     public Move(Piece piece, Space currentSpace, Space destinationSpace, Game game) {
@@ -135,21 +135,6 @@ public class Move {
         this.destinationSpace = new Space(File.create(spaceFile), Rank.create(spaceRank));
     }
      */
-
-    public boolean validate() {
-        // TODO
-        //  0 - Square: ensure the move is within the field -- this belongs to the `Square` class
-        //  1 - Piece: general rules
-        //  2 - Piece: if does not comply with general rules, check specific rules if eligible
-        //    e.g. for King / Rook - check if ever moved (if castling is attempted);
-        //    think about Pawn
-        //  3 - Square: check if cell is not occupied by piece of same color
-        //  4 - Piece: validate if checkmate
-        //  other checks?
-
-        // TODO IllegalArgumentException
-        return true;
-    }
 
     // TODO ensure enums are properly created
     //  Hibernate was once bad with enums, ref.: https://stackoverflow.com/a/735762

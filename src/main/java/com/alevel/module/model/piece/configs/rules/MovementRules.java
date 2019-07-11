@@ -29,6 +29,8 @@ public class MovementRules {
             {2, -1},
             {1, -2}
     };
+
+    // Pawn captures diagonally
     public static final int[][] PAWN_ALLOWED_MOVEMENT_DELTAS = {
             {0, 1},
             {0, 2},

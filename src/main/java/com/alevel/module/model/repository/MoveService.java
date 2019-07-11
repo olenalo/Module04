@@ -88,10 +88,15 @@ public class MoveService implements MoveOperations {
 
         // Validate and make a move
         if (move.getPiece().doMove(move, chessboard)) {
-            // TODO Add other validators (compliance with specific rules, if empty, within-the-field movement, etc)
+            // TODO Add other validators
+            //  compliance with specific rules,
+            //  if on-the-way squares are empty (cannot jump over other pieces!),
+            //  if a destination square is not occupied by piece of same color
+            //  if within-the-field
 
             // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
 
+            // TODO Implement the attack
             // TODO Add game state evaluators (check, checkmate, draw)
 
             // TODO Move: store (in the db) if captured opponent's piece to avoid re-validation upon every request
