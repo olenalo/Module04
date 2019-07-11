@@ -2,7 +2,9 @@ package com.alevel.module.controller;
 
 import com.alevel.module.auth.PlayerDetailsService;
 import com.alevel.module.model.game.Player;
+import com.alevel.module.model.game.PlayerDto;
 import com.alevel.module.service.PlayerOperations;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,18 +19,25 @@ public class PlayerController {
 
     private PlayerOperations playerOperations;
     private PlayerDetailsService playerDetailsService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public PlayerController(PlayerOperations playerOperations, PlayerDetailsService playerDetailsService) {
+    public PlayerController(PlayerOperations playerOperations,
+                            PlayerDetailsService playerDetailsService,
+                            ModelMapper modelMapper) {
         this.playerOperations = playerOperations;
-        // TODO not sure if it should be wired in controller; but where?
         this.playerDetailsService = playerDetailsService;
+        this.modelMapper = modelMapper;
     }
 
     // TODO fetch by tokens
     Authentication getAuthentication(String username) { // String token
         UserDetails userDetails = this.playerDetailsService.loadUserByUsername(username); // token
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    private Player convertToEntity(PlayerDto playerDto) {
+        return modelMapper.map(playerDto, Player.class);
     }
 
     private boolean authenticate(Player player) {
@@ -46,20 +55,22 @@ public class PlayerController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody Player player) {
+    public boolean login(@RequestBody PlayerDto playerDto) {
         // TODO check password
-        return authenticate(player);
+        return authenticate(convertToEntity(playerDto));
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO validate required params
-    public Player register(@RequestBody Player player) {
-        // TODO store password hash, add salting
+    public PlayerDto register(@RequestBody PlayerDto playerDto) {
+        // TODO store password hash
+        // TODO add password salting
         // TODO handle 500 (e.g. unique constraints violation)
+        Player player = convertToEntity(playerDto);
         Long id = playerOperations.save(player);
         player.setId(id);
         authenticate(player);
-        return player;
+        return playerDto;
     }
 }

@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.Optional;
 
 // TODO get rid of wildcard imports everywhere
@@ -56,13 +55,13 @@ public class MoveController {
     @PostMapping("/create")
     public ResponseEntity save(@RequestBody MoveDto moveDto) {
         try {
+            System.out.println("Current move: -------" + moveDto);
             // TODO check piece color by player (if first player in a game, it's white; if second, then black);
             //  color can also be taken from request
             // TODO ensure a move's player is the same as a current user (i.e. authenticated user)
             Optional<Player> playerOptional = playerOperations.find(moveDto.getPlayer().getId());
             // TODO get the game the user is currently playing (if any; if none, raise GameNotFoundException)
             Optional<Game> gameOptional = gameOperations.find(moveDto.getGame().getId());
-            System.out.println("Current move: -------" + moveDto);
             Long id = moveOperations.save(convertToEntity(moveDto));
             if (id == null) { // TODO handle checkmate case better (null is not obvious)
                 // TODO end the game
