@@ -18,11 +18,11 @@ import java.util.List;
 import static com.alevel.module.model.piece.configs.Color.BLACK;
 import static com.alevel.module.model.piece.configs.Color.WHITE;
 
-public class ChessboardFreshStartPopulator {
+public class ChessboardPopulator {
 
     private List<Square> squares = new ArrayList<>();
 
-    public ChessboardFreshStartPopulator() {
+    public ChessboardPopulator() {
         for (Rank rank : Rank.values()) {
             for (File file : File.values()) {
                 squares.add(new Square(new Space(file, rank)));

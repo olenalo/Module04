@@ -3,7 +3,7 @@ package com.alevel.module.model.game.initializers;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Square;
-import com.alevel.module.model.game.initializers.utils.ChessboardFreshStartPopulator;
+import com.alevel.module.model.game.initializers.utils.ChessboardPopulator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,35 +31,32 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
      *
      * @return builder object.
      */
-    public StandardChessboardBuilder buildUpSquares(List<Square> squares) {
+    private void buildUpStates() {
         System.out.println("============ Moves history: ================");
         if (!gameMoves.isEmpty()) {
             for (Move move : gameMoves) {
                 System.out.println(move);
                 // Clean up a previous state.
                 // TODO Consider avoiding removal (just settting a piece to null)
-                squares.remove(new Square(move.getCurrentSpace()));
-                squares.add(new Square(move.getCurrentSpace()));
+                movesSquares.remove(new Square(move.getCurrentSpace()));
+                movesSquares.add(new Square(move.getCurrentSpace()));
                 // Update piece's states
                 move.getPiece().setMoved(true);  // TODO check nullable (shouldn't be null though)
                 // TODO Build pieces' vectors
                 // Clean up a destination square. Like that, we remove captured pieces.
-                squares.remove(new Square(move.getDestinationSpace()));
+                movesSquares.remove(new Square(move.getDestinationSpace()));
                 // Add a new state
-                squares.add(new Square(move.getDestinationSpace(), move.getPiece()));
+                movesSquares.add(new Square(move.getDestinationSpace(), move.getPiece()));
             }
         }
-        this.movesSquares = squares;
         System.out.println("============================");
-        return this;
     }
 
     @Override
     public Chessboard build() {
-        List<Square> squares;
-        squares = new ChessboardFreshStartPopulator().populateFreshStartSquares();
+        this.movesSquares = new ChessboardPopulator().populateFreshStartSquares();
         if (!this.gameMoves.isEmpty()) {
-            buildUpSquares(squares);
+            buildUpStates();
         }
         return new Chessboard(this.movesSquares);
     }

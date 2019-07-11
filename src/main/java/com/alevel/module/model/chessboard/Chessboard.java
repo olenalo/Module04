@@ -160,7 +160,7 @@ public class Chessboard {
         return false;
     }
 
-    // TODO DRY
+    // TODO DRY; or better get rid at all; don't pass mutable!
     private void updateChessboard(Move move) {
         squares.remove(new Square(move.getCurrentSpace()));
         squares.add(new Square(move.getCurrentSpace()));
