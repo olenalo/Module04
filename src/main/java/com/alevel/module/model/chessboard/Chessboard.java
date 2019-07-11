@@ -86,6 +86,31 @@ public class Chessboard {
         return squaresByColor;
     }
 
+    private List<Space> checkAllowedMoves(Piece piece) {
+        List<Space> allowedSpaces = new ArrayList<>();
+        Space space = this.getSpace(piece);
+        //  As per general rules, evaluate each possible destination (isAvailable)
+        //  TODO do specific (e.g. castling) rules apply here?
+        if (space != null) {
+            int currentFile = FILE_NUMERIC_DECODER.get(space.getFile());
+            int currentRank = RANK_NUMERIC_DECODER.get(space.getRank());
+            for (int[] rule : piece.getAllowedMovementDeltas()) {
+                File file = getFileKey(FILE_NUMERIC_DECODER, currentFile + rule[0]);
+                Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
+                if (file != null && rank != null) {
+                    Space s = new Space(file, rank);
+                    if (isAvailable(s, piece.getColor())) {
+                        allowedSpaces.add(s);
+                    }
+                }
+            }
+        }
+        for (Space s: allowedSpaces) {
+            System.out.println(piece.getColor() + " " + piece.getType() + "'s allowed move: " + s);
+        }
+        return allowedSpaces;
+    }
+
     /**
      * Check if checkmate is in effect.
      *
@@ -99,44 +124,26 @@ public class Chessboard {
     public boolean isCheckMate(Move move) {
         // Check all possible moves for a king if any
         // Locate a king of opponent's pieces color (find its current space)
-        List<Space> kingAllowedSpaces = new ArrayList<>();
         Color currentColor = move.getPiece().getColor();
-        Space kingSpace = this.getSpace(new King(currentColor.getOpponentColor()));
-        //  As per general rules, evaluate each possible destination (isAvailable)
-        //  TODO do specific (castling) rules apply here?
-        if (kingSpace != null) {
-            int currentFile = FILE_NUMERIC_DECODER.get(kingSpace.getFile());
-            int currentRank = RANK_NUMERIC_DECODER.get(kingSpace.getRank());
-            for (int[] rule : KING_ALLOWED_MOVEMENT_DELTAS) {
-                File file = getFileKey(FILE_NUMERIC_DECODER, currentFile + rule[0]);
-                Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
-                if (file != null && rank != null) {
-                    Space space = new Space(file, rank);
-                    if (isAvailable(space, currentColor)) {
-                        kingAllowedSpaces.add(space);
-                    }
-                }
-            }
-        }
+        Piece king = new King(currentColor.getOpponentColor());
+        List<Space> kingAllowedSpaces = checkAllowedMoves(king);
         // If none, mate. Not sure if it's possible to reach this situation in chess game though
         if (kingAllowedSpaces.isEmpty()) {
             return false;
-        }
-        for (Space s: kingAllowedSpaces) {
-            System.out.println(currentColor.getOpponentColor() + " king's allowed move: " + s);
         }
 
         // Check that with all allowed moves a king would fall under attack
         // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
         // TODO make chessboard immutable again to preserve history (think of better ways to count a current move);
+        //  consider using pieces' vectors to avoid chessboard update
         updateChessboard(move);
         // Iterate over all pieces on the board and
         //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
         //  and if so, checkmate!
         for (Square square: getSquaresByPieceColor(currentColor)) {
-            Space space = square.getSpace();
-            int currentFile = FILE_NUMERIC_DECODER.get(space.getFile());
-            int currentRank = RANK_NUMERIC_DECODER.get(space.getRank());
+            Space spc = square.getSpace();
+            int currentFile = FILE_NUMERIC_DECODER.get(spc.getFile());
+            int currentRank = RANK_NUMERIC_DECODER.get(spc.getRank());
             // TODO take into account specific rules
             for (int[] rule : square.getPiece().getAllowedMovementDeltas()) {
                 File file = getFileKey(FILE_NUMERIC_DECODER, currentFile + rule[0]);
@@ -145,7 +152,7 @@ public class Chessboard {
                 for (Space s : kingAllowedSpaces) {
                     // Check if a king is within reach (under attack)
                     if (file == s.getFile() && rank == s.getRank()) {
-                        System.out.println("Revealed a piece which can beat the king: " + square.getPiece());
+                        System.out.println("Revealed a piece that can beat the king: " + square.getPiece());
                         return true;
                     }
                 }
