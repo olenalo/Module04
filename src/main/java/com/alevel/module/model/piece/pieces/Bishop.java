@@ -12,7 +12,7 @@ public class Bishop extends Piece {
 
     public Bishop(Color color) {
         super(color, BISHOP);
-        // this.allowedMovementDeltas = BISHOP_ALLOWED_MOVEMENT_DELTAS;
+        this.allowedMovementDeltas = BISHOP_ALLOWED_MOVEMENT_DELTAS;
     }
 
     // Ref.: https://stackoverflow.com/a/51014378

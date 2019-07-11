@@ -54,10 +54,17 @@ public class MovementRules {
             {-7, -7},
             {7, -7},
             {-4, 4},
+            {-4, -4},
             {4, -4},
             {4, 4},
             {0, 4},
             {4, 0},
+            {-2, 2},
+            {-2, -2},
+            {2, -2},
+            {2, 2},
+            {0, 2},
+            {2, 0},
             // TODO add the rest
     };
     public static final int[][] ROOK_ALLOWED_MOVEMENT_DELTAS = {

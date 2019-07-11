@@ -12,7 +12,7 @@ public class Rook extends Piece {  // could be `Castle`
 
     public Rook(Color color) {
         super(color, ROOK);
-        // this.allowedMovementDeltas = ROOK_ALLOWED_MOVEMENT_DELTAS;
+        this.allowedMovementDeltas = ROOK_ALLOWED_MOVEMENT_DELTAS;
     }
 
     // Ref.: https://stackoverflow.com/a/51014378

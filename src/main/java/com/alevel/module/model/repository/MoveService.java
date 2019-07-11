@@ -90,11 +90,11 @@ public class MoveService implements MoveOperations {
 
         // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
 
-        // TODO Add game state evaluators (check, checkmate, draw)
+        // TODO Add game state evaluators: check, checkmate, draw -
+        //  ref. https://en.wikipedia.org/wiki/Draw_(chess)
         // TODO Closure (if checkmate or draw, store results and finish the game).
 
         // TODO Cache the updated states
-        // TODO For caching, set `isUntouched` to False if it's either Rook or King (for castling)
         if (move.getPiece().validateMove(move, chessboard)) {
             Long id = moveRepository.save(move).getId();
             if (chessboard.isCheckMate(move)) {

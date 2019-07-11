@@ -12,7 +12,7 @@ public class Pawn extends Piece {
 
     public Pawn(Color color) {
         super(color, PAWN);
-        // this.allowedMovementDeltas = PAWN_ALLOWED_MOVEMENT_DELTAS;
+        this.allowedMovementDeltas = PAWN_ALLOWED_MOVEMENT_DELTAS;
     }
 
     // Ref.: https://stackoverflow.com/a/51014378

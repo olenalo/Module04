@@ -11,7 +11,7 @@ import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.utils.DecodersLookups.getFileKey;
 import static com.alevel.module.model.chessboard.configs.utils.DecodersLookups.getRankKey;
-import static com.alevel.module.model.piece.configs.rules.MovementRules.KING_ALLOWED_MOVEMENT_DELTAS;
+import static com.alevel.module.model.piece.configs.rules.MovementRules.*;
 
 /**
  * Build up a board state from squares.
@@ -28,10 +28,8 @@ public class Chessboard {
 
     private List<Square> squares;
 
-    // TODO capturedPieces to track a score
-
     public Chessboard(List<Square> squares) {
-        this.squares = Collections.unmodifiableList(squares);
+        this.squares = squares; // Collections.unmodifiableList(squares);
     }
 
     /**
@@ -85,7 +83,7 @@ public class Chessboard {
     public boolean isCheckMate(Move move) {
         // Check all possible moves for a king (if any; TODO if none, mate? is it possible in chess game?)
         // Locate a king of opponent's pieces color (find its current space)
-        List<Space> allowedSpaces = new ArrayList<>();
+        List<Space> kingAllowedSpaces = new ArrayList<>();
         Space kingSpace = this.getSpace(new King(move.getPiece().getColor().getOpponentColor()));
         //  As per general rules, evaluate each possible destination (isEmpty)
         //  TODO do specific (castling) rules apply here?
@@ -98,22 +96,91 @@ public class Chessboard {
                 if (file != null && rank != null) {
                     Space space = new Space(file, rank);
                     if (isEmpty(space)) {
-                        allowedSpaces.add(space);
+                        kingAllowedSpaces.add(space);
+                    }
+                }
+            }
+        }
+        for (Space s: kingAllowedSpaces) {
+            System.out.println(move.getPiece().getColor().getOpponentColor() + " king's allowed move: " + s);
+        }
+
+        // Check that with all allowed moves a king would fall under attack
+        // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
+        // TODO make chessboard immutable again to preserve history (think of better ways to count a current move)
+        updateChessboard(move);
+        // Iterate over all pieces on the board and
+        //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
+        //  and if so, checkmate!
+        for (Square square: squares) {
+            if (square.getPiece() != null) {
+                if (square.getPiece().getColor() == move.getPiece().getColor()) {
+                    Space space = square.getSpace(); // TODO filter out by color
+                    int currentFile = FILE_NUMERIC_DECODER.get(space.getFile());
+                    int currentRank = RANK_NUMERIC_DECODER.get(space.getRank());
+                    // TODO take into account specific rules
+                    System.out.println("o_O o_O o_O o_O o_O " + square.getPiece() + " at " + square.getSpace());
+                    /*
+                    for (int [] rule : square.getPiece().getAllowedMovementDeltas() ) {
+                        System.out.println("o_O o_O o_O  " + rule[0] + " and " + rule[1]);
+                    }
+                    // System.out.println("o_O o_O o_O  " + square.getPiece().getAllowedMovementDeltas() != null);
+                     */
+                    for (int[] rule : square.getPiece().getAllowedMovementDeltas()) { // FIXME deltas
+                        File file = getFileKey(FILE_NUMERIC_DECODER, currentFile + rule[0]);
+                        Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
+                        // TODO consider changing loop nesting (by allowed space and then by square)
+                        for (Space s : kingAllowedSpaces) {
+                            // Check if a king is within reach (under attack)
+                            if (file == s.getFile() && rank == s.getRank()) {
+                                System.out.println("Revealed a piece which can beat the king: " + square.getPiece());
+                                return true;
+                            }
+                        }
                     }
                 }
             }
         }
 
-        // TODO Check that with all allowed moves a king would fall under attack, i.e.
-        //  assume a move under evaluation is made (how? with immutable chessboard...),
-        //  iterate over all pieces on the board, (do we even need to iterate?),
-        //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
-        //  if so, baaaaam!
-        for (Space s: allowedSpaces) {
-            System.out.println(move.getPiece().getColor().getOpponentColor() + " king's allowed move: " + s);
-        }
-
         return false;
+    }
+
+    // TODO DRY
+    private void updateChessboard(Move move) {
+        squares.remove(new Square(move.getCurrentSpace()));
+        squares.add(new Square(move.getCurrentSpace()));
+        // Update piece's states
+        move.getPiece().setMoved(true);
+        System.out.println("0000000000000000000000000000000000000000" + move.getPiece());
+        System.out.println("0000000000000000000000000000000000000000" + move.getPiece().getType());
+        System.out.println("0000000000000000000" + move.getPiece().getAllowedMovementDeltas());
+        // FIXME come up with a better design
+        switch(move.getPiece().getType()) {
+            // TODO consider getting rid of magic strings
+            case KING:
+                move.getPiece().setAllowedMovementDeltas(KING_ALLOWED_MOVEMENT_DELTAS);
+                break;
+            case BISHOP:
+                move.getPiece().setAllowedMovementDeltas(BISHOP_ALLOWED_MOVEMENT_DELTAS);
+                break;
+            case KNIGHT:
+                move.getPiece().setAllowedMovementDeltas(KNIGHT_ALLOWED_MOVEMENT_DELTAS);
+                break;
+            case PAWN:
+                move.getPiece().setAllowedMovementDeltas(PAWN_ALLOWED_MOVEMENT_DELTAS);
+                break;
+            case QUEEN:
+                move.getPiece().setAllowedMovementDeltas(QUEEN_ALLOWED_MOVEMENT_DELTAS);
+                break;
+            case ROOK:
+                move.getPiece().setAllowedMovementDeltas(ROOK_ALLOWED_MOVEMENT_DELTAS);
+                break;
+        }
+        // TODO Build pieces' vectors?
+        // Clean up a destination square. Like that, we remove captured pieces.
+        squares.remove(new Square(move.getDestinationSpace()));
+        // Add a new state
+        squares.add(new Square(move.getDestinationSpace(), move.getPiece()));  // TODO handle nullables
     }
 
     public List<Square> getSquares() {

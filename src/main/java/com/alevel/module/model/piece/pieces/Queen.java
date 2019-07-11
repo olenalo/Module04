@@ -13,7 +13,7 @@ public class Queen extends Piece {
 
     public Queen(Color color) {
         super(color, QUEEN);
-        // this.allowedMovementDeltas = QUEEN_ALLOWED_MOVEMENT_DELTAS;
+        this.allowedMovementDeltas = QUEEN_ALLOWED_MOVEMENT_DELTAS;
     }
 
     // Ref.: https://stackoverflow.com/a/51014378

@@ -19,7 +19,7 @@ import java.util.Objects;
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
-@JsonIgnoreProperties({"moved"})
+@JsonIgnoreProperties({"moved", "allowedMovementDeltas"})
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
@@ -36,7 +36,15 @@ public abstract class Piece {
     @JsonProperty("pieceType")  // FIXME this is an ugly workaround; need to pass both "type" and "pieceType" with JSON
     private Type type;
 
-    // protected int[][] allowedMovementDeltas; // TODO make it work with jackson (shouldn't pass as method arg below!)
+    protected int[][] allowedMovementDeltas; // TODO make it work with jackson (shouldn't pass as method arg below!)
+
+    public int[][] getAllowedMovementDeltas() {
+        return allowedMovementDeltas;
+    }
+
+    public void setAllowedMovementDeltas(int[][] allowedMovementDeltas) {
+        this.allowedMovementDeltas = allowedMovementDeltas;
+    }
 
     // TODO: add additional rules,
     //    i.e. if special features are available
@@ -125,11 +133,5 @@ public abstract class Piece {
     public int hashCode() {
         return Objects.hash(color, type);
     }
-
-    /*
-    public int[][] getAllowedMovementDeltas() {
-        return allowedMovementDeltas;
-    }
-     */
 
 }

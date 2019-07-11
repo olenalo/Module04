@@ -12,7 +12,7 @@ public class King extends Piece {
 
     public King(Color color) {
         super(color, KING);
-        // this.allowedMovementDeltas = KING_ALLOWED_MOVEMENT_DELTAS;
+        this.allowedMovementDeltas = KING_ALLOWED_MOVEMENT_DELTAS;
     }
 
     // Ref.: https://stackoverflow.com/a/51014378

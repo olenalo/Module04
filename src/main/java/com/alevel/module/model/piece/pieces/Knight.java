@@ -12,7 +12,7 @@ public class Knight extends Piece {
 
     public Knight(Color color) {
         super(color, KNIGHT);
-        // this.allowedMovementDeltas = KNIGHT_ALLOWED_MOVEMENT_DELTAS;
+        this.allowedMovementDeltas = KNIGHT_ALLOWED_MOVEMENT_DELTAS;
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
