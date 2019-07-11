@@ -30,23 +30,26 @@ public class Chessboard {
     private List<Square> squares;
 
     public Chessboard(List<Square> squares) {
-        this.squares = squares; // Collections.unmodifiableList(squares);
+        this.squares = squares; // TODO Collections.unmodifiableList(squares);
     }
 
     /**
-     *  Check if a destination square is empty.
+     *  Check if a destination space is available.
      *
-     *  Piece color does not matter.
+     *  That is, if there's no piece of same color
+     *  on the destination space.
      *
-     * @param space space to validate.
+     * @param space space to validate (destination space).
      * @return validation results.
      */
-    private boolean isEmpty(Space space) {
+    private boolean isAvailable(Space space, Color color) {
         for (Square square : squares) {
             if (space.getFile() == square.getSpace().getFile() &&
                     space.getRank() == square.getSpace().getRank() &&
                     square.getPiece() != null) {
-                return false;
+                if (square.getPiece().getColor() == color) {
+                    return false;
+                }
             }
         }
         return true;
@@ -94,11 +97,12 @@ public class Chessboard {
      * @return boolean: true if checkmate is reached, false if not.
      */
     public boolean isCheckMate(Move move) {
-        // Check all possible moves for a king (if any; TODO if none, mate? is it possible in chess game?)
+        // Check all possible moves for a king if any; TODO if none, mate? is it possible in chess game?
         // Locate a king of opponent's pieces color (find its current space)
         List<Space> kingAllowedSpaces = new ArrayList<>();
-        Space kingSpace = this.getSpace(new King(move.getPiece().getColor().getOpponentColor()));
-        //  As per general rules, evaluate each possible destination (isEmpty)
+        Color currentColor = move.getPiece().getColor();
+        Space kingSpace = this.getSpace(new King(currentColor.getOpponentColor()));
+        //  As per general rules, evaluate each possible destination (isAvailable)
         //  TODO do specific (castling) rules apply here?
         if (kingSpace != null) {
             int currentFile = FILE_NUMERIC_DECODER.get(kingSpace.getFile());
@@ -108,25 +112,24 @@ public class Chessboard {
                 Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
                 if (file != null && rank != null) {
                     Space space = new Space(file, rank);
-                    if (isEmpty(space)) {
+                    if (isAvailable(space,currentColor)) {
                         kingAllowedSpaces.add(space);
                     }
                 }
             }
         }
         for (Space s: kingAllowedSpaces) {
-            System.out.println(move.getPiece().getColor().getOpponentColor() + " king's allowed move: " + s);
+            System.out.println(currentColor.getOpponentColor() + " king's allowed move: " + s);
         }
 
         // Check that with all allowed moves a king would fall under attack
         // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
         // TODO make chessboard immutable again to preserve history (think of better ways to count a current move);
-        //  Consider hitting a db one more time
         updateChessboard(move);
         // Iterate over all pieces on the board and
         //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
         //  and if so, checkmate!
-        for (Square square: getSquaresByPieceColor(move.getPiece().getColor())) {
+        for (Square square: getSquaresByPieceColor(currentColor)) {
             Space space = square.getSpace();
             int currentFile = FILE_NUMERIC_DECODER.get(space.getFile());
             int currentRank = RANK_NUMERIC_DECODER.get(space.getRank());
@@ -157,7 +160,7 @@ public class Chessboard {
         // Clean up a destination square. Like that, we remove captured pieces.
         squares.remove(new Square(move.getDestinationSpace()));
         // Add a new state
-        squares.add(new Square(move.getDestinationSpace(), move.getPiece()));  // TODO handle nullables
+        squares.add(new Square(move.getDestinationSpace(), move.getPiece()));
     }
 
     public List<Square> getSquares() {
