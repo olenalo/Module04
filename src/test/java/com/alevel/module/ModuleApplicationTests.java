@@ -22,6 +22,17 @@ public class ModuleApplicationTests {
 	 - Integration: Play Fool's Mate to speed up testing, ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
 	 */
 
+	// TODO: Play Fool's Mate
+	//  ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
+        /*
+        gameMoves = new ArrayList<>();
+        gameMoves.add(new Move(new Pawn(WHITE), new Space(F, TWO), new Space(F, THREE)));
+        gameMoves.add(new Move(new Pawn(BLACK), new Space(E, SEVEN), new Space(E, FIVE)));
+        gameMoves.add(new Move(new Pawn(WHITE), new Space(G, TWO), new Space(G, FOUR)));
+        // Expected move for checkmate:
+        // gameMoves.add(new Move(new Queen(BLACK), new Space(D, EIGHT), new Space(H, FOUR)));
+         */
+
 	@Test
 	public void contextLoads() {
 	}

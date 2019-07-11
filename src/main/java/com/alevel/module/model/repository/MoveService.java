@@ -52,22 +52,9 @@ public class MoveService implements MoveOperations {
 
     @Override
     public Long save(Move move) {
-
         // Fetch moves history
-        // FIXME each entry should contain all move's fields (now it's `id` only);
-        //  consider https://stackoverflow.com/a/36329166
         // TODO assign colors to pieces!  (see StandardChessboardBuilder)
         List<Move> gameMoves = findAll(move.getGame());
-
-        // Replaced with demo moves till aforementioned FIX-ME gets resolved
-        // Play Fool's Mate to speed up testing
-        //  ref.: https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
-        gameMoves = new ArrayList<>();
-        gameMoves.add(new Move(new Pawn(WHITE), new Space(F, TWO), new Space(F, THREE)));
-        gameMoves.add(new Move(new Pawn(BLACK), new Space(E, SEVEN), new Space(E, FIVE)));
-        gameMoves.add(new Move(new Pawn(WHITE), new Space(G, TWO), new Space(G, FOUR)));
-        // Expected move for checkmate:
-        // gameMoves.add(new Move(new Queen(BLACK), new Space(D, EIGHT), new Space(H, FOUR)));
 
         // Build the game chessboard
         // TODO think of better ways: this is not a builder: we don't pass params one by one
@@ -82,7 +69,7 @@ public class MoveService implements MoveOperations {
         move.setDestinationSpaceFile(move.getDestinationSpace().getFile().getShortTitle());
         move.setDestinationSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
 
-        // Validate and make a move
+        // Validate and make a move, evaluate game situation
         // TODO Add other validators
         //  compliance with specific rules,
         //  if on-the-way squares are empty (cannot jump over other pieces!),

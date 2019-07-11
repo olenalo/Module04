@@ -20,6 +20,23 @@ import static com.alevel.module.model.piece.configs.Type.KING;
  *
  * Only valid move will be saved to the db.
  */
+@SqlResultSetMapping(
+    name="MoveResult",
+    classes={
+        @ConstructorResult(
+            targetClass=Move.class,
+            columns={
+                @ColumnResult(name="id", type=Long.class),
+                @ColumnResult(name="current_space_file", type=String.class),
+                @ColumnResult(name="current_space_rank", type=String.class),
+                @ColumnResult(name="destination_space_file", type=String.class),
+                @ColumnResult(name="destination_space_rank", type=String.class),
+                @ColumnResult(name="game_id", type=Long.class),
+                @ColumnResult(name="piece_title", type=String.class),
+                @ColumnResult(name="player_id", type=Long.class)})})
+@NamedNativeQuery(name = "Move.findByGameId",
+        query = "select * from moves move0_ left outer join games game1_ on move0_.game_id=game1_.id where game1_.id=?",
+        resultSetMapping = "MoveResult")
 @Entity
 @Table(name="moves")
 public class Move {
@@ -82,29 +99,18 @@ public class Move {
         this.destinationSpace = destinationSpace;
     }
 
-    // Required for model mapper
+    // Required for a model mapper
     public Move() {
     }
 
-    // Hibernate:
-    // select
-    //   move0_.id as id1_1_,
-    //   move0_.current_space_file as current_2_1_,
-    //   move0_.current_space_rank as current_3_1_,
-    //   move0_.destination_space_file as destinat4_1_,
-    //   move0_.destination_space_rank as destinat5_1_,
-    //   move0_.game_id as game_id7_1_,
-    //   move0_.piece_title as piece_ti6_1_,
-    //   move0_.player_id as player_i8_1_
-    // from moves move0_ left outer join games game1_ on move0_.game_id=game1_.id where game1_.id=?
     public Move(Long id,
                 String currentSpaceFile,
                 String currentSpaceRank,
                 String destinationSpaceFile,
                 String destinationSpaceRank,
-                String gameId,
+                Long gameId,
                 String pieceTitle,
-                String playerId) {
+                Long playerId) {
         switch(pieceTitle) {
             // TODO consider getting rid of magic strings
             case "king":
