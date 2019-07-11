@@ -22,7 +22,7 @@ public enum Type {
     }
 
     @JsonCreator
-    public static Type create(String value) {
+    public static Type create(String value) throws IllegalArgumentException {
         if(value == null) {
             throw new IllegalArgumentException("Please provide a Type value.");
         }

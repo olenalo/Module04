@@ -5,21 +5,11 @@ import com.alevel.module.model.chessboard.configs.Rank;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.piece.Piece;
-import com.alevel.module.model.piece.configs.Color;
-import com.alevel.module.model.piece.configs.Type;
 import com.alevel.module.model.piece.pieces.*;
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.persistence.*;
 
-import static com.alevel.module.model.piece.configs.Type.KING;
 
-/**
- * Move model.
- *
- * Only valid move will be saved to the db.
- */
 @SqlResultSetMapping(
     name="MoveResult",
     classes={

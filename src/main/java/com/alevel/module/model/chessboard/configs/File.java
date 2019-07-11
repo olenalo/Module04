@@ -24,7 +24,7 @@ public enum File {
     }
 
     @JsonCreator
-    public static File create(String value) {
+    public static File create(String value) throws IllegalArgumentException {
         if(value == null) {
             throw new IllegalArgumentException("Please provide a File value.");
         }

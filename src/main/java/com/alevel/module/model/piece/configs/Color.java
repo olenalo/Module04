@@ -18,7 +18,7 @@ public enum Color {
     }
 
     @JsonCreator
-    public static Color create(String value) {
+    public static Color create(String value) throws IllegalArgumentException {
         if(value == null) {
             throw new IllegalArgumentException("Please provide a Color value.");
         }

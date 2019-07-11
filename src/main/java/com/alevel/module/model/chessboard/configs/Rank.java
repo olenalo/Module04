@@ -25,7 +25,7 @@ public enum Rank {
     }
 
     @JsonCreator
-    public static Rank create(String value) {
+    public static Rank create(String value) throws IllegalArgumentException {
         if(value == null) {
             throw new IllegalArgumentException("Please provide a Rank value.");
         }

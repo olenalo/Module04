@@ -44,11 +44,15 @@ public class MoveController {
         return modelMapper.map(move, MoveDto.class);
     }
 
-    private Move convertToEntity(MoveDto moveDto) throws ParseException {
+    private Move convertToEntity(MoveDto moveDto) {
         return modelMapper.map(moveDto, Move.class);
     }
 
-    // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
+    /**
+     * Save a move.
+     *
+     * Only valid move will be saved to the db.
+     */
     @PostMapping("/create")
     public ResponseEntity save(@RequestBody MoveDto moveDto) {
         try {
@@ -74,9 +78,6 @@ public class MoveController {
             return new ResponseEntity<>(new Response("Illegal argument. " + e.getMessage()), HttpStatus.FORBIDDEN);
         } catch (InvalidMoveException e) {
             return new ResponseEntity<>(new Response("The move is invalid."), HttpStatus.FORBIDDEN);
-        } catch (ParseException e) {
-            return new ResponseEntity<>(new Response("The move could not be parsed. " + e.getMessage()),
-                                        HttpStatus.FORBIDDEN);
         }
     }
 

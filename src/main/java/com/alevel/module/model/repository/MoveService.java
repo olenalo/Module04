@@ -51,7 +51,7 @@ public class MoveService implements MoveOperations {
     }
 
     @Override
-    public Long save(Move move) {
+    public Long save(Move move) throws InvalidMoveException {
         // Fetch moves history
         // TODO assign colors to pieces!  (see StandardChessboardBuilder)
         List<Move> gameMoves = findAll(move.getGame());
