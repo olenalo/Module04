@@ -48,19 +48,19 @@ public class MoveController {
             Long id = moveOperations.save(move);
             if (id == null) { // TODO handle checkmate case better (null is not obvious)
                 // TODO end the game
-                return new ResponseEntity(
+                return new ResponseEntity<>(
                         new Response("Checkmate! A " + move.getPiece().getColor() + " side won."),
                         HttpStatus.CREATED);
             } else {
                 move.setId(id);
-                return new ResponseEntity(move, HttpStatus.CREATED);
+                return new ResponseEntity<>(move, HttpStatus.CREATED);
             }
         } catch (IllegalArgumentException e) {
             // TODO catch it
             // e.g. "Please provide a correct Rank value"
-            return new ResponseEntity(new Response("Illegal argument. " + e.getMessage()), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new Response("Illegal argument. " + e.getMessage()), HttpStatus.FORBIDDEN);
         } catch (InvalidMoveException e) {
-            return new ResponseEntity(new Response("The move is invalid."), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new Response("The move is invalid."), HttpStatus.FORBIDDEN);
         }
     }
 

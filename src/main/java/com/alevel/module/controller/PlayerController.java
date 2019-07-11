@@ -26,8 +26,8 @@ public class PlayerController {
     }
 
     // TODO fetch by tokens
-    Authentication getAuthentication(String username) { // (String token) {
-        UserDetails userDetails = this.playerDetailsService.loadUserByUsername(username);// getUsername(token));
+    Authentication getAuthentication(String username) { // String token
+        UserDetails userDetails = this.playerDetailsService.loadUserByUsername(username); // token
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

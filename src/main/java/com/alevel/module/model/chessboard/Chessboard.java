@@ -12,7 +12,6 @@ import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.utils.DecodersLookups.getFileKey;
 import static com.alevel.module.model.chessboard.configs.utils.DecodersLookups.getRankKey;
-import static com.alevel.module.model.piece.configs.rules.MovementRules.*;
 
 /**
  * Build up a board state from squares.
@@ -135,7 +134,7 @@ public class Chessboard {
         // Check that with all allowed moves a king would fall under attack
         // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
         // TODO make chessboard immutable again to preserve history (think of better ways to count a current move);
-        //  consider using pieces' vectors to avoid chessboard update
+        //  consider using pieces' vectors to avoid chessboard update (and squares iteration).
         updateChessboard(move);
         // Iterate over all pieces on the board and
         //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
