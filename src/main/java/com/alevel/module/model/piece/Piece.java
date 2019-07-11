@@ -56,7 +56,7 @@ public abstract class Piece {
     // Ref.: https://stackoverflow.com/a/51014378
     public Piece() {}
 
-    public abstract boolean doMove(Move move, Chessboard chessboard);
+    public abstract boolean validateMove(Move move, Chessboard chessboard);
 
     public Piece(Color color, Type type) {
         this.color = color;

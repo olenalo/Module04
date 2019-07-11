@@ -49,9 +49,15 @@ public class MoveController {
             Optional<Game> gameOptional = gameOperations.find(move.getGame().getId());
             System.out.println(" move: -------" + move);
             Long id = moveOperations.save(move);
-            move.setId(id);
-            // TODO if mate, let a user know! ..and end the game
-            return new ResponseEntity(move, HttpStatus.CREATED);
+            if (id == null) { // TODO handle checkmate case better
+                // TODO end the game
+                return new ResponseEntity(
+                        "Checkmate! " + move.getPiece().getColor() + " won.",
+                        HttpStatus.OK);
+            } else {
+                move.setId(id);
+                return new ResponseEntity(move, HttpStatus.CREATED);
+            }
         } catch (InvalidMoveException e) {
             return new ResponseEntity("The move is invalid.", HttpStatus.FORBIDDEN);
         }

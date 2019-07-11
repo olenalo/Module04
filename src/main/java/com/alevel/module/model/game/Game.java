@@ -28,6 +28,8 @@ public class Game {
     @JoinColumn()
     private Player secondPlayer;
 
+    // TODO Player winnerPlayer;
+
     @OneToMany(mappedBy = "game")
     private List<Move> moves = new ArrayList<>();
 

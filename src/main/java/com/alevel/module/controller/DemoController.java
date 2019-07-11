@@ -6,7 +6,6 @@ import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.chessboard.Square;
 import com.alevel.module.model.chessboard.configs.File;
 import com.alevel.module.model.chessboard.configs.Rank;
-import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
 import com.alevel.module.model.piece.Piece;
 import com.alevel.module.model.piece.pieces.King;
 import com.alevel.module.model.piece.pieces.Knight;
@@ -61,7 +60,7 @@ public class DemoController {
         Space destinationSpace = new Space(B, FOUR);
         */
         Move move = new Move(piece, currentSpace, destinationSpace);
-        return move.getPiece().doMove(move, createDummyChessboard());
+        return move.getPiece().validateMove(move, createDummyChessboard());
     }
 
     @PostMapping("/makeMove")
@@ -98,7 +97,7 @@ public class DemoController {
         // move.setCurrentSpace(new Space(A, FOUR));
 
         // Make a move
-        return move.getPiece().doMove(move, chessboard);
+        return move.getPiece().validateMove(move, chessboard);
          */
     }
 

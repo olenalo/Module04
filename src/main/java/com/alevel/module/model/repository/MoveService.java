@@ -4,14 +4,9 @@ import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
-import com.alevel.module.model.chessboard.Square;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
-import com.alevel.module.model.piece.Piece;
-import com.alevel.module.model.piece.configs.Color;
-import com.alevel.module.model.piece.pieces.King;
 import com.alevel.module.model.piece.pieces.Pawn;
-import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,26 +82,26 @@ public class MoveService implements MoveOperations {
         move.setDestinationSpaceRank(move.getDestinationSpace().getRank().getShortTitle());
 
         // Validate and make a move
-        if (move.getPiece().doMove(move, chessboard)) {
-            // TODO Add other validators
-            //  compliance with specific rules,
-            //  if on-the-way squares are empty (cannot jump over other pieces!),
-            //  if a destination square is not occupied by piece of same color
-            //  if within-the-field
+        // TODO Add other validators
+        //  compliance with specific rules,
+        //  if on-the-way squares are empty (cannot jump over other pieces!),
+        //  if a destination square is not occupied by piece of same color
+        //  if within-the-field
 
-            // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
+        // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
 
-            // TODO Implement the attack
-            // TODO Add game state evaluators (check, checkmate, draw)
+        // TODO Add game state evaluators (check, checkmate, draw)
+        // TODO Closure (if checkmate or draw, store results and finish the game).
 
-            // TODO Move: store (in the db) if captured opponent's piece to avoid re-validation upon every request
-
-            // TODO Closure (if checkmate or draw, store results and finish the game).
-            // TODO Implement capturing (write to the previously implemented isCaptured - update a `move` to store (setIsCaptured))
-
-            // TODO Cache the updated states
-            // TODO For caching, set `isUntouched` to False if it's either Rook or King (for castling)
-            return moveRepository.save(move).getId() ;
+        // TODO Cache the updated states
+        // TODO For caching, set `isUntouched` to False if it's either Rook or King (for castling)
+        if (move.getPiece().validateMove(move, chessboard)) {
+            Long id = moveRepository.save(move).getId();
+            if (chessboard.isCheckMate(move)) {
+                return null;
+            } else {
+                return id;
+            }
         } else {
             throw new InvalidMoveException(move);
         }

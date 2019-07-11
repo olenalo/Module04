@@ -20,12 +20,8 @@ public class Queen extends Piece {
     public Queen() {}
 
     @Override
-    public boolean doMove(Move move, Chessboard chessboard) {
-        if (super.validatePerMovementRules(move, QUEEN_ALLOWED_MOVEMENT_DELTAS)) {
-            return chessboard.validateCheckMate(move);
-        } else {
-            return false;
-        }
+    public boolean validateMove(Move move, Chessboard chessboard) {
+        return super.validatePerMovementRules(move, QUEEN_ALLOWED_MOVEMENT_DELTAS);
     }
 
     @Override

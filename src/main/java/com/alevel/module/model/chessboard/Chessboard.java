@@ -82,7 +82,7 @@ public class Chessboard {
      *
      * @return boolean: true if checkmate is reached, false if not.
      */
-    public boolean validateCheckMate(Move move) {
+    public boolean isCheckMate(Move move) {
         // Check all possible moves for a king (if any; TODO if none, mate? is it possible in chess game?)
         // Locate a king of opponent's pieces color (find its current space)
         List<Space> allowedSpaces = new ArrayList<>();
@@ -105,7 +105,7 @@ public class Chessboard {
         }
 
         // TODO Check that with all allowed moves a king would fall under attack, i.e.
-        //  assume a move under evaluation ismade (how? with immutable chessboard...),
+        //  assume a move under evaluation is made (how? with immutable chessboard...),
         //  iterate over all pieces on the board, (do we even need to iterate?),
         //  check if king's destination space (within each king's allowed move) is within the reach of any piece,
         //  if so, baaaaam!
@@ -113,7 +113,7 @@ public class Chessboard {
             System.out.println(move.getPiece().getColor().getOpponentColor() + " king's allowed move: " + s);
         }
 
-        return true;
+        return false;
     }
 
     public List<Square> getSquares() {

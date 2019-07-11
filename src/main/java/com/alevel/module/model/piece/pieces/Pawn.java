@@ -19,13 +19,9 @@ public class Pawn extends Piece {
     public Pawn() {}
 
     @Override
-    public boolean doMove(Move move, Chessboard chessboard) {
+    public boolean validateMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
-        if (super.validatePerMovementRules(move, PAWN_ALLOWED_MOVEMENT_DELTAS)) {
-            return chessboard.validateCheckMate(move);
-        } else {
-            return false;
-        }
+        return super.validatePerMovementRules(move, PAWN_ALLOWED_MOVEMENT_DELTAS);
     }
 
     @Override
