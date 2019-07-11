@@ -51,7 +51,7 @@ public class MoveService implements MoveOperations {
     }
 
     @Override
-    public Long save(Move move) throws IllegalArgumentException {
+    public Long save(Move move) {
 
         // Fetch moves history
         // FIXME each entry should contain all move's fields (now it's `id` only);

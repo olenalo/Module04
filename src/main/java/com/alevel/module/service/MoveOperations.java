@@ -15,7 +15,7 @@ public interface MoveOperations {
 
     void update(Long id, Move move);
 
-    Long save(Move move);
+    Long save (Move move);
 
     void delete(Long id);
 }

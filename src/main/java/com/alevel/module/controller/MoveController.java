@@ -1,6 +1,7 @@
 package com.alevel.module.controller;
 
 import com.alevel.module.controller.exceptions.InvalidMoveException;
+import com.alevel.module.controller.utils.Response;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
@@ -10,11 +11,8 @@ import com.alevel.module.service.PlayerOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 // TODO get rid of wildcard imports everywhere
@@ -39,7 +37,6 @@ public class MoveController {
     // TODO response: statuses, custom codes and messages based on validation results (IllegalArgumentException?)
     @PostMapping("/create")
     public ResponseEntity save(@RequestBody Move move) {
-        // TODO catch 'IllegalArgumentException' e.g. "Please provide a correct Rank value"
         try {
             // TODO check piece color by player (if first player in a game, it's white; if second, then black);
             //  color can also be taken from request
@@ -49,17 +46,21 @@ public class MoveController {
             Optional<Game> gameOptional = gameOperations.find(move.getGame().getId());
             System.out.println(" move: -------" + move);
             Long id = moveOperations.save(move);
-            if (id == null) { // TODO handle checkmate case better
+            if (id == null) { // TODO handle checkmate case better (null is not obvious)
                 // TODO end the game
                 return new ResponseEntity(
-                        "Checkmate! " + move.getPiece().getColor() + " won.",
-                        HttpStatus.OK);
+                        new Response("Checkmate! A " + move.getPiece().getColor() + " side won."),
+                        HttpStatus.CREATED);
             } else {
                 move.setId(id);
                 return new ResponseEntity(move, HttpStatus.CREATED);
             }
+        } catch (IllegalArgumentException e) {
+            // TODO catch it
+            // e.g. "Please provide a correct Rank value"
+            return new ResponseEntity(new Response("Illegal argument. " + e.getMessage()), HttpStatus.FORBIDDEN);
         } catch (InvalidMoveException e) {
-            return new ResponseEntity("The move is invalid.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity(new Response("The move is invalid."), HttpStatus.FORBIDDEN);
         }
     }
 
