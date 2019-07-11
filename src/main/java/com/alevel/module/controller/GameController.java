@@ -20,6 +20,7 @@ public class GameController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Game save(@RequestBody Game game) {
+        System.out.println("Input game: " + game);
         Long id = gameOperations.save(game);
         game.setId(id);
         return game;

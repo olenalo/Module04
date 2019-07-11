@@ -36,6 +36,10 @@ public class PlayerController {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    private PlayerDto convertToDto(Player player) {
+        return modelMapper.map(player, PlayerDto.class);
+    }
+
     private Player convertToEntity(PlayerDto playerDto) {
         return modelMapper.map(playerDto, Player.class);
     }
@@ -54,12 +58,6 @@ public class PlayerController {
         }
     }
 
-    @PostMapping("/login")
-    public boolean login(@RequestBody PlayerDto playerDto) {
-        // TODO check password
-        return authenticate(convertToEntity(playerDto));
-    }
-
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     // TODO validate required params
@@ -67,10 +65,18 @@ public class PlayerController {
         // TODO store password hash
         // TODO add password salting
         // TODO handle 500 (e.g. unique constraints violation)
+        // TODO check that account doesn't already exist
+        System.out.println("Input playerDto: " + playerDto);
         Player player = convertToEntity(playerDto);
         Long id = playerOperations.save(player);
         player.setId(id);
         authenticate(player);
         return playerDto;
+    }
+
+    @PostMapping("/login")
+    public boolean login(@RequestBody PlayerDto playerDto) {
+        // TODO check password
+        return authenticate(convertToEntity(playerDto));
     }
 }

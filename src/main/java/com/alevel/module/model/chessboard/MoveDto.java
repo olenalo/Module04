@@ -1,6 +1,5 @@
 package com.alevel.module.model.chessboard;
 
-
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.piece.Piece;
@@ -10,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.persistence.*;
 
-
+@JsonIgnoreProperties({"id"})
 @JsonDeserialize(as=MoveDto.class)
 public class MoveDto {
     @JsonProperty("id")
@@ -88,7 +87,10 @@ public class MoveDto {
     @Override
     public String toString() {
         return "MoveDto{" +
-                "piece=" + piece +
+                "id=" + id +
+                ", game=" + game +
+                ", player=" + player +
+                ", piece=" + piece +
                 ", currentSpace=" + currentSpace +
                 ", destinationSpace=" + destinationSpace +
                 '}';

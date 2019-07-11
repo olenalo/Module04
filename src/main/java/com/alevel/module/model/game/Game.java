@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO introduce GameDto
-@JsonIgnoreProperties({"chessboard", "moves", "firstPlayer", "secondPlayer"})
+@JsonIgnoreProperties({"chessboard", "moves"})
 @JsonDeserialize(as=Game.class)
 @Entity
 @Table(name="games")
@@ -25,6 +25,7 @@ public class Game {
     @JoinColumn()
     private Player firstPlayer;
 
+    // Can be null (second player hasn't joined yet)
     @ManyToOne
     @JoinColumn()
     private Player secondPlayer;
@@ -56,12 +57,12 @@ public class Game {
     public Game() {
     }
 
-    @JsonGetter("firstPlayer")
+    @JsonIgnore
     public Player getFirstPlayer() {
         return firstPlayer;
     }
 
-    @JsonGetter("secondPlayer")
+    @JsonIgnore
     public Player getSecondPlayer() {
         return secondPlayer;
     }
@@ -78,12 +79,12 @@ public class Game {
         this.id = id;
     }
 
-    @JsonSetter("firstPlayer")
+    @JsonProperty("firstPlayer")
     public void setFirstPlayer(Player firstPlayer) {
         this.firstPlayer = firstPlayer;
     }
 
-    @JsonSetter("secondPlayer")
+    @JsonProperty("secondPlayer")
     public void setSecondPlayer(Player secondPlayer) {
         this.secondPlayer = secondPlayer;
     }
@@ -94,5 +95,14 @@ public class Game {
 
     public void setMoves(List<Move> moves) {
         this.moves = moves;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", firstPlayer=" + firstPlayer +
+                ", secondPlayer=" + secondPlayer +
+                '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.alevel.module.model.game;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -10,15 +12,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@JsonIgnoreProperties({"id",
-                       "fname",
-                       "sname",
-                       "email",
-                       "moves",
-                       "password"})  // "roles"})
 @JsonDeserialize(as=PlayerDto.class)
 public class PlayerDto {
-    @JsonProperty("id")
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -29,26 +24,30 @@ public class PlayerDto {
     private String username;
 
     // Can be provided by a user later
-    @JsonProperty("fname")
     private String firstName;
 
     // Can be provided by a user later
-    @JsonProperty("sname")
     private String secondName;
 
-    @JsonProperty("email")
+    @JsonProperty(value="email", access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
+    @NotEmpty
     private String email;
 
-    @JsonProperty("password")
+    @JsonProperty(value="password", access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
+    @NotEmpty
     private String password;
 
     public PlayerDto() {
     }
 
+    @JsonIgnore
     public Long getId() {
         return id;
     }
 
+    @JsonProperty("id")
     public void setId(Long id) {
         this.id = id;
     }
@@ -61,22 +60,27 @@ public class PlayerDto {
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
+    @JsonProperty("sname")
     public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
 
+    @JsonIgnore
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @JsonProperty("fname")
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @JsonIgnore
+    public String getSecondName() {
+        return secondName;
+    }
+
+    @JsonIgnore
     public String getEmail() {
         return email;
     }
@@ -85,6 +89,7 @@ public class PlayerDto {
         this.email = email;
     }
 
+    @JsonIgnore  // Ignore for serialization only
     public String getPassword() {
         return password;
     }
@@ -95,8 +100,14 @@ public class PlayerDto {
 
     @Override
     public String toString() {
+        // Make it as much detailed as possible (to debug deserialization)
         return "PlayerDto{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
