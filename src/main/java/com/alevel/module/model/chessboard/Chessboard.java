@@ -97,7 +97,7 @@ public class Chessboard {
      * @return boolean: true if checkmate is reached, false if not.
      */
     public boolean isCheckMate(Move move) {
-        // Check all possible moves for a king if any; TODO if none, mate? is it possible in chess game?
+        // Check all possible moves for a king if any
         // Locate a king of opponent's pieces color (find its current space)
         List<Space> kingAllowedSpaces = new ArrayList<>();
         Color currentColor = move.getPiece().getColor();
@@ -112,11 +112,15 @@ public class Chessboard {
                 Rank rank = getRankKey(RANK_NUMERIC_DECODER, currentRank + rule[1]);
                 if (file != null && rank != null) {
                     Space space = new Space(file, rank);
-                    if (isAvailable(space,currentColor)) {
+                    if (isAvailable(space, currentColor)) {
                         kingAllowedSpaces.add(space);
                     }
                 }
             }
+        }
+        // If none, mate. Not sure if it's possible to reach this situation in chess game though
+        if (kingAllowedSpaces.isEmpty()) {
+            return false;
         }
         for (Space s: kingAllowedSpaces) {
             System.out.println(currentColor.getOpponentColor() + " king's allowed move: " + s);
