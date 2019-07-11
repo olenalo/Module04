@@ -16,11 +16,13 @@ public class Knight extends Piece {
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
-    public Knight() {}
+    public Knight() {
+        this.allowedMovementDeltas = KNIGHT_ALLOWED_MOVEMENT_DELTAS;
+    }
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
-        return super.validatePerMovementRules(move, KNIGHT_ALLOWED_MOVEMENT_DELTAS);
+        return super.validatePerMovementRules(move);
     }
 
     @Override

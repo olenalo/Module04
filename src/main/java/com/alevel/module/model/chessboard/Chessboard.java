@@ -121,7 +121,6 @@ public class Chessboard {
         // Check that with all allowed moves a king would fall under attack
         // Assume a move under evaluation is made (update the chessboard states - no longer immutable!)
         // TODO make chessboard immutable again to preserve history (think of better ways to count a current move);
-        //  we lose movement rules field when updating chessboard!
         //  Consider hitting a db one more time
         updateChessboard(move);
         // Iterate over all pieces on the board and
@@ -154,28 +153,6 @@ public class Chessboard {
         squares.add(new Square(move.getCurrentSpace()));
         // Update piece's states
         move.getPiece().setMoved(true);
-        // FIXME come up with a better design (we lose movement rules field when updating chessboard!)
-        switch(move.getPiece().getType()) {
-            // TODO consider getting rid of magic strings
-            case KING:
-                move.getPiece().setAllowedMovementDeltas(KING_ALLOWED_MOVEMENT_DELTAS);
-                break;
-            case BISHOP:
-                move.getPiece().setAllowedMovementDeltas(BISHOP_ALLOWED_MOVEMENT_DELTAS);
-                break;
-            case KNIGHT:
-                move.getPiece().setAllowedMovementDeltas(KNIGHT_ALLOWED_MOVEMENT_DELTAS);
-                break;
-            case PAWN:
-                move.getPiece().setAllowedMovementDeltas(PAWN_ALLOWED_MOVEMENT_DELTAS);
-                break;
-            case QUEEN:
-                move.getPiece().setAllowedMovementDeltas(QUEEN_ALLOWED_MOVEMENT_DELTAS);
-                break;
-            case ROOK:
-                move.getPiece().setAllowedMovementDeltas(ROOK_ALLOWED_MOVEMENT_DELTAS);
-                break;
-        }
         // TODO Build pieces' vectors?
         // Clean up a destination square. Like that, we remove captured pieces.
         squares.remove(new Square(move.getDestinationSpace()));

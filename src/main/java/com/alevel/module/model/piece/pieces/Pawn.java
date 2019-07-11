@@ -16,12 +16,14 @@ public class Pawn extends Piece {
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
-    public Pawn() {}
+    public Pawn() {
+        this.allowedMovementDeltas = PAWN_ALLOWED_MOVEMENT_DELTAS;
+    }
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
-        return super.validatePerMovementRules(move, PAWN_ALLOWED_MOVEMENT_DELTAS);
+        return super.validatePerMovementRules(move);
     }
 
     @Override

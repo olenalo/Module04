@@ -16,13 +16,15 @@ public class King extends Piece {
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
-    public King() {}
+    public King() {
+        this.allowedMovementDeltas = KING_ALLOWED_MOVEMENT_DELTAS;
+    }
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
         // TODO add validateCheck(): ensure the move doesn't put a King in check
-        return super.validatePerMovementRules(move, KING_ALLOWED_MOVEMENT_DELTAS);
+        return super.validatePerMovementRules(move);
     }
 
     @Override

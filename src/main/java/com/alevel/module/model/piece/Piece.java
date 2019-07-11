@@ -36,14 +36,10 @@ public abstract class Piece {
     @JsonProperty("pieceType")  // FIXME this is an ugly workaround; need to pass both "type" and "pieceType" with JSON
     private Type type;
 
-    protected int[][] allowedMovementDeltas; // TODO make it work with jackson (shouldn't pass as method arg below!)
+    protected int[][] allowedMovementDeltas;
 
     public int[][] getAllowedMovementDeltas() {
         return allowedMovementDeltas;
-    }
-
-    public void setAllowedMovementDeltas(int[][] allowedMovementDeltas) {
-        this.allowedMovementDeltas = allowedMovementDeltas;
     }
 
     // TODO: add additional rules,
@@ -82,15 +78,13 @@ public abstract class Piece {
      * Validate if a move is allowed.
      *
      * @param move move to validate.
-     * @param allowedMovementDeltas move rules to validate a move against.
      * @return true if a move is valid, otherwise false.
      */
-    protected boolean validatePerMovementRules(Move move, int[][] allowedMovementDeltas) {
+    protected boolean validatePerMovementRules(Move move) {
         int expectedFileDelta = FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile()) -
                 FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile());
         int expectedRankDelta = RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank()) -
                 RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank());
-        // TODO separate out to a dedicated method
         for (int[] allowedMovesDelta : allowedMovementDeltas) {
             if (expectedFileDelta == allowedMovesDelta[0] && expectedRankDelta == allowedMovesDelta[1]) {
                 return true;

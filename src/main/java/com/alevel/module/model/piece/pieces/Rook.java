@@ -16,12 +16,14 @@ public class Rook extends Piece {  // could be `Castle`
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
-    public Rook() {}
+    public Rook() {
+        this.allowedMovementDeltas = ROOK_ALLOWED_MOVEMENT_DELTAS;
+    }
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
-        return super.validatePerMovementRules(move, ROOK_ALLOWED_MOVEMENT_DELTAS);
+        return super.validatePerMovementRules(move);
     }
 
     @Override

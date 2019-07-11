@@ -16,11 +16,13 @@ public class Bishop extends Piece {
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
-    public Bishop() {}
+    public Bishop() {
+        this.allowedMovementDeltas = BISHOP_ALLOWED_MOVEMENT_DELTAS;
+    }
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
-        return super.validatePerMovementRules(move, BISHOP_ALLOWED_MOVEMENT_DELTAS);
+        return super.validatePerMovementRules(move);
     }
 
     @Override

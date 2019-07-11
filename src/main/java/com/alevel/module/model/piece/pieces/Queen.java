@@ -17,11 +17,13 @@ public class Queen extends Piece {
     }
 
     // Ref.: https://stackoverflow.com/a/51014378
-    public Queen() {}
+    public Queen() {
+        this.allowedMovementDeltas = QUEEN_ALLOWED_MOVEMENT_DELTAS;
+    }
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
-        return super.validatePerMovementRules(move, QUEEN_ALLOWED_MOVEMENT_DELTAS);
+        return super.validatePerMovementRules(move);
     }
 
     @Override
