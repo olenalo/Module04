@@ -24,7 +24,7 @@ public class King extends Piece {
     public boolean validateMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
         // TODO add validateCheck(): ensure the move doesn't put a King in check
-        return super.validatePerMovementRules(move);
+        return super.validatePerMovementRules(move) && chessboard.validateMove(move);
     }
 
     @Override

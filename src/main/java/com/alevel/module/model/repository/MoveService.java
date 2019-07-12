@@ -78,7 +78,7 @@ public class MoveService implements MoveOperations {
         //  if on-the-way squares are empty (cannot jump over other pieces!),
         //  if within-the-field
 
-        if (move.getPiece().validateMove(move, chessboard) && chessboard.validateMove(move)) {
+        if (move.getPiece().validateMove(move, chessboard)) {
             System.out.println("Going to save a move: " + move);
             Long id = moveRepository.save(move).getId();
             // TODO Cache the updated states

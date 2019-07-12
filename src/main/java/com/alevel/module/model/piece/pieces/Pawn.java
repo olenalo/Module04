@@ -23,7 +23,7 @@ public class Pawn extends Piece {
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) {
         // TODO check compliance with specific rules
-        return super.validatePerMovementRules(move);
+        return super.validatePerMovementRules(move) && chessboard.validateMove(move);
     }
 
     @Override
