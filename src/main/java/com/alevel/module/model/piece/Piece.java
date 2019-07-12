@@ -3,6 +3,7 @@ package com.alevel.module.model.piece;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
+import com.alevel.module.model.piece.Vector;
 import com.alevel.module.model.piece.configs.Color;
 import com.alevel.module.model.piece.configs.Type;
 import com.alevel.module.model.piece.pieces.King;
@@ -13,13 +14,14 @@ import com.alevel.module.model.piece.pieces.Queen;
 import com.alevel.module.model.piece.pieces.Rook;
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
 
-@JsonIgnoreProperties({"moved", "allowedMovementDeltas"})
+@JsonIgnoreProperties({"moved", "allowedMovementDeltas", "vector"})
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "king", value = King.class),
@@ -35,8 +37,9 @@ public abstract class Piece {
     protected Color color;
     @JsonProperty("pieceType")  // FIXME this is an ugly workaround; need to pass both "type" and "pieceType" with JSON
     protected Type type;
-    protected boolean isMoved = false;  // Actually needed for King and Rook only (for castling)
     protected int[][] allowedMovementDeltas;
+    private boolean isMoved = false;  // Actually needed for King and Rook only (for castling)
+    private Vector vector;
 
     public int[][] getAllowedMovementDeltas() {
         return allowedMovementDeltas;
@@ -66,13 +69,6 @@ public abstract class Piece {
         this.type = type;
     }
 
-    // TODO: implement
-    /*
-    public Vector getVector(Move move) {
-
-    }
-    */
-
     /**
      * Validate if a move is allowed.
      *
@@ -91,6 +87,30 @@ public abstract class Piece {
         }
         // TODO add specific rules validation
         return false;
+    }
+
+    public Vector getVector() {
+        return vector;
+    }
+
+    public void setVector(Vector vector) {
+        this.vector = vector;
+    }
+
+    protected void setVector(Move move) {
+
+        Space currentSpace = move.getCurrentSpace();
+        Space destinationSpace = move.getDestinationSpace();
+
+        int expectedFileDelta = FILE_NUMERIC_DECODER.get(destinationSpace.getFile()) -
+                FILE_NUMERIC_DECODER.get(currentSpace.getFile());
+        int expectedRankDelta = RANK_NUMERIC_DECODER.get(destinationSpace.getRank()) -
+                RANK_NUMERIC_DECODER.get(currentSpace.getRank());
+
+        // TODO implement
+
+        List<Space> spaces = new ArrayList<>();
+        this.vector = new Vector(spaces);
     }
 
     @JsonGetter("color")

@@ -55,6 +55,25 @@ public class Chessboard {
     }
 
     /**
+     *  Check if a destination space is empty.
+     *
+     *  Piece color doesn't matter.
+     *
+     * @param space space to validate (destination space).
+     * @return validation results.
+     */
+    private boolean isEmpty(Space space) {
+        for (Square square : squares) {
+            if (space.getFile() == square.getSpace().getFile() &&
+                    space.getRank() == square.getSpace().getRank() &&
+                    square.getPiece() != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Locate a piece.
      *
      * First occurrence is returned.
@@ -161,13 +180,28 @@ public class Chessboard {
     }
 
     /**
-     * Perform board-level validation on a move.
+     *  Validate move's piece perspective vector.
+     *
+     *  That is, check if on-the-way squares are available
+     *  (cannot jump over other pieces).
+     */
+    private boolean validatePath(Move move) {
+        for (Space space : move.getPiece().getVector().getSpaces())  {
+            if (!isEmpty(space)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Perform board-level validations on a move.
      *
      * @param move a move under validation.
-     * @return validation results (true if valid).
+     * @return validation results (true if valid, otherwise false).
      */
     public boolean validateMove(Move move) {
-        return isAvailable(move.getDestinationSpace(), move.getPiece().getColor());
+        return isAvailable(move.getDestinationSpace(), move.getPiece().getColor()) && validatePath(move);
     }
 
     // TODO DRY; or better get rid at all; don't pass mutable!
