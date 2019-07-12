@@ -40,7 +40,7 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
         if (!gameMoves.isEmpty()) {
             for (Move move : gameMoves) {
                 // Clean up a previous state.
-                // TODO Consider avoiding removal (just settting a piece to null)
+                // TODO Consider avoiding removal (just setting a piece to null)
                 movesSquares.remove(new Square(move.getCurrentSpace()));
                 movesSquares.add(new Square(move.getCurrentSpace()));
                 // Update piece's states

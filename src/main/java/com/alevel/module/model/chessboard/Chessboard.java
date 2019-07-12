@@ -35,8 +35,8 @@ public class Chessboard {
     /**
      *  Check if a destination space is available.
      *
-     *  That is, if there's no piece of same color
-     *  on the destination space.
+     *  That is, validate if a destination square
+     *  is not occupied by a piece of same color.
      *
      * @param space space to validate (destination space).
      * @return validation results.
@@ -158,6 +158,16 @@ public class Chessboard {
             }
         }
         return false;
+    }
+
+    /**
+     * Perform board-level validation on a move.
+     *
+     * @param move a move under validation.
+     * @return validation results (true if valid).
+     */
+    public boolean validateMove(Move move) {
+        return isAvailable(move.getDestinationSpace(), move.getPiece().getColor());
     }
 
     // TODO DRY; or better get rid at all; don't pass mutable!

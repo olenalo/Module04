@@ -73,15 +73,12 @@ public class MoveService implements MoveOperations {
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
         // Validate and make a move, evaluate game situation
-        // TODO Add other validators
+        // TODO Add other validators:
         //  compliance with specific rules,
         //  if on-the-way squares are empty (cannot jump over other pieces!),
-        //  if a destination square is not occupied by piece of same color
         //  if within-the-field
 
-        // TODO Chessboard: implement the look-up of players' pieces' states from a chessboard
-
-        if (move.getPiece().validateMove(move, chessboard)) {
+        if (move.getPiece().validateMove(move, chessboard) && chessboard.validateMove(move)) {
             System.out.println("Going to save a move: " + move);
             Long id = moveRepository.save(move).getId();
             // TODO Cache the updated states
