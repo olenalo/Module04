@@ -1,7 +1,7 @@
 package com.alevel.module.auth;
 
 import com.alevel.module.model.game.Player;
-import com.alevel.module.model.repository.PlayerRepository;
+import com.alevel.module.service.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,27 +1,18 @@
-package com.alevel.module.model.repository;
+package com.alevel.module.service.repository;
 
 import com.alevel.module.controller.exceptions.GameNotFoundException;
 import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
-import com.alevel.module.model.chessboard.Space;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
-import com.alevel.module.model.piece.configs.Color;
-import com.alevel.module.model.piece.pieces.Pawn;
 import com.alevel.module.service.MoveOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.alevel.module.model.chessboard.configs.File.*;
-import static com.alevel.module.model.chessboard.configs.Rank.*;
-import static com.alevel.module.model.piece.configs.Color.BLACK;
-import static com.alevel.module.model.piece.configs.Color.WHITE;
 
 @Service
 public class MoveService implements MoveOperations {
@@ -68,7 +59,8 @@ public class MoveService implements MoveOperations {
         }
 
         // Build the game chessboard
-        // TODO think of better ways: this is not a builder: we don't pass params one by one
+        // TODO think of better ways (maye moving in all to Chessboard directly):
+        //  this is not a builder: we don't pass params one by one
         Chessboard chessboard = new StandardChessboardBuilder(gameMoves, game).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
@@ -79,10 +71,9 @@ public class MoveService implements MoveOperations {
         if (move.getPiece().validateMove(move, chessboard)) {
             System.out.println("Going to save a move: " + move);
             Long id = moveRepository.save(move).getId();
-            // TODO Cache the updated states
             // Evaluate game situation
             // TODO Add isDraw() evaluation, ref. https://en.wikipedia.org/wiki/Draw_(chess)
-            // TODO Closure (if checkmate or draw, store results and finish the game).
+            // TODO Closure (store results and finish the game).
             if (chessboard.isCheckMate(move)) {
                 return null;
             } else {

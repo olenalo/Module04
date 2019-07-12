@@ -1,4 +1,4 @@
-package com.alevel.module.model.repository;
+package com.alevel.module.service.repository;
 
 import com.alevel.module.model.game.Game;
 import com.alevel.module.service.GameOperations;
