@@ -83,6 +83,13 @@ public class Move {
         this.destinationSpace = destinationSpace;
     }
 
+    public Move(Piece piece, Space currentSpace, Space destinationSpace, Player player) {
+        this.piece = piece;
+        this.currentSpace = currentSpace;
+        this.destinationSpace = destinationSpace;
+        this.player = player;
+    }
+
     // Required for a model mapper
     public Move() {
     }

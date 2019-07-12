@@ -66,11 +66,24 @@ public abstract class Piece {
     // Ref.: https://stackoverflow.com/a/51014378
     public Piece() {}
 
-    public abstract boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException;
-
     public Piece(Color color, Type type) {
         this.color = color;
         this.type = type;
+    }
+
+    public boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException {
+        this.setVector(move);
+        return validateMoveDeltaExists(move) &&
+                validatePerMovementRules(move) &&
+                chessboard.validateMove(move);
+    }
+
+    private boolean validateMoveDeltaExists(Move move) {
+        int expectedFileDelta = FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile()) -
+                FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile());
+        int expectedRankDelta = RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank()) -
+                RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank());
+        return expectedFileDelta != 0 || expectedRankDelta != 0;
     }
 
     /**
@@ -79,20 +92,17 @@ public abstract class Piece {
      * @param move move to validate.
      * @return true if a move is valid, otherwise false.
      */
-    protected boolean validatePerMovementRules(Move move) throws InvalidMoveException {
+    private boolean validatePerMovementRules(Move move) throws InvalidMoveException {
         int expectedFileDelta = FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile()) -
                 FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile());
         int expectedRankDelta = RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank()) -
                 RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank());
-        if (expectedFileDelta == 0 && expectedRankDelta == 0) {
-            throw new InvalidMoveException(move);
-        }
         for (int[] allowedMovesDelta : allowedMovementDeltas) {
             if (expectedFileDelta == allowedMovesDelta[0] && expectedRankDelta == allowedMovesDelta[1]) {
                 return true;
             }
         }
-        // TODO add specific rules validation
+        // TODO add specific rules validation (if any): will apply for King, Rook, and Pawn
         return false;
     }
 
@@ -100,7 +110,7 @@ public abstract class Piece {
         return vector;
     }
 
-    public void setVector(Vector vector) {
+    void setVector(Vector vector) {
         this.vector = vector;
     }
 
@@ -111,7 +121,7 @@ public abstract class Piece {
      *
      * @param move
      */
-    protected void setVector(Move move) {
+    void setVector(Move move) {
         List<Space> spaces = new ArrayList<>();
 
         Space currentSpace = move.getCurrentSpace();

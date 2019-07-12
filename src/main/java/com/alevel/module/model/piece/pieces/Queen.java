@@ -23,12 +23,6 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException {
-        this.setVector(move);
-        return super.validatePerMovementRules(move) && chessboard.validateMove(move);
-    }
-
-    @Override
     public String toString() {
         return "Queen{" +
                 "color=" + this.getColor() +

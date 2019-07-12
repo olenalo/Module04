@@ -44,17 +44,17 @@ public class Game {
     // TODO keep track of pieces removed from the board
     // TODO record the moves
 
-    public Game(Player firstPlayer, Player secondPlayer, Chessboard chessboard) {
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
-        this.chessboard = chessboard;
+    public Game() {
     }
 
     public Game(Long id) {
         this.id = id;
     }
 
-    public Game() {
+    public Game(Long id, Player firstPlayer, Player secondPlayer) {
+        this.id = id;
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
     }
 
     @JsonIgnore

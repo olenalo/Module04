@@ -22,12 +22,6 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException {
-        this.setVector(move);
-        return super.validatePerMovementRules(move) && chessboard.validateMove(move);
-    }
-
-    @Override
     public String toString() {
         return "Bishop{" +
                 "color=" + this.getColor() +

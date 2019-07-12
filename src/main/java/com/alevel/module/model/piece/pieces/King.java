@@ -23,10 +23,8 @@ public class King extends Piece {
 
     @Override
     public boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException {
-        this.setVector(move);
-        // TODO check compliance with specific rules
         // TODO add validateCheck(): ensure the move doesn't put a King in check
-        return super.validatePerMovementRules(move) && chessboard.validateMove(move);
+        return super.validateMove(move, chessboard);
     }
 
     @Override

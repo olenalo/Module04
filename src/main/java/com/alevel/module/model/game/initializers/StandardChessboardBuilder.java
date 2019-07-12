@@ -33,6 +33,8 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
      *
      * Update pieces states as well.
      *
+     * TODO split into dedicated methods (not SOLID enough, does too many things)
+     *
      * @return builder object.
      */
     private void buildUpStates() {
