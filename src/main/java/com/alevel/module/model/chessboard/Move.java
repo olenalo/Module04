@@ -70,17 +70,11 @@ public class Move {
 
     // TODO add a timestamp field
 
-    // TODO review constructors (do we need all of them?)
     public Move(Piece piece, Space currentSpace, Space destinationSpace, Game game) {
         this.piece = piece;
         this.currentSpace = currentSpace;
         this.destinationSpace = destinationSpace;
         this.game = game;
-    }
-
-    public Move(Piece piece, Space destinationSpace) {
-        this.piece = piece;
-        this.destinationSpace = destinationSpace;
     }
 
     public Move(Piece piece, Space currentSpace, Space destinationSpace) {

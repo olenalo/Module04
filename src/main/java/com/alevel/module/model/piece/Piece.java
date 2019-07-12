@@ -1,8 +1,10 @@
 package com.alevel.module.model.piece;
 
+import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.chessboard.Space;
+import com.alevel.module.model.chessboard.configs.Rank;
 import com.alevel.module.model.piece.Vector;
 import com.alevel.module.model.piece.configs.Color;
 import com.alevel.module.model.piece.configs.Type;
@@ -20,6 +22,8 @@ import java.util.Objects;
 
 import static com.alevel.module.model.chessboard.configs.FileNumericDecoder.FILE_NUMERIC_DECODER;
 import static com.alevel.module.model.chessboard.configs.RankNumericDecoder.RANK_NUMERIC_DECODER;
+import static com.alevel.module.model.chessboard.configs.utils.DecodersLookups.getFileKey;
+import static com.alevel.module.model.chessboard.configs.utils.DecodersLookups.getRankKey;
 
 @JsonIgnoreProperties({"moved", "allowedMovementDeltas", "vector"})
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -62,7 +66,7 @@ public abstract class Piece {
     // Ref.: https://stackoverflow.com/a/51014378
     public Piece() {}
 
-    public abstract boolean validateMove(Move move, Chessboard chessboard);
+    public abstract boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException;
 
     public Piece(Color color, Type type) {
         this.color = color;
@@ -75,11 +79,14 @@ public abstract class Piece {
      * @param move move to validate.
      * @return true if a move is valid, otherwise false.
      */
-    protected boolean validatePerMovementRules(Move move) {
+    protected boolean validatePerMovementRules(Move move) throws InvalidMoveException {
         int expectedFileDelta = FILE_NUMERIC_DECODER.get(move.getDestinationSpace().getFile()) -
                 FILE_NUMERIC_DECODER.get(move.getCurrentSpace().getFile());
         int expectedRankDelta = RANK_NUMERIC_DECODER.get(move.getDestinationSpace().getRank()) -
                 RANK_NUMERIC_DECODER.get(move.getCurrentSpace().getRank());
+        if (expectedFileDelta == 0 && expectedRankDelta == 0) {
+            throw new InvalidMoveException(move);
+        }
         for (int[] allowedMovesDelta : allowedMovementDeltas) {
             if (expectedFileDelta == allowedMovesDelta[0] && expectedRankDelta == allowedMovesDelta[1]) {
                 return true;
@@ -97,7 +104,15 @@ public abstract class Piece {
         this.vector = vector;
     }
 
+    /**
+     * Set vector of perspective spaces.
+     *
+     * Does not include a current space.
+     *
+     * @param move
+     */
     protected void setVector(Move move) {
+        List<Space> spaces = new ArrayList<>();
 
         Space currentSpace = move.getCurrentSpace();
         Space destinationSpace = move.getDestinationSpace();
@@ -107,9 +122,66 @@ public abstract class Piece {
         int expectedRankDelta = RANK_NUMERIC_DECODER.get(destinationSpace.getRank()) -
                 RANK_NUMERIC_DECODER.get(currentSpace.getRank());
 
-        // TODO implement
+        // TODO consider refactoring (although it's already quite readable)
+        if (expectedFileDelta == 0) {
+            if (expectedRankDelta > 0) {
+                for (int i = 1; i <= expectedRankDelta; i++) {
+                    int expectedRank = RANK_NUMERIC_DECODER.get(currentSpace.getRank()) + i;
+                    spaces.add(new Space(destinationSpace.getFile(), getRankKey(RANK_NUMERIC_DECODER, expectedRank)));
+                }
+            } else if (expectedRankDelta < 0) {
+                for (int i = -1; i >= expectedRankDelta; i--) {
+                    int expectedRank = RANK_NUMERIC_DECODER.get(currentSpace.getRank()) - Math.abs(i);
+                    spaces.add(new Space(destinationSpace.getFile(), getRankKey(RANK_NUMERIC_DECODER, expectedRank)));
+                }
+            }
+        }
+        else if (expectedRankDelta == 0) {
+            if (expectedFileDelta > 0) {
+                for (int i = 1; i <= expectedFileDelta; i++) {
+                    int expectedFile = FILE_NUMERIC_DECODER.get(currentSpace.getFile()) + i;
+                    spaces.add(new Space(getFileKey(FILE_NUMERIC_DECODER, expectedFile), destinationSpace.getRank()));
+                }
+            } else {
+                for (int i = -1; i >= expectedFileDelta; i--) {
+                    int expectedFile = FILE_NUMERIC_DECODER.get(currentSpace.getFile()) - Math.abs(i);
+                    spaces.add(new Space(getFileKey(FILE_NUMERIC_DECODER, expectedFile), destinationSpace.getRank()));
+                }
+            }
+        }
+        // Diagonal
+        else if (expectedFileDelta > 0) {
+            if (expectedRankDelta > 0) {
+                for (int i = 1; i <= expectedFileDelta; i++) {
+                    int expectedFile = FILE_NUMERIC_DECODER.get(currentSpace.getFile()) + i;
+                    int expectedRank = RANK_NUMERIC_DECODER.get(currentSpace.getRank()) + i;
+                    spaces.add(new Space(getFileKey(FILE_NUMERIC_DECODER, expectedFile), getRankKey(RANK_NUMERIC_DECODER, expectedRank)));
+                }
+            } else {
+                for (int i = -1; i >= expectedRankDelta; i--) {
+                    int expectedFile = FILE_NUMERIC_DECODER.get(currentSpace.getFile()) + Math.abs(i);
+                    int expectedRank = RANK_NUMERIC_DECODER.get(currentSpace.getRank()) - Math.abs(i);
+                    spaces.add(new Space(getFileKey(FILE_NUMERIC_DECODER, expectedFile), getRankKey(RANK_NUMERIC_DECODER, expectedRank)));
+                }
+            }
+        }
+        // Diagonal
+        else if (expectedFileDelta < 0) {
+            if (expectedRankDelta > 0) {
+                for (int i = -1; i >= expectedFileDelta; i--) {
+                    int expectedFile = FILE_NUMERIC_DECODER.get(currentSpace.getFile()) - Math.abs(i);
+                    int expectedRank = RANK_NUMERIC_DECODER.get(currentSpace.getRank()) + Math.abs(i);
+                    spaces.add(new Space(getFileKey(FILE_NUMERIC_DECODER, expectedFile), getRankKey(RANK_NUMERIC_DECODER, expectedRank)));
+                }
+            } else {
+                for (int i = -1; i >= expectedFileDelta; i--) {
+                    int expectedFile = FILE_NUMERIC_DECODER.get(currentSpace.getFile()) - Math.abs(i);
+                    int expectedRank = RANK_NUMERIC_DECODER.get(currentSpace.getRank()) - Math.abs(i);
+                    spaces.add(new Space(getFileKey(FILE_NUMERIC_DECODER, expectedFile), getRankKey(RANK_NUMERIC_DECODER, expectedRank)));
+                }
+            }
+        }
 
-        List<Space> spaces = new ArrayList<>();
         this.vector = new Vector(spaces);
     }
 

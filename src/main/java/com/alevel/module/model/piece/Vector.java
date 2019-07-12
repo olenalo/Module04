@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Piece moves vector.
+ * Vector (path) of piece moves' spaces.
  */
 public class Vector {
 
@@ -14,6 +14,9 @@ public class Vector {
 
     public Vector(List<Space> spaces) {
         this.spaces = Collections.unmodifiableList(spaces);
+    }
+
+    public Vector() {
     }
 
     public List<Space> getSpaces() {

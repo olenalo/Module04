@@ -5,6 +5,7 @@ import java.util.Map;
 public class DecodersLookups {
 
     // TODO DRY
+    // TODO move to decoders
 
     /**
      * Look up key by value.

@@ -1,5 +1,6 @@
 package com.alevel.module.model.piece.pieces;
 
+import com.alevel.module.controller.exceptions.InvalidMoveException;
 import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.piece.Piece;
@@ -21,7 +22,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean validateMove(Move move, Chessboard chessboard) {
+    public boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException {
         this.setVector(move);
         // TODO check compliance with specific rules
         return super.validatePerMovementRules(move) && chessboard.validateMove(move);
