@@ -50,12 +50,11 @@ public class MoveController {
     public ResponseEntity save(@RequestBody MoveDto moveDto) {
         try {
             System.out.println("Current move: -------" + moveDto);
-            // TODO ensure a move's player is the same as a current user (i.e. authenticated user)
-            Optional<Player> playerOptional = playerOperations.find(moveDto.getPlayer().getId());
+            // TODO Ensure a move's player is the same as a current (authenticated) user
+            // Optional<Player> playerOptional = playerOperations.find(moveDto.getPlayer().getId());
             Long id = moveOperations.save(convertToEntity(moveDto));
             // TODO Cache the updated states
             if (id == null) { // TODO handle checkmate case better (null is not obvious)
-                // TODO end the game
                 return new ResponseEntity<>(
                         new Response("Checkmate! A " + moveDto.getPiece().getColor() + " side won."),
                         HttpStatus.CREATED);
