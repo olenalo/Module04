@@ -74,8 +74,9 @@ public class MoveService implements MoveOperations {
 
         // Validate and make a move, evaluate game situation
         // TODO Add other validators:
-        //  compliance with specific rules,
-        //  if on-the-way squares are empty (cannot jump over other pieces!),
+        //  finish compliance validation with general rules,
+        //  validate compliance with specific rules,
+        //  validate if on-the-way squares are empty (cannot jump over other pieces!),
 
         if (move.getPiece().validateMove(move, chessboard)) {
             System.out.println("Going to save a move: " + move);
