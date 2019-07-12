@@ -1,7 +1,7 @@
 package com.alevel.module.controller;
 
 import com.alevel.module.model.game.Game;
-import com.alevel.module.service.GameOperations;
+import com.alevel.module.service.operation.GameOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

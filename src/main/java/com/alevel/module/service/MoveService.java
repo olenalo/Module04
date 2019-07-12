@@ -1,4 +1,4 @@
-package com.alevel.module.service.repository;
+package com.alevel.module.service;
 
 import com.alevel.module.controller.exceptions.GameNotFoundException;
 import com.alevel.module.controller.exceptions.InvalidMoveException;
@@ -6,7 +6,9 @@ import com.alevel.module.model.chessboard.Chessboard;
 import com.alevel.module.model.chessboard.Move;
 import com.alevel.module.model.game.Game;
 import com.alevel.module.model.game.initializers.StandardChessboardBuilder;
-import com.alevel.module.service.MoveOperations;
+import com.alevel.module.service.operation.MoveOperations;
+import com.alevel.module.service.repository.GameRepository;
+import com.alevel.module.service.repository.MoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

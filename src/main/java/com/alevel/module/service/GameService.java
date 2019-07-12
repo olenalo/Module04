@@ -1,7 +1,8 @@
-package com.alevel.module.service.repository;
+package com.alevel.module.service;
 
 import com.alevel.module.model.game.Game;
-import com.alevel.module.service.GameOperations;
+import com.alevel.module.service.operation.GameOperations;
+import com.alevel.module.service.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

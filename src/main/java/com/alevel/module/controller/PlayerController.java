@@ -4,7 +4,7 @@ import com.alevel.module.auth.PlayerDetailsService;
 import com.alevel.module.controller.utils.Response;
 import com.alevel.module.model.game.Player;
 import com.alevel.module.model.game.PlayerDto;
-import com.alevel.module.service.PlayerOperations;
+import com.alevel.module.service.operation.PlayerOperations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

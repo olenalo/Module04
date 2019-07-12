@@ -1,8 +1,9 @@
-package com.alevel.module.service.repository;
+package com.alevel.module.service;
 
 import com.alevel.module.controller.exceptions.PlayerNotFoundException;
 import com.alevel.module.model.game.Player;
-import com.alevel.module.service.PlayerOperations;
+import com.alevel.module.service.operation.PlayerOperations;
+import com.alevel.module.service.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
