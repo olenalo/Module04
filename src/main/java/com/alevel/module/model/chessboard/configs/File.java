@@ -2,6 +2,9 @@ package com.alevel.module.model.chessboard.configs;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ *  Space file types.
+ */
 public enum File {
     A("a"),
     B("b"),
@@ -23,6 +26,16 @@ public enum File {
         return shortTitle;
     }
 
+    /**
+     *  Provide for (de)serialization.
+     *
+     *  It also allows for validating if
+     *  chess moves are within the field.
+     *
+     * @param value
+     * @return
+     * @throws IllegalArgumentException
+     */
     @JsonCreator
     public static File create(String value) throws IllegalArgumentException {
         if(value == null) {

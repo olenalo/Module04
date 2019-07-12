@@ -13,7 +13,9 @@ import static com.alevel.module.model.chessboard.configs.File.F;
 import static com.alevel.module.model.chessboard.configs.File.G;
 import static com.alevel.module.model.chessboard.configs.File.H;
 
-
+/**
+ * Decode space file type to numeric value.
+ */
 public class FileNumericDecoder {
 
     public static Map<File, Integer> FILE_NUMERIC_DECODER = ImmutableMap.<File, Integer>builder()
