@@ -54,7 +54,6 @@ public abstract class Piece {
     //    (promotion, castling), specific rules apply
     // private int[][] getAllowedSpecificMovesDeltas;
 
-
     public boolean isMoved() {
         return isMoved;
     }
