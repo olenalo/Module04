@@ -33,7 +33,10 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
      *
      * Update pieces states as well.
      *
+     * TODO consider moving it all to Chessboard directly.
+     *
      * TODO split into dedicated methods (not SOLID enough, does too many things)
+     * TODO consider writing validators of historical vectors (for each piece) to handle broken db data
      *
      * @return builder object.
      */

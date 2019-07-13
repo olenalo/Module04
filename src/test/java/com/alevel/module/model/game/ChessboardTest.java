@@ -70,7 +70,6 @@ public class ChessboardTest {
     @Test
     public void testIsCheckMateFoolMateVariation() {
         // Prerequisites
-        // TODO consider writing validators of vectors (for each piece) to handle broken db data
         gameMoves.add(new Move(new Pawn(WHITE), new Space(D, ONE), new Space(D, FOUR), firstPlayer));
         gameMoves.add(new Move(new Pawn(BLACK), new Space(F, SEVEN), new Space(F, FIVE), secondPlayer));
         gameMoves.add(new Move(new Bishop(WHITE), new Space(A, THREE), new Space(G, FIVE), firstPlayer));

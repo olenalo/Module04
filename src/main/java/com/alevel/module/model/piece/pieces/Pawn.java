@@ -21,10 +21,12 @@ public class Pawn extends Piece {
         this.allowedMovementDeltas = PAWN_ALLOWED_MOVEMENT_DELTAS;
     }
 
-    // TODO override validation to handle cases:
-    //  Pawn chess pieces can only directly forward one square, with two exceptions. (--> check per color to ensure forward movement)
-    //  Pawns can move directly forward two squares on their first move only. (--> check if first move)
-    //  Pawns can move diagonally forward when capturing an opponent's chess piece (--> check if capture)
+    public boolean validateMove(Move move, Chessboard chessboard) throws InvalidMoveException {
+        // TODO Pawn chess pieces can only directly forward one square, with two exceptions. (--> check per color to ensure forward movement)
+        // TODO Pawns can move directly forward two squares on their first move only. (--> check if first move)
+        // TODO Pawns can move diagonally forward when capturing an opponent's chess piece (--> check if capture)
+        return super.validateMove(move, chessboard);
+    }
 
     @Override
     public String toString() {

@@ -61,20 +61,23 @@ public class MoveService implements MoveOperations {
         }
 
         // Build the game chessboard
-        // TODO think of better ways (maye moving in all to Chessboard directly):
-        //  this is not a builder: we don't pass params one by one
+        // TODO remove builder (it's not a builder)
         Chessboard chessboard = new StandardChessboardBuilder(gameMoves, game).build();
         System.out.println("The game chessboard has been built: \n" + chessboard);
 
         // Validate and make a move, evaluate game situation
-        // TODO Add other validators:
-        //  validate compliance with specific rules,
-        //  King: add validateCheck(): ensure the move doesn't put a King in check
+        // TODO Validate compliance with specific rules (King, Rook, Pawn).
         if (move.getPiece().validateMove(move, chessboard)) {
             System.out.println("Going to save a move: " + move);
             Long id = moveRepository.save(move).getId();
             // Evaluate game situation
-            // TODO Add isDraw() evaluation, ref. https://en.wikipedia.org/wiki/Draw_(chess)
+            // TODO Add isDraw() evaluation (three validators; either of), ref. https://en.wikipedia.org/wiki/Draw_(chess)
+            //  - stalemate;
+            //  - threefold repetition;
+            //  - the fifty-move rule (need to define/store move results).
+
+            // TODO Add time limitation as per task requirements
+
             // TODO Closure (store results and finish the game).
             if (chessboard.isCheckMate(move)) {
                 return null;
