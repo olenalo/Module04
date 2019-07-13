@@ -55,7 +55,6 @@ public class StandardChessboardBuilder implements ChessboardBuilder {
                     move.getPiece().setColor(BLACK);
                 }
                 System.out.println(move);
-                // TODO Build pieces' vectors
                 // Clean up a destination square. Like that, we remove captured pieces.
                 movesSquares.remove(new Square(move.getDestinationSpace()));
                 // Add a new state

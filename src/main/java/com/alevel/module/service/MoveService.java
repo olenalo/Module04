@@ -68,7 +68,6 @@ public class MoveService implements MoveOperations {
 
         // Validate and make a move, evaluate game situation
         // TODO Add other validators:
-        //  finish compliance validation with general rules,
         //  validate compliance with specific rules,
         //  King: add validateCheck(): ensure the move doesn't put a King in check
         if (move.getPiece().validateMove(move, chessboard)) {

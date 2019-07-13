@@ -68,12 +68,11 @@ public class ChessboardTest {
      *     https://www.chess.com/article/view/the-fastest-possible-checkmate-in-chess
      */
     @Test
-    @Ignore("Skip till fixed.")
     public void testIsCheckMateFoolMateVariation() {
         // Prerequisites
         // TODO consider writing validators of vectors (for each piece) to handle broken db data
-        gameMoves.add(new Move(new Pawn(WHITE), new Space(F, TWO), new Space(D, FOUR), firstPlayer));
-        gameMoves.add(new Move(new Pawn(BLACK), new Space(E, SEVEN), new Space(F, FIVE), secondPlayer));
+        gameMoves.add(new Move(new Pawn(WHITE), new Space(D, ONE), new Space(D, FOUR), firstPlayer));
+        gameMoves.add(new Move(new Pawn(BLACK), new Space(F, SEVEN), new Space(F, FIVE), secondPlayer));
         gameMoves.add(new Move(new Bishop(WHITE), new Space(A, THREE), new Space(G, FIVE), firstPlayer));
         gameMoves.add(new Move(new Pawn(BLACK), new Space(H, SEVEN), new Space(H, SIX), secondPlayer));
         gameMoves.add(new Move(new Bishop(WHITE), new Space(G, FIVE), new Space(F, FOUR), firstPlayer));
@@ -91,11 +90,6 @@ public class ChessboardTest {
         // Expected move for checkmate
         Move currentMove = new Move(new Bishop(WHITE), new Space(D, THREE), new Space(G, SIX), firstPlayer);
         currentMove.setGame(game);
-        // FIXME
-        //  ensure chessboard squares are built up correctly if the same piece happens to move many times;
-        //  check allowed king's moves buildup:
-        //    black king's allowed move: Space{file=e, rank=7}
-        //    should be Space{file=f, rank=7}
         assertTrue(chessboard.isCheckMate(currentMove));
     }
 }
