@@ -138,6 +138,7 @@ public class Move {
 
     // FIXME enum types in the db tables
     //  Hibernate with enums, ref.: https://stackoverflow.com/a/735762
+    //  Add @Column - see the example solution: https://vladmihalcea.com/the-best-way-to-map-an-enum-type-with-jpa-and-hibernate/
     @Enumerated(EnumType.STRING)
     public String getPieceTitle() {
         return piece.getType().getShortTitle();
