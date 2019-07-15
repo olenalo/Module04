@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import static com.alevel.module.auth.configs.UserRoles.ROLE_ADMIN;
 import static com.alevel.module.auth.configs.UserRoles.ROLE_USER;
 
+// TODO rename class to ..Configuration
 @Configuration
 public class AuthConfigurer extends WebSecurityConfigurerAdapter {
 
@@ -45,7 +46,9 @@ public class AuthConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/chess/player/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/chess/player/login").permitAll()
                 .anyRequest().authenticated() // .hasAnyRole(ROLE_USER.getShortTitle(), ROLE_ADMIN.getShortTitle()) // .authenticated()
+                // roles can be configured in controllers with @PreAuthorize annotation!but at leas one mapping is required (?) TODO investigate
                 .and()
+            // or filters: JWTAuthenticationFilter
             .httpBasic()
                 .and()
             .csrf().disable()
