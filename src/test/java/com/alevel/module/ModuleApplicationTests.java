@@ -16,7 +16,7 @@ public class ModuleApplicationTests {
 	 - MoveService: save a move (w/ validators); `InvalidMoveException`
 	 - MoveService | MoveController: 'IllegalArgumentException' e.g. "Please provide a correct Rank value" (enum)
 	 - MoveController: test API endpoint (e.g. valid move, invalid move -> error code and message)
-	 - MoveController" authorization
+	 - MoveController: authorization
 	 - Move, Piece: check validation per general rules for pieces of each kind
 	 - PlayerController: cannot login if not registered (401)
 	 */

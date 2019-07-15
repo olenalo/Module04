@@ -32,25 +32,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @ActiveProfiles("test")
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)  // TODO SpringRunner.class
 //@SpringApplicationConfiguration(classes = ModuleApplication.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)  // Ref.: https://stackoverflow.com/a/43896841
 public class MoveServiceTest {
 
-    @Autowired
+    @Autowired // TODO just replace with @MockBean  (ActiveProfiles not needed then); moveService.build() then; A a = new A(mock);
     private MoveService moveService;
     @Autowired
     private MoveRepository moveRepository;
     @Autowired
     private GameRepository gameRepository;
-    /*
-    @Autowired
-    public MoveServiceTest(MoveService moveService, MoveRepository moveRepository, GameRepository gameRepository) {
-        this.moveService = moveService;
-        this.moveRepository = moveRepository;
-        this.gameRepository = gameRepository;
-    }
-     */
 
     /**
      * Play Fool's Mate.

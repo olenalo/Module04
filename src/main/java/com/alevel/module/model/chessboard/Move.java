@@ -24,7 +24,7 @@ import javax.persistence.*;
                 @ColumnResult(name="game_id", type=Long.class),
                 @ColumnResult(name="piece_title", type=String.class),
                 @ColumnResult(name="player_id", type=Long.class)})})
-@NamedNativeQuery(name = "Move.findByGameId",
+@NamedNativeQuery(name = "Move.findByGameId",  // TODO rewrite with @JoinTable, @JoinColumn, e.g. https://stackoverflow.com/q/949996
         query = "select * from moves move0_ left outer join games game1_ on move0_.game_id=game1_.id where game1_.id=?",
         resultSetMapping = "MoveResult")
 @Entity

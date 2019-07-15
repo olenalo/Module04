@@ -11,8 +11,9 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class TestGameRepositoryConfiguration {
     @Bean
-    @Primary
+    @Primary  // in case of namesake beans, this one will be of highest priority
     public GameRepository gameRepository() {
+        // TODO add return values here
         return Mockito.mock(GameRepository.class);
     }
 }
